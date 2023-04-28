@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PFE | acceuille</title>
+    <link rel="stylesheet" href="../css/main.css">
+    <script src="../JS_Front/posts.js" defer></script>
+    <script src="../JS_Front/main.js" defer></script>
+</head>
+<body>
+    <div id="leftMenu" class="leftMenu">
+        <div class="titleDiv">
+            <h1>GTR L3</h1>
+        </div>
+
+        <div class="moduleElement moduleGeneral">
+            <p>General</p>
+            <div class="notifDiv"></div>
+        </div>
+
+        <h3>Modules :</h3>
+
+        <div class="moduleMenu">
+            <div class="moduleElement">
+                <p>SCAN</p>
+                <div class="notifDiv"></div>
+            </div>
+            <div class="moduleElement selected_module">
+                <p>SCAN</p>
+                <div class="notifDiv"></div>
+            </div>
+            <div class="moduleElement">
+                <p>SCAN</p>
+            </div>
+            <div class="moduleElement">
+                <p>SCAN</p>
+                <div class="notifDiv"></div>
+            </div>
+            <div class="moduleElement">
+                <p>SCAN</p>
+            </div>
+        </div>
+
+        <div class="leftMenuInfoDiv">
+            <div class="parametresDiv">
+                <img src="../assets/icons/Icon_gear.png" alt="">
+                <h3>Parametres</h3>
+            </div>
+            <p>Version 0.2</p>
+        </div>
+
+    </div>
+
+
+
+    <div class="mainPart">
+        <div class="Top">
+            <button class="hamburgerMenu" onclick="toogleMenu()"><img id="imgBtnToogleMenu" src="../assets/icons/icon_hamburger.png" alt=""></button>
+            <h1>Actualité SCAN</h1>
+            <!-- <div class="filtreDiv">
+                <p>Filtres : </p>
+                <button>General</button>
+                <button>Cours</button>
+                <button>TD</button>
+                <button>TP</button>
+            </div> -->
+        </div>
+        
+        <div id="popUpBackground"></div>
+        <!-- <button class="addPost">+</button> -->
+
+        <div class="posts">
+            <div class="optionPost">
+                <!-- <h2>Scan</h2> -->
+                <div class="categorieDiv">
+                    <a href="">
+                        <h3>Drive</h3>
+                        <p>Consulter les cours et documents</p>
+                    </a>
+                    <a href="">
+                        <h3>Messagerie</h3>
+                        <p>Contacter vos professeurs du module</p>
+                    </a>
+                    <a href="">
+                        <h3>Notes</h3>
+                        <p>Consulter vos notes d'évaluation</p>
+                    </a>
+                </div>
+                <div id="filtreDiv" class="filterDiv">
+                    <h3>Filtrer :</h3>
+                    <button>Cours</button>
+                    <button class="filterSelected">TD</button>
+                    <button class="filterSelected">TP</button>
+                </div>
+            </div>
+
+
+
+
+            <div class="postElement">
+                <div class="postTop">
+                    <div class="moduleTitleDiv">
+                        <h3>Réseau Sans Fil</h3>
+                        <p>Madame xxxxxxxxxxx</p>
+                    </div>
+                    <h3 class="postTitle">Série d'éxercices a préparer !</h3>
+                </div>
+    
+                <div class="postCore">
+                    <div class="postText">
+                        <p>Bonsoir,</p>
+                        <p>Je vous envoie la série de TD a préparer pour la prochaine séance,<br>Les exercices 3-4-5 doivent étres envoyés en piéce jointe avant le dimanche prochain</p>
+                        <p>rappel que votre intérogation sera la semaine prochaine :))</p>
+                    </div>
+    
+                    <div class="postPieceJointe">
+                        <h4>piéce jointes :</h4>
+                        <div class="pieceJointeElement">
+                            <div class="PJimg"></div>
+                            <div class="PJtext">
+                                <p>Série TD1 RSF 2022</p>
+                                <p>2.2Mb</p>
+                            </div>
+                        </div>
+                        <div class="pieceJointeElement">
+                            <div class="PJimg"></div>
+                            <div class="PJtext">
+                                <p>Série TD1 RSF 2022</p>
+                                <p>2.2Mb</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+    
+                <div class="postBottomDiv">
+
+                    <button class="commentSectionBtn">Commenter</button>
+                    <button class="submitTravailBtn">Remettre le travail demandé</button>
+                    
+                    <!-- <div class="postComment">
+                        <div class="commentElement">
+                            <div class="ProfileImg"></div>
+                            <div class="commentCore">
+                                <p>{nom prénom}</p>
+                                <input type="text">
+                                <h3>></h3>
+                            </div>
+                        </div>
+                    </div>
+    
+                    <div class="SendBtn">
+                        <h3>Remettre le travail demandé</h3>
+                    </div> -->
+                </div>
+    
+            </div>
+
+
+
+
+            <div class="postElement">
+                <div class="postTop">
+                    <div class="moduleTitleDiv">
+                        <h3>Réseau Sans Fil</h3>
+                        <p>Madame xxxxxxxxxxx</p>
+                    </div>
+                    <h3 class="postTitle">Série d'éxercices a préparer !</h3>
+                </div>
+    
+                <div class="postCore extendedPJ">
+                    <div class="postText">
+                        <p>Bonsoir,</p>
+                        <p>Je vous envoie la série de TD a préparer pour la prochaine séance,<br>Les exercices 3-4-5 doivent étres envoyés en piéce jointe avant le dimanche prochain</p>
+                        <p>rappel que votre intérogation sera la semaine prochaine :))</p>
+                    </div>
+                    
+                    <div class="postPieceJointe">
+                        <h4>piéce jointes :</h4>
+                        <div class="pieceJointeElement">
+                            <div class="PJimg"></div>
+                            <div class="PJtext">
+                                <p>Série TD1 RSF 2022</p>
+                                <p>2.2Mb</p>
+                            </div>
+                        </div>
+                        <div class="pieceJointeElement">
+                            <div class="PJimg"></div>
+                            <div class="PJtext">
+                                <p>Série TD1 RSF 2022</p>
+                                <p>2.2Mb</p>
+                            </div>
+                        </div>
+                        <div class="pieceJointeElement">
+                            <div class="PJimg"></div>
+                            <div class="PJtext">
+                                <p>Série TD1 RSF 2022</p>
+                                <p>2.2Mb</p>
+                            </div>
+                        </div>
+                        <div class="pieceJointeElement">
+                            <div class="PJimg"></div>
+                            <div class="PJtext">
+                                <p>Série TD1 RSF 2022</p>
+                                <p>2.2Mb</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+    
+                <div class="postBottomDiv">
+
+                    <button class="commentSectionBtn">Commenter</button>
+                    <button class="submitTravailBtn">Remettre le travail demandé</button>
+                    
+                    <!-- <div class="postComment">
+                        <div class="commentElement">
+                            <div class="ProfileImg"></div>
+                            <div class="commentCore">
+                                <p>{nom prénom}</p>
+                                <input type="text">
+                                <h3>></h3>
+                            </div>
+                        </div>
+                    </div>
+    
+                    <div class="SendBtn">
+                        <h3>Remettre le travail demandé</h3>
+                    </div> -->
+                </div>
+    
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="rightPart">
+        <div class="profileDiv">
+            <img class="profilePicDiv" src="../assets/icons/default_user.png"></img>
+            <div class="profileTextDiv">
+                <p>Hannoun</p>
+                <p>Amar Amine</p>
+                <button id="profileSubMenuBtn">Mon compte</button>
+            </div>
+        </div>
+
+        <h3>Travaux actuels</h3>
+        <div class="travaux">
+            <div class="travauxElement">
+                <h3>Dev Web</h3>
+                <p>Tp3: les variables session</p>
+            </div>
+            <div class="travauxElement">
+                <h3>Dev Web</h3>
+                <p>Tp3: les variables session</p>
+            </div>
+            <div class="travauxElement">
+                <h3>Dev Web</h3>
+                <p>Tp3: les variables session</p>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>

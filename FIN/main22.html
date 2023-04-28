@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PFE | acceuille</title>
+    <link rel="stylesheet" href="css/main.css">
+    <script src="js/main.js" defer></script>
+</head>
+<body>
+    <div id="leftMenu" class="leftMenu">
+        <div class="titleDiv">
+            <h1 id="Section">GTR L3</h1>
+        </div>
+
+        <div class="moduleElement moduleGeneral selected_module">
+            <p>General</p>
+            <div class="notifDiv"></div>
+        </div>
+
+        <h3>Modules :</h3>
+
+        <div class="moduleMenu" id="moduleMenu">
+            
+        </div>
+
+        <div class="leftMenuInfoDiv">
+            <div class="parametresDiv">
+                <img src="icons/Icon_gear.png" alt="">
+                <h3>Parametres</h3>
+            </div>
+            <p>Version 0.2</p>
+        </div>
+
+    </div>
+
+
+
+    <div class="mainPart">
+        <div class="Top">
+            <button class="hamburgerMenu" onclick="toogleMenu()"><img id="imgBtnToogleMenu" src="icons/icon_hamburger.png" alt=""></button>
+            <h1 id="mainTitle">Actualité General</h1>
+            <!-- <div class="filtreDiv">
+                <p>Filtres : </p>
+                <button>General</button>
+                <button>Cours</button>
+                <button>TD</button>
+                <button>TP</button>
+            </div> -->
+        </div>
+        
+        <div id="popUpBackground"></div>
+        <!-- <button class="addPost">+</button> -->
+
+        <div class="posts" id="posts">
+            <div class="optionPost">
+                <!-- <h2>Scan</h2> -->
+                <div class="categorieDiv">
+                    <a href="">
+                        <h3>Drive</h3>
+                        <p>Consulter les cours et documents</p>
+                    </a>
+                    <a href="">
+                        <h3>Messagerie</h3>
+                        <p>Contacter vos professeurs du module</p>
+                    </a>
+                    <a href="">
+                        <h3>Notes</h3>
+                        <p>Consulter vos notes d'évaluation</p>
+                    </a>
+                </div>
+                <div id="filtreDiv" class="filterDiv">
+                    <h3>Filtrer :</h3>
+                    <button>Cours</button>
+                    <button class="filterSelected">TD</button>
+                    <button class="filterSelected">TP</button>
+                </div>
+            </div>
+
+
+
+
+            <div class="postElement">
+                <div class="postTop">
+                    <div class="moduleTitleDiv">
+                        <h3>Réseau Sans Fil</h3>
+                        <p>Madame xxxxxxxxxxx</p>
+                    </div>
+                    <h3 class="postTitle">Série d'éxercices a préparer !</h3>
+                </div>
+    
+                <div class="postCore">
+                    <div class="postText">
+                        <p>Bonsoir,</p>
+                        <p>Je vous envoie la série de TD a préparer pour la prochaine séance,<br>Les exercices 3-4-5 doivent étres envoyés en piéce jointe avant le dimanche prochain</p>
+                        <p>rappel que votre intérogation sera la semaine prochaine :))</p>
+                    </div>
+    
+                    <div class="postPieceJointe">
+                        <h4>piéce jointes :</h4>
+                        <div class="pieceJointeElement">
+                            <div class="PJimg"></div>
+                            <div class="PJtext">
+                                <p>Série TD1 RSF 2022</p>
+                                <p>2.2Mb</p>
+                            </div>
+                        </div>
+                        <div class="pieceJointeElement">
+                            <div class="PJimg"></div>
+                            <div class="PJtext">
+                                <p>Série TD1 RSF 2022</p>
+                                <p>2.2Mb</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+    
+                <div class="postBottomDiv">
+
+                    <button class="commentSectionBtn">Commenter</button>
+                    <button class="submitTravailBtn">Remettre le travail demandé</button>
+                    
+                    <!-- <div class="postComment">
+                        <div class="commentElement">
+                            <div class="ProfileImg"></div>
+                            <div class="commentCore">
+                                <p>{nom prénom}</p>
+                                <input type="text">
+                                <h3>></h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="SendBtn">
+                        <h3>Remettre le travail demandé</h3>
+                    </div> -->
+                </div>
+    
+            </div>
+
+
+
+
+            <div class="postElement">
+                <div class="postTop">
+                    <div class="moduleTitleDiv">
+                        <h3>Réseau Sans Fil</h3>
+                        <p>Madame xxxxxxxxxxx</p>
+                    </div>
+                    <h3 class="postTitle">Série d'éxercices a préparer !</h3>
+                </div>
+    
+                <div class="postCore extendedPJ">
+                    <div class="postText">
+                        <p>Bonsoir,</p>
+                        <p>Je vous envoie la série de TD a préparer pour la prochaine séance,<br>Les exercices 3-4-5 doivent étres envoyés en piéce jointe avant le dimanche prochain</p>
+                        <p>rappel que votre intérogation sera la semaine prochaine :))</p>
+                    </div>
+                    
+                    <div class="postPieceJointe">
+                        <h4>piéce jointes :</h4>
+                        <div class="pieceJointeElement">
+                            <div class="PJimg"></div>
+                            <div class="PJtext">
+                                <p>Série TD1 RSF 2022</p>
+                                <p>2.2Mb</p>
+                            </div>
+                        </div>
+                        <div class="pieceJointeElement">
+                            <div class="PJimg"></div>
+                            <div class="PJtext">
+                                <p>Série TD1 RSF 2022</p>
+                                <p>2.2Mb</p>
+                            </div>
+                        </div>
+                        <div class="pieceJointeElement">
+                            <div class="PJimg"></div>
+                            <div class="PJtext">
+                                <p>Série TD1 RSF 2022</p>
+                                <p>2.2Mb</p>
+                            </div>
+                        </div>
+                        <div class="pieceJointeElement">
+                            <div class="PJimg"></div>
+                            <div class="PJtext">
+                                <p>Série TD1 RSF 2022</p>
+                                <p>2.2Mb</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+    
+                <div class="postBottomDiv">
+
+                    <button class="commentSectionBtn">Commenter</button>
+                    <button class="submitTravailBtn">Remettre le travail demandé</button>
+                    
+                    <!-- <div class="postComment">
+                        <div class="commentElement">
+                            <div class="ProfileImg"></div>
+                            <div class="commentCore">
+                                <p>{nom prénom}</p>
+                                <input type="text">
+                                <h3>></h3>
+                            </div>
+                        </div>
+                    </div>
+    
+                    <div class="SendBtn">
+                        <h3>Remettre le travail demandé</h3>
+                    </div> -->
+                </div>
+    
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="rightPart">
+        <div class="profileDiv">
+            <img class="profilePicDiv" src="icons/default_user.png"></img>
+            <div class="profileTextDiv">
+                <p id="nom">Hannoun</p>
+                <p id="prenom">Amar Amine</p>
+                <button id="profileSubMenuBtn">Mon compte</button>
+            </div>
+        </div>
+
+        <h3>Travaux actuels</h3>
+        <div class="travaux">
+            <div class="travauxElement">
+                <h3>Dev Web</h3>
+                <p>Tp3: les variables session</p>
+            </div>
+            <div class="travauxElement">
+                <h3>Dev Web</h3>
+                <p>Tp3: les variables session</p>
+            </div>
+            <div class="travauxElement">
+                <h3>Dev Web</h3>
+                <p>Tp3: les variables session</p>
+            </div>
+        </div>
+
+    </div>
+
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        //connection to the socket
+        socket = io()
+        socket.on('connect', () => {
+            socket.emit("connected", [document.cookie]) //get  the cookies with the connection socket
+        })
+
+
+        
+        socket.on('connected', (data) => { //get the data from the server with the acknoledgement
+            login = data[0]["login"]            //get the login from the data
+            prenom = login.split('.')[0]        //get the first part of the login (the prenom)
+            nom = login.split('.')[1]           //get the second part of the login (the nom)
+            sec = "L" + data[0]["niveau"] + " " + data[0]["specialite"] //get the section (LX spé)
+            idSec = data[0]["idSec"]
+            
+            document.getElementById("nom").innerHTML = nom          //replace the nom with the right one
+            document.getElementById("prenom").innerHTML = prenom    //replace the prenom with the right one
+            document.getElementById("Section").innerHTML = sec      //replace the section with the right one
+            
+            modules = data[1]           //get the modules from the data
+            modDiv = document.getElementById("moduleMenu")  //get the module menu div
+            for(var module of modules){ //for each module in the modules array add a button to the module menu
+                modDiv.innerHTML += `<div class="moduleElement"><p>${module['nom']}</p><div class="notifDiv"></div></div>`
+            }
+            //add the event listener to the module buttons to change the selected module
+            const modulesBtns = document.querySelectorAll('.moduleElement');
+            modulesBtns.forEach(moduleBtn => {
+                moduleBtn.addEventListener('click', () => {
+                    modulesBtns.forEach(moduleBtn => {moduleBtn.classList.remove("selected_module")})
+                    moduleBtn.classList.add("selected_module")
+                    // change the main part menu title
+                    document.getElementById("mainTitle").innerHTML = `Actualité ${moduleBtn.children[0].innerHTML}`
+                    getPosts(idSec, moduleBtn.children[0].innerHTML)
+                })
+            })
+            const selected_module = document.querySelectorAll('.selected_module')[0].innerHTML;
+            getPosts(idSec, "General") //get the posts from the server (all the posts from the section)
+            
+            
+        })
+    </script>
+
+</body>
+</html>
+
+
+
+<!----------------------------------------------------------------
+    
+    
+            <div class="postElement postElement_profSide">
+                <div class="postTop">
+                    <h3 class="postTitle">Objet : </h3>
+                    <input type="text" placeholder="Aa">
+                </div>
+    
+                <div class="postCore extendedPJ">
+                    <textarea id="" rows="8" placeholder="Aa"></textarea>
+    
+                    <div class="postPieceJointe">
+                        <h4>piéce jointes :</h4>
+                        <button>+</button>
+                        <div class="pieceJointeElement">
+                            <div class="PJimg"></div>
+                            <div class="PJtext">
+                                <p>Série TD1 RSF 2022</p>
+                                <p>2.2Mb</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+    
+                <div class="postBottomDiv">
+                    <button class="profSideOption">Commentairer (X)</button>
+                    <button class="profSideOption">Piéces jointes (V)</button>
+                    <button class="profSideOption">Travail a remettre (X)</button>
+                    <button class="profSideOption">Envoyer</button>
+                </div>
+    
+            </div>
+    
+
+
+
+    
+    
+    >

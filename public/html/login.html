@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/login.css">
+    <title>PFE | Login page</title>
+</head>
+<body>
+
+    <div class="conainer">
+        <form action="">
+            <label for="username">identifiant :</label>    
+            <input type="text" name="username" id="username">
+            <label for="mot de passe">mot de passe :</label>   
+            <input type="password" name="password" id="password">
+            <p id="hidden" align="center" style="color:red;padding:0;margin:0;display: none;">identifiant ou mot de passe incorrect</p>
+
+            <input type="submit" value="Connecter">
+        </form>
+        
+        <div class="subLogin">
+            <a href="#">Mot de passe oublié</a>
+            <a href="#">Créer un compte</a>
+        </div>
+    </div>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const myParam = urlParams.get('error');
+        console.log(myParam);
+        if( myParam != null && myParam == "true"){
+            document.getElementById("hidden").style.display = "block";
+        }
+    </script>
+    
+</body>
+</html>
