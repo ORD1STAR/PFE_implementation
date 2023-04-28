@@ -1,0 +1,50 @@
+.filesSectionMain{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    text-align: center;
+    overflow-y: scroll;
+}
+.file{
+    width: calc(100%/3 - 30px);
+    margin: 15px;
+    background-color: rgba(0, 0, 0, 0.15);
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+    padding: 0;
+    padding-top: 20px;
+    border-radius: 10px;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2);
+}
+.file p{
+    margin: 0;
+    padding: 0;
+}
+.file .title{
+    font-weight: bold;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+.file .tag{
+    font-weight: 600;
+    font-size: 0.8em;
+    color: rgba(0, 0, 0, 0.55);
+    margin: 10px 0 5px 0;
+    padding: 2px 5px;
+    background-color: rgba(0, 0, 0, 0.15);
+    border-radius: 10px;
+}
+.file .taille{
+    font-size: 0.8em;
+    color: rgba(0, 0, 0, 0.45);
+}
+.file img{
+    height: 100px;
+    width: 100px;
+    border-radius: 100px;
+}
+.file:hover{
+    cursor: pointer;
+    background-color: rgba(0, 0, 0, 0.2);
+}
