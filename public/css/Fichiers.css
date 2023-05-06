@@ -4,6 +4,7 @@
     flex-wrap: wrap;
     text-align: center;
     overflow-y: scroll;
+    width: 100%;
 }
 .file{
     width: calc(100%/3 - 30px);
@@ -47,4 +48,11 @@
 .file:hover{
     cursor: pointer;
     background-color: rgba(0, 0, 0, 0.2);
+}
+.fileSection{
+    display: flex;
+    flex-direction: row;
+}
+.moduleSection{
+    width: 500px;
 }

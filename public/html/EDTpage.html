@@ -5,46 +5,49 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PFE | Emploie du temps</title>
-    <link rel="stylesheet" href="../css/main.css">
-    <link rel="stylesheet" href="../css/Perso.css">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/Perso.css">
 </head>
 <body>
     <div id="leftMenu" class="leftMenu">
         <div class="titleDiv">
-            <h1>GTR L3</h1>
+            <h1 id="Section">GTR L3</h1>
         </div>
 
-        <div class="moduleElement moduleGeneral">
-            <p>General</p>
-            <div class="notifDiv"></div>
-        </div>
+        <h3>Menu :</h3>
 
-        <h3>Modules :</h3>
-
-        <div class="moduleMenu">
-            <div class="moduleElement">
-                <p>SCAN</p>
+        <div class="moduleMenu" id="moduleMenu">
+            <div class="moduleElement selected_module" onclick="location.href = '/edt'">
+                <p>Emploi du temps</p>
                 <div class="notifDiv"></div>
             </div>
-            <div class="moduleElement selected_module">
-                <p>SCAN</p>
+            <div class="moduleElement" onclick="location.href = '/msg'">
+                <p>Messagerie</p>
+                <div class="notifDiv"></div>
+            </div>
+            <div class="moduleElement" onclick="location.href = '/files'">
+                <p>Documents</p>
+                <div class="notifDiv"></div>
+            </div>
+            <div class="moduleElement" onclick="location.href = '/notes'">
+                <p>Notes</p>
                 <div class="notifDiv"></div>
             </div>
             <div class="moduleElement">
-                <p>SCAN</p>
-            </div>
-            <div class="moduleElement">
-                <p>SCAN</p>
+                <p>Calendier</p>
                 <div class="notifDiv"></div>
             </div>
             <div class="moduleElement">
-                <p>SCAN</p>
+                <p>Informations Personnels</p>
+            </div>
+            <div class="moduleElement">
+                <p>USTHB map</p>
             </div>
         </div>
 
         <div class="leftMenuInfoDiv">
             <div class="parametresDiv">
-                <img src="../assets/icons/Icon_gear.png" alt="">
+                <img src="/icons/Icon_gear.png" alt="">
                 <h3>Parametres</h3>
             </div>
             <p>Version 0.2</p>
@@ -63,16 +66,16 @@
             <div class="profileDiv">
                 <div class="profilePicDiv"></div>
                     <div class="profileTextDiv">
-                        <p>Hannoun</p>
-                        <p>Amar Amine</p>
+                        <p id="nom">Hannoun</p>
+                        <p id="prenom">Amar Amine</p>
                         <button id="profileSubMenuBtn">Mon compte</button>
                     </div>
 
                 <div class="profileSubMenu">
                     <a href="#"><p>Espace Personnel</p></a>
-                    <a href="#"><p>Messagerie</p></a>
-                    <a href="#"><p>Emploie du temps</p></a>
-                    <a href="#"><p>Délibération</p></a>
+                    <a href="/msg"><p>Messagerie</p></a>
+                    <a href="/edt"><p>Emploie du temps</p></a>
+                    <a href="/notes"><p>Délibération</p></a>
                     <div class="delimiteur"></div>
                     <a href="#"><p>Parametres</p></a>
                     <a href="#"><p>se déconecter</p></a>
@@ -84,7 +87,7 @@
             <div class="EDT_optionBar">
                 
             </div>
-            <table class="EDT">
+            <table class="EDT" id="EDT">
                 <tr>
                     <th></th>
                     <th>8h 9h30</th>
@@ -94,209 +97,89 @@
                     <th>14h40 16h10</th>
                     <th>16h20 17h50</th>
                 </tr>
-                <tr>
-                    <td>Samedi</td>
-                    <td><div class="EDTcase">
-                        <div class="EDT_module">
-                            <div class="moduleGroupes"><p>G1</p><p>G2</p></div>
-                            <div class="moduleContent">
-                                <div class="moduleTitleDiv">
-                                    <p class="moduleType">TP</p>
-                                    <p class="moduleTitle">BDD</p>
-                                </div>
-                                <p class="moduleClass">TP122</p>
-                            </div>
-                        </div>
-                        <div class="EDT_module">
-                            <div class="moduleGroupes"><p>G3</p></div>
-                            <div class="moduleContent">
-                                <div class="moduleTitleDiv">
-                                    <p class="moduleType">TP</p>
-                                    <p class="moduleTitle">BDD</p>
-                                </div>
-                                <p class="moduleClass">TP122</p>
-                            </div>
-                        </div>
-                    </div></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>Dimanche</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>Lundi</td>
-                    <td><div class="EDTcase">
-                        <div class="EDT_module">
-                            <div class="moduleContent">
-                                <div class="moduleTitleDiv">
-                                    <p class="moduleTitle">BDD</p>
-                                </div>
-                                <p class="moduleClass">113D</p>
-                            </div>
-                        </div>
-                    </div></td>
-                    <td><div class="EDTcase">
-                        <div class="EDT_module">
-                            <div class="moduleContent">
-                                <div class="moduleTitleDiv">
-                                    <p class="moduleTitle">Sécurité</p>
-                                </div>
-                                <p class="moduleClass">103D</p>
-                            </div>
-                        </div>
-                    </div></td>
-                    <td><div class="EDTcase">
-                        <div class="EDT_module">
-                            <div class="moduleContent">
-                                <div class="moduleTitleDiv">
-                                    <p class="moduleTitle">QoS</p>
-                                </div>
-                                <p class="moduleClass">Salle de conférences</p>
-                            </div>
-                        </div>
-                    </div></td>
-                    <td><div class="EDTcase">
-                        <div class="EDT_module">
-                            <div class="moduleGroupes"><p>G3</p></div>
-                            <div class="moduleContent">
-                                <div class="moduleTitleDiv">
-                                    <p class="moduleType">TP</p>
-                                    <p class="moduleTitle">Sécurité</p>
-                                </div>
-                                <p class="moduleClass">TP122</p>
-                            </div>
-                        </div>
-                    </div></td>
-                    <td><div class="EDTcase">
-                        <div class="EDT_module">
-                            <div class="moduleGroupes"><p>G2</p></div>
-                            <div class="moduleContent">
-                                <div class="moduleTitleDiv">
-                                    <p class="moduleType">TP</p>
-                                    <p class="moduleTitle">Sécurité</p>
-                                </div>
-                                <p class="moduleClass">TP122</p>
-                            </div>
-                        </div>
-                    </div></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>Mardi</td>
-                    <td><div class="EDTcase">
-                            <div class="EDT_module">
-                                <div class="moduleGroupes"><p>G1</p></div>
-                                <div class="moduleContent">
-                                    <div class="moduleTitleDiv">
-                                        <p class="moduleType">TP</p>
-                                        <p class="moduleTitle">Sécurité</p>
-                                    </div>
-                                    <p class="moduleClass">TP122</p>
-                                </div>
-                            </div>
-                            <div class="EDT_module">
-                                <div class="moduleGroupes"><p>G2</p><p>G3</p></div>
-                                <div class="moduleContent">
-                                    <div class="moduleTitleDiv">
-                                        <p class="moduleType">TD</p>
-                                        <p class="moduleTitle">QoS</p>
-                                    </div>
-                                    <p class="moduleClass">446</p>
-                                </div>
-                            </div>
-                    </div></td>
-                    <td><div class="EDTcase">
-                        <div class="EDT_module">
-                            <div class="moduleGroupes"><p>G1</p></div>
-                            <div class="moduleContent">
-                                <div class="moduleTitleDiv">
-                                    <p class="moduleType">TP</p>
-                                    <p class="moduleTitle">QoS</p>
-                                </div>
-                                <p class="moduleClass">310</p>
-                            </div>
-                        </div>
-                        <div class="EDT_module">
-                            <div class="moduleGroupes"><p>G2</p></div>
-                            <div class="moduleContent">
-                                <div class="moduleTitleDiv">
-                                    <p class="moduleType">TD</p>
-                                    <p class="moduleTitle">BDD</p>
-                                </div>
-                                <p class="moduleClass">TP C4</p>
-                            </div>
-                        </div>
-                    </div></td>
-                    <td><div class="EDTcase">
-                        <div class="EDT_module">
-                            <div class="moduleContent">
-                                <div class="moduleTitleDiv">
-                                    <p class="moduleTitle">Sécurité</p>
-                                </div>
-                                <p class="moduleClass">103D</p>
-                            </div>
-                        </div>
-                    </div></td>
-                    <td><div class="EDTcase">
-                        <div class="EDT_module">
-                            <div class="moduleGroupes"><p>G1</p></div>
-                            <div class="moduleContent">
-                                <div class="moduleTitleDiv">
-                                    <p class="moduleType">TP</p>
-                                    <p class="moduleTitle">BDD</p>
-                                </div>
-                                <p class="moduleClass">TP130</p>
-                            </div>
-                        </div>
-                    </div></td>
-                    <td><div class="EDTcase">
-                        <div class="EDT_module">
-                            <div class="moduleGroupes"><p>G3</p></div>
-                            <div class="moduleContent">
-                                <div class="moduleTitleDiv">
-                                    <p class="moduleType">TP</p>
-                                    <p class="moduleTitle">BDD</p>
-                                </div>
-                                <p class="moduleClass">TP130</p>
-                            </div>
-                        </div>
-                    </div></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>Mercredi</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>Jeudi</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
+                
             </table>
         </div>
         
     </div>
 
-    <script src="main.js" defer></script>
+    <script src="/js/main.js" defer></script>
+    <script src="/js/edt.js" defer></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
+    <script>
+
+        socket = io()
+        socket.on('connect', () => {
+            socket.emit("connected", [document.cookie]) //get  the cookies with the connection socket
+        })
+
+        socket.on('connectedEtu', (data) => { //get the data from the server with the acknoledgement
+            login = data[0]["login"]            //get the login from the data
+            prenom = login.split('.')[0]        //get the first part of the login (the prenom)
+            nom = login.split('.')[1]           //get the second part of the login (the nom)
+            
+            sec = "L" + data[0]["niveau"] + " " + data[0]["specialite"] //get the section (LX spé)
+            idSec = data[0]["idSec"]
+            
+            document.getElementById("nom").innerHTML = nom          //replace the nom with the right one
+            document.getElementById("prenom").innerHTML = prenom    //replace the prenom with the right one
+            document.getElementById("Section").innerHTML = sec      //replace the section with the right one
+            
+            
+
+            
+
+            const modLs = document.querySelectorAll('.TPTDmoduleSection');
+            modLs.forEach(moduleBtn => {
+                moduleBtn.addEventListener('click', () => {
+                    document.getElementById("mainTitle").innerHTML = `Fichiers ${moduleBtn.children[0].innerHTML}`
+                })
+            })
+            selected_module = document.querySelectorAll('.selected_module')[0].innerHTML;
+            
+            
+        })
+
+        socket.on('connectedEns', (data) => { //get the data from the server with the acknoledgement
+            login = data[0]["login"]            //get the login from the data
+            prenom = login.split('.')[0]        //get the first part of the login (the prenom)
+            nom = login.split('.')[1]           //get the second part of the login (the nom)
+            
+            
+            document.getElementById("nom").innerHTML = nom          //replace the nom with the right one
+            document.getElementById("prenom").innerHTML = prenom    //replace the prenom with the right one
+            document.getElementById("Section").innerHTML = "Sections"      //replace the section with the right one
+            
+            modules = data[1]           //get the modules from the data
+            modDiv = document.getElementById("moduleSection")  //get the module menu div
+            for(var module of modules){ //for each module in the modules array add a button to the module menu
+                modDiv.innerHTML += `<div class="TPTDmoduleSection closed" id="${module["idSec"]}"><h3>${module['nom']}|L${module['niveau']} ${module['specialite']}</h3></div>`
+            }
+
+            //add the event listener to the module buttons to change the selected module
+            const modulesBtns = document.querySelectorAll('.moduleElement');
+            modulesBtns.forEach(moduleBtn => {
+                moduleBtn.addEventListener('click', () => {
+                    modulesBtns.forEach(moduleBtn => {moduleBtn.classList.remove("selected_module")})
+                    moduleBtn.classList.add("selected_module")
+                })
+            })
+
+            const modLs = document.querySelectorAll('.TPTDmoduleSection');
+            modLs.forEach(moduleBtn => {
+                moduleBtn.addEventListener('click', () => {
+                    document.getElementById("mainTitle").innerHTML = `Fichiers ${moduleBtn.children[0].innerHTML}`
+                    getFilesE(moduleBtn.children[0].innerHTML, moduleBtn.id)
+                })
+            })
+            selected_module = document.querySelectorAll('.selected_module')[0].innerHTML;
+            
+            
+        })
+
+    </script>
+
 
 </body>
 </html>

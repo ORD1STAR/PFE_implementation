@@ -5,48 +5,63 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PFE | Messagerie</title>
-    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="/css/main.css">
+    <style>.mainPart {height: 100vh;}</style>
 </head>
 <body>
-    <div class="leftMenu">
+    <div id="leftMenu" class="leftMenu">
         <div class="titleDiv">
-            <h1>GTR L3</h1>
-        </div>
-        <h3>Modules :</h3>
-
-        <div class="moduleMenu">
-            <div class="moduleElement">
-                <p>SCAN</p>
-                <div class="notifDiv"></div>
-            </div>
-            <div class="moduleElement">
-                <p>SCAN</p>
-                <div class="notifDiv"></div>
-            </div>
-            <div class="moduleElement">
-                <p>SCAN</p>
-                <div class="notifDiv"></div>
-            </div>
-            <div class="moduleElement">
-                <p>SCAN</p>
-                <div class="notifDiv"></div>
-            </div>
-            <div class="moduleElement">
-                <p>SCAN</p>
-                <div class="notifDiv"></div>
-            </div>
+            <h1 id="Section" onclick="location.href = '/home'">GTR L3</h1>
         </div>
 
+        <h3>Menu :</h3>
 
+        <div class="moduleMenu" id="moduleMenu">
+            <div class="moduleElement">
+                <p>Emploi du temps</p>
+                <div class="notifDiv"></div>
+            </div>
+            <div class="moduleElement selected_module" onclick="location.href = '/msg'">
+                <p>Messagerie</p>
+                <div class="notifDiv"></div>
+            </div>
+            <div class="moduleElement" onclick="location.href = '/files'">
+                <p>Documents</p>
+                <div class="notifDiv"></div>
+            </div>
+            <div class="moduleElement" onclick="location.href = '/notes'">
+                <p>Notes</p>
+                <div class="notifDiv"></div>
+            </div>
+            <div class="moduleElement">
+                <p>Calendier</p>
+                <div class="notifDiv"></div>
+            </div>
+            <div class="moduleElement">
+                <p>Informations Personnels</p>
+            </div>
+            <div class="moduleElement">
+                <p>USTHB map</p>
+            </div>
+        </div>
 
+        <div class="leftMenuInfoDiv">
+            <div class="parametresDiv" id="parametresDiv">
+                <img src="/icons/Icon_gear.png" alt="">
+                <h3>Parametres</h3>
+            </div>
+            <p>Version 0.2</p>
+        </div>
 
     </div>
-
+    <div id="popUpBackground"></div>
+    <!--<button class="contactMenuBtn" onclick="toogleMenu()"><img id="contactBtnToggleMenu" src="/icons/default_user.png" alt=""></button> -->
 
 
     <div class="mainPart">
-        <div class="Top">
-            <h1>Messagerie instantannée</h1>
+        <div class="Top"> 
+            <button class="hamburgerMenu" onclick="toogleMenu()"><img id="imgBtnToogleMenu" src="/icons/icon_hamburger.png" alt=""></button>
+            <h1 class="" id="discutID">Messagerie instantannée</h1>
             <!-- <div class="filtreDiv">
                 <p>Filtres : </p>
                 <button>General</button>
@@ -54,102 +69,12 @@
                 <button>TD</button>
                 <button>TP</button>
             </div> -->
+
         </div>
 
         <div class="msgSection">
-            <div class="contactSection">
-                <div class="TPTDmoduleSection closed">
-                    <h3>Module 1</h3>
-                    <p class="arrow">V</p>
-                    <div class="moduleTPTD">
-                        <h4>cours</h4><p>mr xxxxxx</p><p class="arrow">></p>
-                    </div>
-                    <div class="moduleTPTD">
-                        <h4>TP</h4><p>mr xxxxxx</p><p class="arrow">></p>
-                    </div>
-                    <div class="moduleTPTD">
-                        <h4>TD</h4><p>mr xxxxxx</p><p class="arrow">></p>
-                    </div>
-                </div>
-
-                <div class="TPTDmoduleSection closed">
-                    <h3>Module 2</h3>
-                    <p class="arrow">V</p>
-                    <div class="moduleTPTD">
-                        <h4>cours</h4><p>mr yyyyyy</p><p class="arrow">></p>
-                    </div>
-                    <div class="moduleTPTD">
-                        <h4>TP</h4><p>mr yyyyyy</p><p class="arrow">></p>
-                    </div>
-                    <div class="moduleTPTD">
-                        <h4>TD</h4><p>mr yyyyyy</p><p class="arrow">></p>
-                    </div>
-                </div>
-                <div class="TPTDmoduleSection closed">
-                    <h3>Module 2</h3>
-                    <p class="arrow">V</p>
-                    <div class="moduleTPTD">
-                        <h4>cours</h4><p>mr yyyyyy</p><p class="arrow">></p>
-                    </div>
-                    <div class="moduleTPTD">
-                        <h4>TP</h4><p>mr yyyyyy</p><p class="arrow">></p>
-                    </div>
-                    <div class="moduleTPTD">
-                        <h4>TD</h4><p>mr yyyyyy</p><p class="arrow">></p>
-                    </div>
-                </div>
-                <div class="TPTDmoduleSection closed">
-                    <h3>Module 2</h3>
-                    <p class="arrow">V</p>
-                    <div class="moduleTPTD">
-                        <h4>cours</h4><p>mr yyyyyy</p><p class="arrow">></p>
-                    </div>
-                    <div class="moduleTPTD">
-                        <h4>TP</h4><p>mr yyyyyy</p><p class="arrow">></p>
-                    </div>
-                    <div class="moduleTPTD">
-                        <h4>TD</h4><p>mr yyyyyy</p><p class="arrow">></p>
-                    </div>
-                </div>
-                <div class="TPTDmoduleSection closed">
-                    <h3>Module 2</h3>
-                    <p class="arrow">V</p>
-                    <div class="moduleTPTD">
-                        <h4>cours</h4><p>mr yyyyyy</p><p class="arrow">></p>
-                    </div>
-                    <div class="moduleTPTD">
-                        <h4>TP</h4><p>mr yyyyyy</p><p class="arrow">></p>
-                    </div>
-                    <div class="moduleTPTD">
-                        <h4>TD</h4><p>mr yyyyyy</p><p class="arrow">></p>
-                    </div>
-                </div>
-                <div class="TPTDmoduleSection closed">
-                    <h3>Module 2</h3>
-                    <p class="arrow">V</p>
-                    <div class="moduleTPTD">
-                        <h4>cours</h4><p>mr yyyyyy</p><p class="arrow">></p>
-                    </div>
-                    <div class="moduleTPTD">
-                        <h4>TP</h4><p>mr yyyyyy</p><p class="arrow">></p>
-                    </div>
-                    <div class="moduleTPTD">
-                        <h4>TD</h4><p>mr yyyyyy</p><p class="arrow">></p>
-                    </div>
-                </div>
-                <div class="TPTDmoduleSection closed">
-                    <h3>Module 2</h3>
-                    <p class="arrow">V</p>
-                    <div class="moduleTPTD">
-                        <h4>cours</h4><p>mr yyyyyy</p><p class="arrow">></p>
-                    </div>
-                    <div class="moduleTPTD">
-                        <h4>TP</h4><p>mr yyyyyy</p><p class="arrow">></p>
-                    </div>
-                    <div class="moduleTPTD">
-                        <h4>TD</h4><p>mr yyyyyy</p><p class="arrow">></p>
-                    </div>
-                </div>
+            <div id="contactSection" class="contactSection contactSectionVisible"> <!--added contactSectionVisible-->
+                
             </div>
 
 
@@ -168,67 +93,17 @@
                     <p>mr xxxxxx</p>
                 </div> -->
                 <div class="msgTxtSectionTop">
-                    <h3>Module 1</h3>
-                    <div class="TPTD_select">
-                        <button class="TPTDselectBtn selected_TPTD">Cours</button>
-                        <button class="TPTDselectBtn">TD</button>
-                        <button class="TPTDselectBtn">TP</button>
+                    <h3 id="moduleName"></h3>
+                    <div class="TPTD_select" id="TPTD_select">
+                        <button class="TPTDselectBtn selected_TPTD" id="C">Cours</button>
+                        <button class="TPTDselectBtn" id="D">TD</button>                 
+                        <button class="TPTDselectBtn" id="P">TP</button>                 
                         <div class="indic"></div>
                     </div>
-                    <p>mr xxxxxx</p>
+                    <p id="nomProf"></p>
                 </div>
 
-                <div class="msgContainer">
-                    <div class="msgLine firstMsg">
-                        <div class="msgTxt">
-                            <p>Début de la discussion</p>
-                        </div>
-                    </div>
-
-                    <div class="msgLine">
-                        <div class="msgerIcon"></div>
-                        <div class="msgTxt">
-                            <p>bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla blabla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla </p>
-                            <p>bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla blabla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla </p>
-                            <p>bla blaaa </p>
-                        </div>
-                    </div>
-                    
-                    <div class="msgLine ownMsgLine">
-                        <div class="msgerIcon"></div>
-                        <div class="msgTxt">
-                            <p>bla bla bla bla b bla bla bla bla bla </p>
-                            <p>bla bla bla bla b bla bla bla bla bla </p>
-                            <p>bla bla bla bla b bla bla bla bla blabla bla bla bla b bla bla bla bla bla bla bla bla bla b bla bla bla bla bla  </p>
-                            <p>bla bla bla bla b bla bla bla bla bla </p>
-                            <p>bla bla bla ? </p>
-                        </div>
-                    </div>
-                    
-                    <div class="msgLine">
-                        <div class="msgerIcon"></div>
-                        <div class="msgTxt">
-                            <p>bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla blabla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla </p>
-                            <p>bla blaaa </p>
-                        </div>
-                    </div>
-
-                    <div class="msgLine ownMsgLine">
-                        <div class="msgerIcon"></div>
-                        <div class="msgTxt">
-                            <p>bla bla bla bla b bla bla bla bla blabla bla bla bla b bla bla bla bla bla bla bla bla bla b bla bla bla bla bla  </p>
-                            <p>bla bla bla bla b bla bla bla bla bla </p>
-                            <p>bla bla bla ? </p>
-                        </div>
-                    </div>
-
-                    <div class="msgLine">
-                        <div class="msgerIcon"></div>
-                        <div class="msgTxt">
-                            <p>bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla blabla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla </p>
-                            <p>bla blaaa </p>
-                        </div>
-                    </div>
+                <div class="msgContainer" id="msgContainer">
                     
                     <div class="msgLineVide"></div>
                     
@@ -237,8 +112,7 @@
 
                 <div class="msgWritingSection">
                     <input type="text" placeholder="Aa" id="textEntry">
-                    <button id="PJbtn">PJ</button>
-                    <button id="sendBtn">Envoyer ></button>
+                    <button id="sendBtn">Envoyer</button>
                 </div>
             </div>
         </div>
@@ -252,16 +126,16 @@
         <div class="profileDiv">
             <div class="profilePicDiv"></div>
             <div class="profileTextDiv">
-                <p>Hannoun</p>
-                <p>Amar Amine</p>
+                <p id="nom">Hannoun</p>
+                <p id="prenom">Amar Amine</p>
                 <button id="profileSubMenuBtn">Mon compte</button>
             </div>
 
             <div class="profileSubMenu">
                 <a href="#"><p>Espace Personnel</p></a>
-                <a href="#"><p>Messagerie</p></a>
+                <a href="/msg"><p>Messagerie</p></a>
                 <a href="#"><p>Emploie du temps</p></a>
-                <a href="#"><p>Délibération</p></a>
+                <a href="/notes"><p>Délibération</p></a>
                 <div class="delimiteur"></div>
                 <a href="#"><p>Parametres</p></a>
                 <a href="#"><p>se déconecter</p></a>
@@ -286,8 +160,191 @@
 
     </div>
 
-    <script src="js/msgPageAnimation.js" defer></script>
-    <script src="js/main.js" defer></script>
+    <script src="/js/main.js" defer></script>
+    <script src="/socket.io/socket.io.js"></script>
+    
+    <script>
+        socket = io()
+        socket.on('connect', () => {
+            socket.emit("connected", [document.cookie]) //get  the cookies with the connection socket
+        })
+        socket.on('connectedEtu', (data) => { //get the data from the server with the acknoledgement
+            login = data[0]["login"]            //get the login from the data
+            //socket.join(login)
+            prenom = login.split('.')[0]        //get the first part of the login (the prenom)
+            nom = login.split('.')[1]           //get the second part of the login (the nom)
+            
+            sec = "L" + data[0]["niveau"] + " " + data[0]["specialite"] //get the section (LX spé)
+            idSec = data[0]["idSec"]
+            
+            document.getElementById("nom").innerHTML = nom          //replace the nom with the right one
+            document.getElementById("prenom").innerHTML = prenom    //replace the prenom with the right one
+            document.getElementById("Section").innerHTML = sec      //replace the section with the right one
+            
+            modules = data[1]           //get the modules from the data
+            modDiv = document.getElementById("contactSection")  //get the module menu div
+            filtreSelectDiv = document.getElementById("TPTD_select")
+            for(var module of modules){ //for each module in the modules array add a button to the module menu
+                cours = false
+                prfCours = ""
+                td = false 
+                prfTd = ""
+                tp = false
+                prfTp = "" 
+                for(var types of data[2]){
+                    if(types["codeMod"] == module["codeMod"]){ 
+                        if(types["type"] == "cours"){
+                            cours = true
+                            prfCours = types["login"]
+                            
+                        }
+                        if(types["type"] == "td"){
+                            td = true
+                            prfTd = types["login"]
+                            
+                        }
+                        if(types["type"] == "tp"){
+                            tp = true
+                            prfTp = types["login"]
+                            
+                        }
+                    }
+                }
+                modDiv.innerHTML += `
+                <div class="TPTDmoduleSection closed">
+                    <h3>${module["nom"]}</h3>
+                    <p class="arrow">V</p>
+                    ${cours ? `<div class="moduleTPTD" onclick="openChat('${prfCours}', '${module["nom"]}', 1)"><h4>cours</h4><p>${prfCours}</p><p class="arrow">></p></div>` : ""}
+                    ${td ? `<div class="moduleTPTD" onclick="openChat('${prfTd}', '${module["nom"]}', 2)"><h4>TD</h4><p>${prfTd}</p><p class="arrow">></p></div>` : ""}
+                    ${tp ? `<div class="moduleTPTD" onclick="openChat('${prfTp}', '${module["nom"]}', 3)"><h4>TP</h4><p>${prfTp}</p><p class="arrow">></p></div>` : ""}
+                </div>
+                `
+            }
+            //add the event listener to the module buttons to change the selected module
+            const modulesBtns = document.querySelectorAll('.moduleElement');
+            modulesBtns.forEach(moduleBtn => {
+                moduleBtn.addEventListener('click', () => {
+                    modulesBtns.forEach(moduleBtn => {moduleBtn.classList.remove("selected_module")})
+                    moduleBtn.classList.add("selected_module")
+                    // change the main part menu title
+                    document.getElementById("mainTitle").innerHTML = `Actualité ${moduleBtn.children[0].innerHTML}`
+                    getPosts(moduleBtn.children[0].innerHTML)
+                })
+            })
+
+            const moduleElements = document.querySelectorAll(".TPTDmoduleSection")
+
+            // !!!!!!!!!
+            moduleElements.forEach(element => {
+                element.addEventListener("click", () => {
+                    element.classList.toggle("closed")
+                    chilLen = element.children.length //min 3
+                    users = chilLen-1
+
+                    for(var i = users; i > 1; i--) {
+                        element.children[i].classList.toggle("animateFadeIn")
+                    }
+
+                })
+            })
+            selected_module = document.querySelectorAll('.selected_module')[0].innerHTML;
+            
+            
+        })
+
+        socket.on('connectedEns', (data) => { //get the data from the server with the acknoledgement
+            login = data[0]["login"]            //get the login from the data
+            //socket.join(login)
+            prenom = login.split('.')[0]        //get the first part of the login (the prenom)
+            nom = login.split('.')[1]           //get the second part of the login (the nom)
+            
+            idSec = data[0]["idSec"]
+            
+            document.getElementById("nom").innerHTML = nom          //replace the nom with the right one
+            document.getElementById("prenom").innerHTML = prenom    //replace the prenom with the right one
+            document.getElementById("Section").innerHTML = "Sections"      //replace the section with the right one
+            
+            modules = data[1]           //get the modules from the data
+            modDiv = document.getElementById("contactSection")  //get the module menu div
+            filtreSelectDiv = document.getElementById("TPTD_select")
+            
+            socket.emit("getDMs", document.cookie.split("=")[1])
+            socket.on("getDMs", (data) =>{
+                studentDiv = ""
+                for(var spe of data[2]){
+                    studentDiv += `
+                            <div class="TPTDmoduleSection closed">
+                                <h3>${spe["nom"]} L${spe["niveau"]} ${spe["specialite"]}</h3>
+                                <p class="arrow">V</p>
+                            ` 
+                    for(var DM of data[0]){
+                        if(DM["codeMod"] == spe["codeMod"]){
+
+                            id = DM["discussionID"]
+                            myID = data[1]
+                            hisID = DM["personneA"] == myID ? DM["personneB"] : DM["personneA"]
+                            console.log(DM["type"] == "cours" ? "C" : DM["type"] == "td"? "D" : "P");
+                            studentDiv += `
+                                    <div class="moduleTPTD" id="${DM["type"] == "cours" ? "C" : DM["type"] == "td"? "D" : "P"}" onclick="openChatE('${DM["login"]}', '${DM["nom"]}', '${DM["type"] == "cours" ? 1 : DM["type"] == "td" ? 2 : 3}')"><h4>${DM["login"]}</h4><p class="arrow">></p></div>
+                                `
+                        }
+                    }
+                    studentDiv += `
+                            </div>
+                            `
+
+                    //modDiv.innerHTML = `
+                    //    <div class="TPTDmoduleSection closed">
+                    //        <h3>test L3 gtr</h3>
+                    //        <p class="arrow">V</p>
+                    //        <div class="moduleTPTD" onclick="openChatE('t', 'test nom', 1)"><h4>cours</h4><p>testtt</p><p class="arrow">></p></div>
+                    //        <div class="moduleTPTD" onclick="openChatE('t', 'test nom', 2)"><h4>TD</h4><p>   testtt</p><p class="arrow">></p></div> 
+                    //        <div class="moduleTPTD" onclick="openChatE('t', 'test nom', 3)"><h4>TP</h4><p>   testtt</p><p class="arrow">></p></div> 
+                    //        
+                    //    </div>
+                    //    `
+                }
+                modDiv.innerHTML = studentDiv
+                const moduleElements = document.querySelectorAll(".TPTDmoduleSection")
+                moduleElements.forEach(element => {
+                    element.addEventListener("click", () => {
+                        element.classList.toggle("closed")
+                        chilLen = element.children.length //min 3
+                        users = chilLen-1
+
+                        for(var i = users; i > 1; i--) {
+                            element.children[i].classList.toggle("animateFadeIn")
+                        }
+
+                    })  
+                })
+
+            })
+                
+            
+            //add the event listener to the module buttons to change the selected module
+            const modulesBtns = document.querySelectorAll('.moduleElement');
+            modulesBtns.forEach(moduleBtn => {
+                moduleBtn.addEventListener('click', () => {
+                    modulesBtns.forEach(moduleBtn => {moduleBtn.classList.remove("selected_module")})
+                    moduleBtn.classList.add("selected_module")
+                    // change the main part menu title
+                    document.getElementById("mainTitle").innerHTML = `Actualité ${moduleBtn.children[0].innerHTML}`
+                })
+            })
+
+
+            // !!!!!!!!!
+        
+            selected_module = document.querySelectorAll('.selected_module')[0].innerHTML;
+            
+            
+        })
+
+
+        
+    </script>
+    <script src="/js/msgPageAnimation.js" defer></script>
 
 </body>
 </html>

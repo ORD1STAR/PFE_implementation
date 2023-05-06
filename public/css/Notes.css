@@ -73,7 +73,7 @@
 }
 
 .moduleNoteMain .noteElement:last-of-type {
-    background-color: red;
+    /*background-color: red;*/
     margin-bottom: 50px;
 }
 

@@ -262,6 +262,7 @@ body {
 
 .msgSection {
     /*height: 83%;*/
+    position: relative;
     display: flex;
     flex-grow: 1;
     flex-basis: 1;
@@ -325,6 +326,11 @@ body {
 .TPTDmoduleSection .moduleTPTD {
     display: flex;
     opacity: 0;
+    cursor: pointer;
+    transition: all 0.1s ease-in-out;
+}
+.TPTDmoduleSection .moduleTPTD:hover {
+    background-color: rgba(0, 0, 0, 0.15);
 }
 
 .TPTDmoduleSection .moduleTPTD h4 {
@@ -857,7 +863,7 @@ body {
 
 .postElement {
     margin: 10px;
-    padding: 10px 10px 0px 10px;
+    padding: 10px;
     background-color: rgba(0, 0, 0, 0.1);
     border-radius: var(--common_border_radius);
 }
@@ -947,6 +953,7 @@ body {
 
 .extendedPJ {
     flex-wrap: wrap;
+    /*flex-direction: column;   !!!!!!!! */ 
 }
 
 .postElement .extendedPJ .postPieceJointe {
@@ -963,6 +970,7 @@ body {
 .postElement .extendedPJ .postPieceJointe .pieceJointeElement {
     width: 150px;
     flex-grow: 1;
+    max-width: 200px;
 }
 
 .postElement .extendedPJ .postPieceJointe .pieceJointeElement p:first-child {
@@ -1028,6 +1036,45 @@ body {
 
 
 
+
+/*  Post Prof Side  */
+
+.postElement_profSide .postTop .postTitle {
+    margin: 0px;
+}
+
+.postElement_profSide .postTop input {
+    background-color: transparent;
+    border: none;
+    background-color: rgba(0, 0, 0, 0.05);
+    font-size: 18px;
+    padding: 8px;
+    border-radius: var(--common_border_radius);
+    flex-grow: 1;
+    margin-left: 5px;
+}
+
+.postElement_profSide textarea {
+    background-color: transparent;
+    border: none;
+    background-color: rgba(0, 0, 0, 0.05);
+    border-radius: var(--common_border_radius);
+    width: 100%;
+    padding: 10px;
+    resize: none;
+}
+
+.postElement_profSide .postPieceJointe button {
+    background-color: transparent;
+    border: none;
+    border-radius: var(--common_border_radius);
+    background-color: rgba(0, 0, 0, 0.15);
+    margin: 5px;
+    width: 30px;
+    font-size: 24px;
+    cursor: pointer;
+    justify-self: flex-end;
+}
 
 
 
@@ -1116,6 +1163,146 @@ body {
     display: none;
 }
 
+.container {
+    background-color: red;
+}
+
+
+
+
+
+
+/*      POST Comments      */
+.commentPopUp {
+    position: fixed;
+    background-color: var(--background_Light);
+    margin: auto;
+    left: 0;
+    right: 0;
+    top: 10%;
+    bottom: 10%;
+    margin-left: auto;
+    margin-right: auto;
+    width: 400px;
+    z-index: 10;
+    border-radius: var(--common_border_radius);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transform: translateY(1000px);
+    opacity: 0;
+    transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+}
+
+/* .commentPopUp::before {
+    content: '';
+    background-color: rgba(139, 0, 0, 0.5);
+    position: absolute;
+    top: -400px;
+    bottom: 0;
+    right: -400px;
+    left: -400px;
+    height: 200%;
+    z-index: 0;
+} */
+
+.commentPopUp .commentTop {
+    background-color: var(--background_Dark);
+    display: flex;
+}
+
+.commentPopUp .commentTop h3 {
+    margin: 10px 10px;
+    font-size: 18px;
+    color: white;
+}
+
+.commentPopUp .commentTop button {
+    margin: 5px;
+    padding: 2px 10px;
+    margin-left: auto;
+    border: none;
+    border-radius: var(--common_border_radius);
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+}
+
+.commentPopUp .commentTop button:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.commentPopUp .comments {
+    overflow-y: scroll;
+    flex-grow: 1;
+}
+
+.commentPopUp .comments .commentElement {
+    margin: 5px;
+    padding: 10px 0px;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.commentElement .commenterImg {
+    background-color: rgba(0, 0, 0, 0.5);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin: 0px 5px;
+}
+
+.commentElement .commenterComment h3 {
+    font-size: 16px;
+    margin: 5px 2px;
+}
+
+.commentElement .commenterComment p {
+    margin: 0px 0px 0px 8px;
+}
+
+.commentPopUp .comments::-webkit-scrollbar {    /* jsp win rahi */
+    /* width: 20px; */
+    display: none;
+}
+
+.commentPopUp .commentWritingSection {
+    display: flex;
+}
+
+.commentPopUp .commentWritingSection textarea {
+    flex-grow: 1;
+    font-size: 18px;
+    padding: 5px 10px;
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: var(--common_border_radius);
+    margin: 5px 3px;
+    border: none;
+}
+
+.commentPopUp .commentWritingSection button {
+    border: none;
+    background-color: rgba(0, 0, 0, 0.5);
+    margin: 5px;
+    padding: 0px 10px;
+    color: white;
+    font-weight: 600;
+    border-radius: var(--common_border_radius);
+}
+
+.commentPopUp .commentWritingSection button:hover {
+    padding: 0px 15px;
+}
+
+
+
+
+.popUpVisible {
+    transform: translateY(0px);
+    opacity: 1;
+}
 
 
 
@@ -1123,6 +1310,22 @@ body {
 
 
 
+
+
+
+
+
+
+
+#popUpBackground {
+    position: fixed;
+    background-color: rgba(0, 0, 0, 0.4);
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    pointer-events: none;
+    display: none;
+}
 
 
 
@@ -1175,15 +1378,15 @@ body {
         position: fixed;
     }
     
-    #popUpBackground {
-        position: absolute;
+    /* #popUpBackground {
+        position: fixed;
         background-color: rgba(0, 0, 0, 0.4);
         width: 100%;
         height: 100%;
         z-index: 2;
         pointer-events: none;
         display: none;
-    }
+    } */
 
     /* .leftMenuVisible::before {
         content: '';
@@ -1243,7 +1446,32 @@ body {
         height: 40px;
         width: 40px;
     }
-    
+
+    /*   Messagerie Part   */
+
+    .msgSection .contactSection {
+        background-color: rgb(173, 173, 173);
+        position: absolute;
+        height: 97.8%;   /* trash solution */
+        flex-grow: 1;
+        z-index: 20;
+        left: -200px;
+        transition: left 0.2s ease-in-out;
+        /* box-shadow: 0px 0px 10px rgba(0, 0, 0, 1); */
+    }
+
+    .msgSection .msgTxtSection {
+        width: 100%;
+    }
+
+    .msgSection .contactSectionVisible {
+        left: 0px;
+    }
+
+    .TPTDmoduleSection > * {
+        font-size: 14px;
+    }
+
 }
 
 

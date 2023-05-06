@@ -1,15 +1,15 @@
 
 // module menus animation
-const moduleElements = document.querySelectorAll(".TPTDmoduleSection")
-
-moduleElements.forEach(element => {
-    element.addEventListener("click", () => {
-        element.classList.toggle("closed")
-        element.children[2].classList.toggle("animateFadeIn")
-        element.children[3].classList.toggle("animateFadeIn")
-        element.children[4].classList.toggle("animateFadeIn")
-    })
-})
+// const moduleElements = document.querySelectorAll(".TPTDmoduleSection")
+// 
+// moduleElements.forEach(element => {
+//     element.addEventListener("click", () => {
+//         element.classList.toggle("closed")
+//         element.children[2].classList.toggle("animateFadeIn")
+//         element.children[3].classList.toggle("animateFadeIn")
+//         element.children[4].classList.toggle("animateFadeIn")
+//     })
+// })
 
 
 // making the message scroll to bottom
@@ -96,23 +96,15 @@ sendBtn.addEventListener("click", () => {
     let textEntry = document.getElementById("textEntry").value
     if (textEntry == "") {return}
 
+    //add the message in the data base, for that we will send a socket to the server
+    socket.emit("addMessage", [document.cookie.split("=")[1], document.getElementById("discutID").classList[0], textEntry, document.getElementById("nomProf").innerHTML])
+
     writeMsg(textEntry, 0)
 
     // suprimer le text écrit
     document.getElementById("textEntry").value = null
 })
 
-const PJbtn = document.getElementById("PJbtn")
-PJbtn.addEventListener("click", () => {
-    // getting the test to write
-    let textEntry = document.getElementById("textEntry").value
-    if (textEntry == "") {return}
-
-    writeMsg(textEntry, 1)
-
-    // suprimer le text écrit
-    document.getElementById("textEntry").value = null
-})
 
 
 
@@ -120,15 +112,15 @@ PJbtn.addEventListener("click", () => {
 
 // TD TP Cours Select
 
-const TPTDselectBtns = document.querySelectorAll(".TPTDselectBtn")
-TPTDselectBtns.forEach(selectBtn => {
-    selectBtn.addEventListener("click", (e) => {
-        TPTDselectBtns.forEach(btn => {
-            btn.classList.remove("selected_TPTD")
-        });
-        selectBtn.classList.add("selected_TPTD")
-    })
-});
+//const TPTDselectBtns = document.querySelectorAll(".TPTDselectBtn")
+//TPTDselectBtns.forEach(selectBtn => {
+//    selectBtn.addEventListener("click", (e) => {
+//        TPTDselectBtns.forEach(btn => {
+//            btn.classList.remove("selected_TPTD")
+//        });
+//        selectBtn.classList.add("selected_TPTD")
+//    })
+//});
 
 
 
@@ -137,8 +129,145 @@ TPTDselectBtns.forEach(selectBtn => {
 // Contact Section M0BIL3
 
 const contactSection = document.getElementById("contactSection");
-const contactSectionBtn = document.getElementById("contactBtnToggleMenu");
+//const contactSectionBtn = document.getElementById("contactBtnToggleMenu");
+//
+//contactSectionBtn.addEventListener('click', () => {
+//    contactSection.classList.toggle("contactSectionVisible")
+//})
 
-contactSectionBtn.addEventListener('click', () => {
-    contactSection.classList.toggle("contactSectionVisible")
+function openChat(login, module, type){
+    token = document.cookie.split("=")[1]
+
+    if(type==1){
+        const TPTDselectBtns = document.querySelectorAll(".TPTDselectBtn")
+        TPTDselectBtns.forEach(selectBtn => {
+            selectBtn.classList.remove("selected_TPTD")
+        })
+        document.getElementById("C").classList.add("selected_TPTD")
+        
+    }else if(type==2){
+        const TPTDselectBtns = document.querySelectorAll(".TPTDselectBtn")
+        TPTDselectBtns.forEach(selectBtn => {
+            selectBtn.classList.remove("selected_TPTD")
+        })
+        document.getElementById("D").classList.add("selected_TPTD")
+    }else{
+        const TPTDselectBtns = document.querySelectorAll(".TPTDselectBtn")
+        TPTDselectBtns.forEach(selectBtn => {
+            selectBtn.classList.remove("selected_TPTD")
+        })
+        document.getElementById("P").classList.add("selected_TPTD")
+    }
+
+    socket.emit("getChat", [token, login])
+    socket.on("getChat", (data) => {
+        if(data[0] != "empty"){
+            discutID = data[0][0]["discussionID"]
+            document.getElementById("discutID").classList = discutID
+            let msgContainerDiv = document.getElementById("msgContainer");
+            
+            msgContainerDiv.innerHTML = `
+            <div class="msgLine firstMsg">
+                <div class="msgTxt">
+                    <p>Début de la discussion</p>
+                </div>
+            </div>
+            <div class="msgLineVide"></div>`
+            document.getElementById("nomProf").innerHTML = login
+            document.getElementById("moduleName").innerHTML = module
+            for(var message of data[0]){
+                if(message["sender"] == data[1]){
+                    writeMsg(message["contenu"], 0)
+                }else{
+                    writeMsg(message["contenu"], 1)
+                }
+            }
+        }else{
+            document.getElementById("discutID").classList = data[1]
+            let msgContainerDiv = document.getElementById("msgContainer");
+
+            document.getElementById("nomProf").innerHTML = login
+            document.getElementById("moduleName").innerHTML = module
+            msgContainerDiv.innerHTML = `
+            <div class="msgLine firstMsg">
+                <div class="msgTxt">
+                    <p>Début de la discussion</p>
+                </div>
+            </div>
+            <div class="msgLineVide"></div>`
+        }
+    })
+
+}
+function openChatE(hisLogin, module, type){
+    myToken = document.cookie.split("=")[1]
+
+    if(type==1){
+        const TPTDselectBtns = document.querySelectorAll(".TPTDselectBtn")
+        TPTDselectBtns.forEach(selectBtn => {
+            selectBtn.classList.remove("selected_TPTD")
+        })
+        document.getElementById("C").classList.add("selected_TPTD")
+        
+    }else if(type==2){
+        const TPTDselectBtns = document.querySelectorAll(".TPTDselectBtn")
+        TPTDselectBtns.forEach(selectBtn => {
+            selectBtn.classList.remove("selected_TPTD")
+        })
+        document.getElementById("D").classList.add("selected_TPTD")
+    }else{
+        const TPTDselectBtns = document.querySelectorAll(".TPTDselectBtn")
+        TPTDselectBtns.forEach(selectBtn => {
+            selectBtn.classList.remove("selected_TPTD")
+        })
+        document.getElementById("P").classList.add("selected_TPTD")
+    }
+
+    socket.emit("getChat", [myToken, hisLogin])
+    socket.on("getChat", (data) => {
+        if(data[0] != "empty"){
+            discutID = data[0][0]["discussionID"]
+            document.getElementById("discutID").classList = discutID
+            let msgContainerDiv = document.getElementById("msgContainer");
+            
+            msgContainerDiv.innerHTML = `
+            <div class="msgLine firstMsg">
+                <div class="msgTxt">
+                    <p>Début de la discussion</p>
+                </div>
+            </div>
+            <div class="msgLineVide"></div>`
+            document.getElementById("nomProf").innerHTML = hisLogin
+            document.getElementById("moduleName").innerHTML = module
+            for(var message of data[0]){
+                if(message["sender"] == data[1]){
+                    writeMsg(message["contenu"], 0)
+                }else{
+                    writeMsg(message["contenu"], 1)
+                }
+            }
+        }else{
+            document.getElementById("discutID").classList = data[1]
+            let msgContainerDiv = document.getElementById("msgContainer");
+
+            msgContainerDiv.innerHTML = `
+            <div class="msgLine firstMsg">
+                <div class="msgTxt">
+                    <p>Début de la discussion</p>
+                </div>
+            </div>
+            <div class="msgLineVide"></div>`
+        }
+    })
+
+}
+
+socket.on("recvMessage", (data) => {
+    hisLogin = data[0]
+    centent = data[1]
+
+    if(document.getElementById("nomProf").innerHTML == hisLogin){
+        writeMsg(centent, 1)
+    }
+
 })

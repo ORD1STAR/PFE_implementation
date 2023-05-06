@@ -7,7 +7,6 @@
     display: flex;
     width: 100%;
     height: var(--TopBarSize);
-    margin: 10px 0px;
 }
 
 .mainPart .TopWrapper .Top {
@@ -16,12 +15,9 @@
 }
 
 .mainPart .TopWrapper .profileDiv {
-    min-width: 210px;
-    max-width: 210px;
-    margin-right: 10px;
+    width: 350px;
+    margin: 10px;
 }
-
-
 
 
 
@@ -174,31 +170,3 @@
 
 
 
-@media only screen and (max-width: 650px) {
-    .mainPart .profileDiv {
-        /* left: calc(400px + 145px); */
-        left: 150px;
-        background-color: transparent;
-        position: absolute;
-        box-shadow: none;
-    }
-    
-    .mainPart .profileDiv .profileTextDiv {
-        display: none;
-    }
-    
-    .mainPart .profileDiv .profilePicDiv {
-        height: 50px;
-        width: 50px;
-        margin: auto 5px auto auto;
-    }
-
-    .mainPart .Top h1 {
-        font-size: 24px;
-        max-width: 210px;
-        margin: auto 0px;
-        padding: 0px;
-        padding-left: 10px;
-    }
-
-}

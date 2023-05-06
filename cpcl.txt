@@ -1,1 +1,113 @@
-<div class="postElement"><div class="postTop"><div class="moduleTitleDiv"><h3>${post["nom"]}</h3><p>${post["login"]}</p></div><h3 class="postTitle">TITRE</h3></div><div class="postCore"><div class="postText"><p>${post["contenu"]}</p></div><!----<div class="postPieceJointe"><h4>piéce jointes :</h4><div class="pieceJointeElement"><div class="PJimg"></div><div class="PJtext"><p>Série TD1 RSF 2022</p><p>2.2Mb</p></div></div><div class="pieceJointeElement"><div class="PJimg"></div><div class="PJtext"><p>Série TD1 RSF 2022</p><p>2.2Mb</p></div></div></div> --></div><div class="postBottomDiv"><!----<button class="commentSectionBtn">Commenter</button><button class="submitTravailBtn">Remettre le travail demandé</button> --><!-- <div class="postComment"><div class="commentElement"><div class="ProfileImg"></div><div class="commentCore"><p>{nom prénom}</p><input type="text"><h3>></h3></div></div></div><div class="SendBtn"><h3>Remettre le travail demandé</h3></div> --></div></div>
+// Simple
+
+<td id=""><div class="EDTcase">
+    <div class="EDT_module">
+        <div class="moduleContent">
+            <div class="moduleTitleDiv">
+                <p class="moduleTitle">BDD</p>
+            </div>
+            <p class="moduleClass">113D</p>
+        </div>
+    </div>
+</div></td>
+
+
+// specifidates
+
+<td id="lun4"><div class="EDTcase">
+    <div class="EDT_module">
+        <div class="moduleGroupes"><p>G3</p></div>
+        <div class="moduleContent">
+            <div class="moduleTitleDiv">
+                <p class="moduleType">TP</p>
+                <p class="moduleTitle">Sécurité</p>
+            </div>
+            <p class="moduleClass">TP122</p>
+        </div>
+    </div>
+</div></td>
+
+
+//double
+
+<td id="sam1"><div class="EDTcase">
+    <div class="EDT_module">
+        <div class="moduleGroupes"><p>G1</p><p>G2</p></div>
+        <div class="moduleContent">
+            <div class="moduleTitleDiv">
+                <p class="moduleType">TP</p>
+                <p class="moduleTitle">BDD</p>
+            </div>
+            <p class="moduleClass">TP122</p>
+        </div>
+    </div>
+    <div class="EDT_module">
+        <div class="moduleGroupes"><p>G3</p></div>
+        <div class="moduleContent">
+            <div class="moduleTitleDiv">
+                <p class="moduleType">TP</p>
+                <p class="moduleTitle">BDD</p>
+            </div>
+            <p class="moduleClass">TP122</p>
+        </div>
+    </div>
+</div></td>
+
+
+
+
+
+                (<tr>
+                    <td>Samedi</td>
+                    <td id="sam1"></td>
+                    <td id="sam2"></td>
+                    <td id="sam3"></td>
+                    <td id="sam4"></td>
+                    <td id="sam5"></td>
+                    <td id="sam6"></td>
+                </tr>)
+                <tr>
+                    <td>Dimanche</td>
+                    <td id="dim1"></td>
+                    <td id="dim2"></td>
+                    <td id="dim3"></td>
+                    <td id="dim4"></td>
+                    <td id="dim5"></td>
+                    <td id="dim6"></td>
+                </tr>
+                <tr>
+                    <td>Lundi</td>
+                    <td id="lun1"></td>
+                    <td id="lun2"></td>
+                    <td id="lun3"></td>
+                    <td id="lun4"></td>
+                    <td id="lun5"></td>
+                    <td id="lun6"></td>
+                </tr>
+                <tr>
+                    <td>Mardi</td>
+                    <td id="mar1"></td>
+                    <td id="mar2"></td>
+                    <td id="mar3"></td>
+                    <td id="mar4"></td>
+                    <td id="mar5"></td>
+                    <td id="mar6"></td>
+                </tr>
+                <tr>
+                    <td>Mercredi</td>
+                    <td id="mer1"></td>
+                    <td id="mer2"></td>
+                    <td id="mer3"></td>
+                    <td id="mer4"></td>
+                    <td id="mer5"></td>
+                    <td id="mer6"></td>
+                </tr>
+                <tr>
+                    <td>Jeudi</td>
+                    <td id="jeu1"></td>
+                    <td id="jeu2"></td>
+                    <td id="jeu3"></td>
+                    <td id="jeu4"></td>
+                    <td id="jeu5"></td>
+                    <td id="jeu6"></td>
+                </tr>
