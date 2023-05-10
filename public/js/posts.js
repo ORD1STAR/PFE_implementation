@@ -32,7 +32,7 @@ function getFilters() {
 
 
 // Toggle background function
-const popUpBackground = document.getElementById("popUpBackground");
+popUpBackground = document.getElementById("popUpBackground");
 
 function toggleBackground(isBackgroundShown) {
     // isShown = true => remove background
@@ -60,8 +60,8 @@ toggleBackground(true)
 
 // show comment section
 
-const commentSection = document.getElementById("commentSectionDiv");
-const comments = document.getElementById("comments")
+ commentSection = document.getElementById("commentSectionDiv");
+ comments = document.getElementById("comments")
 function showCommentSection(postID) {
     socket.emit("showComms", postID)
     socket.on("getComms", (data) => {

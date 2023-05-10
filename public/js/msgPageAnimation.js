@@ -129,11 +129,11 @@ sendBtn.addEventListener("click", () => {
 // Contact Section M0BIL3
 
 const contactSection = document.getElementById("contactSection");
-//const contactSectionBtn = document.getElementById("contactBtnToggleMenu");
-//
-//contactSectionBtn.addEventListener('click', () => {
-//    contactSection.classList.toggle("contactSectionVisible")
-//})
+const contactSectionBtn = document.getElementById("contactBtnToggleMenu");
+
+contactSectionBtn.addEventListener('click', () => {
+    contactSection.classList.toggle("contactSectionVisible")
+})
 
 function openChat(login, module, type){
     token = document.cookie.split("=")[1]

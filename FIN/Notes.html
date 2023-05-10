@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PFE | Mes notes</title>
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/Perso.css">
+    <link rel="stylesheet" href="/css/Notes.css">
+</head>
+<body>
+    <div id="leftMenu" class="leftMenu">
+        <div class="titleDiv">
+            <h1 id="Section" onclick="location.href = '/home'">GTR L3</h1>
+        </div>
+
+        <h3>Menu :</h3>
+
+        <div class="moduleMenu" id="moduleMenu">
+            <div class="moduleElement" onclick="location.href = '/edt'">
+                <p>Emploi du temps</p>
+                <div class="notifDiv"></div>
+            </div>
+            <div class="moduleElement" onclick="location.href = '/msg'">
+                <p>Messagerie</p>
+                <div class="notifDiv"></div>
+            </div>
+            <div class="moduleElement" onclick="location.href = '/files'">
+                <p>Documents</p>
+                <div class="notifDiv"></div>
+            </div>
+            <div class="moduleElement selected_module" onclick="location.href = '/notes'">
+                <p>Notes</p>
+                <div class="notifDiv"></div>
+            </div>
+            <div class="moduleElement">
+                <p>Calendier</p>
+                <div class="notifDiv"></div>
+            </div>
+            <div class="moduleElement">
+                <p>Informations Personnels</p>
+            </div>
+            <div class="moduleElement">
+                <p>USTHB map</p>
+            </div>
+        </div>
+
+        <div class="leftMenuInfoDiv">
+            <div class="parametresDiv" id="parametresDiv">
+                <img src="/icons/Icon_gear.png" alt="">
+                <h3>Parametres</h3>
+            </div>
+            <p>Version 0.2</p>
+        </div>
+
+    </div>
+
+
+
+    <div class="mainPart">
+        <div class="TopWrapper">
+            <div class="Top">
+                <button class="hamburgerMenu" onclick="toogleMenu()"><img id="imgBtnToogleMenu" src="/icons/icon_hamburger.png" alt=""></button>
+                <h1>Mes notes</h1>
+            </div>
+    
+            <div class="profileDiv">
+                <div class="profilePicDiv"></div>
+                    <div class="profileTextDiv">
+                        <p id="prenom">Hannoun</p>
+                        <p id="nom">Amar Amine</p>
+                        <button id="profileSubMenuBtn">Mon compte</button>
+                    </div>
+
+                <div class="profileSubMenu">
+                    <a href="#"><p>Espace Personnel</p></a>
+                    <a href="/msg"><p>Messagerie</p></a>
+                    <a href="/edt"><p>Emploie du temps</p></a>
+                    <a href="/notes"><p>Délibération</p></a>
+                    <div class="delimiteur"></div>
+                    <a href="#"><p>Parametres</p></a>
+                    <a href="#"><p>se déconecter</p></a>
+                </div>
+            </div>
+        </div>
+
+        <div class="mainWrapper" id="mainWrapper">
+            
+            
+            
+            
+        </div>
+        
+    </div>
+    <script src="/js/main.js" defer></script>
+
+    <script src="/socket.io/socket.io.js"></script>
+    
+    <script>
+        socket = io()
+        socket.on('connect', () => {
+            socket.emit("connected", [document.cookie]) //get  the cookies with the connection socket
+        })
+        socket.on('connectedEtu', (data) => { //get the data from the server with the acknoledgement
+            login = data[0]["login"]            //get the login from the data
+            //socket.join(login)
+            prenom = login.split('.')[0]        //get the first part of the login (the prenom)
+            nom = login.split('.')[1]           //get the second part of the login (the nom)
+            
+            sec = "L" + data[0]["niveau"] + " " + data[0]["specialite"] //get the section (LX spé)
+            idSec = data[0]["idSec"]
+            
+            document.getElementById("nom").innerHTML = nom          //replace the nom with the right one
+            document.getElementById("prenom").innerHTML = prenom    //replace the prenom with the right one
+            document.getElementById("Section").innerHTML = sec      //replace the section with the right one
+            
+            modules = data[1]           //get the modules from the data
+            
+            notesDiv = document.getElementById("mainWrapper")
+            notesHtml = ""
+            for(mod of modules){
+                nom = mod["nom"]
+                codeMod= mod["codeMod"]
+                prof = ""
+                for(names of data[2]){
+                    if(mod["codeMod"] == names["codeMod"]){
+                        prof = names["login"]
+                        break
+                    }
+                }
+
+                notesHtml += `
+                <div class="moduleNoteElement">
+                    <div class="moduleNoteMain" id="${codeMod}">
+                        <div class="moduleTitleDiv">
+                            <h3 class="moduleTitle">${nom}</h3>
+                            <p>${prof}</p>
+                        </div>
+                        
+                        
+                    </div>
+
+                    <div class="moduleNoteSide">
+                        <button>Mes copies</button>
+                        <button>Recours</button>
+                        <button>Méthode de calcule</button>
+                        <p>modifié : il y a 1 jours</p>
+                    </div>
+                </div>
+                `
+            }
+            notesDiv.innerHTML = notesHtml
+
+
+            socket.emit("getNotes", document.cookie.split("=")[1])
+            socket.on("getNotes", (data) => {
+                modulesNote = data
+
+                for(note of modulesNote){
+                    for(module of modules){
+                        if(note["codeMod"] == module["codeMod"]){
+                            limit = new Date(note["edited"])
+                            limit.setDate(limit.getDate() + 1)
+                            if(note["title"] != "GENERALE"){
+                                document.getElementById(note["codeMod"]).innerHTML += `
+                                <div class="noteElement">
+                                    <p>${note["title"]}</p>
+                                    <p>${note["moyenne"].toFixed(2)}</p>
+                                    <p>/${note["max"].toFixed(2)}</p>
+                                    ${new Date(Date.now()) <= limit ? "<p> Nouveau </p>" : ""}
+                                </div>`
+                            }
+                            break
+                        }
+                    }
+                }
+                
+                for(note of modulesNote){
+                    for(module of modules){
+                        if(note["codeMod"] == module["codeMod"]){
+                            limit = new Date(note["edited"])
+                            limit.setDate(limit.getDate() + 1)
+                            if(note["title"] == "GENERALE"){
+                                document.getElementById(note["codeMod"]).innerHTML += `
+                                <br>
+                                <div class="moduleMoyenneDiv">
+                                    <h3>Moyenne : </h3>
+                                    <h3>${note["moyenne"]}</h3>
+                                    <h3>/20</h3>
+                                </div>`
+                            }
+                            break
+                        }
+                    }
+                }
+                document.getElementById(note["codeMod"]).innerHTML += '<div class="noteElement"></div>'
+            })
+            
+            for(var mod of modules){
+
+            }
+
+            selected_module = document.querySelectorAll('.selected_module')[0].innerHTML;
+            
+            
+        })
+
+        socket.on('connectedEns', (data) => { //get the data from the server with the acknoledgement
+            methode = ""
+            login = data[0]["login"]            //get the login from the data
+            //socket.join(login)
+            prenom = login.split('.')[0]        //get the first part of the login (the prenom)
+            nom = login.split('.')[1]           //get the second part of the login (the nom)
+            
+            idSec = data[0]["idSec"]
+            
+            document.getElementById("nom").innerHTML = nom          //replace the nom with the right one
+            document.getElementById("prenom").innerHTML = prenom    //replace the prenom with the right one
+            document.getElementById("Section").innerHTML = "Section"      //replace the section with the right one
+            
+            modules = data[1]           //get the modules from the data
+            
+            notesDiv = document.getElementById("mainWrapper")
+            notesHtml = ""
+            
+            for(mod of modules){
+                nom = mod["nom"]
+                codeMod= mod["codeMod"]
+                prof = ""
+                for(names of data[2]){
+                    if(mod["codeMod"] == names["codeMod"]){
+                        prof = names["login"]
+                        break
+                    }
+                }
+                notesHtml += `
+                <div class="moduleNoteElement">
+                    <div class="moduleNoteMain notes" id="${codeMod}">
+                        <div class="moduleTitleDiv">
+                            <h3 class="moduleTitle">${nom}</h3>
+                            <p>${prof}</p>
+                        </div>
+                        
+                        
+                    </div>
+
+                    <div class="moduleNoteSide">
+                        <button>Les copies</button>
+                        <button onclick="console.log('test')">Les Recours</button>
+                        <button onclick="methode=prompt('Quel été votre methode de calcule:')">La Méthode de calcule</button>
+                        <button onclick="socket.emit('saveNotes', [methode, document.getElementsByClassName('${codeMod}')], '${codeMod}')">Sauvegarder les notes du module</button>
+                    </div>
+                </div>
+                `
+            }
+            notesDiv.innerHTML = notesHtml
+
+            socket.emit("getNotesE", document.cookie.split("=")[1])
+            socket.on("getNotesE", (data) => {
+                modulesNote = data
+                for(note of modulesNote){
+                    for(module of modules){
+                        if(note["codeMod"] == module["codeMod"]){
+                            limit = new Date(note["edited"])
+                            limit.setDate(limit.getDate() + 1)
+                            if(note["title"] != "GENERALE"){
+                                document.getElementById(note["codeMod"]).innerHTML += `
+                                <div class="noteElement">
+                                    <p style="width: 300px;"><b>${note["login"]}</b> > <i><input class="${note["codeMod"]}" type="text" value="${note["title"]}" size="8"> </i>:</p>
+                                    <p><input class="${note["codeMod"]}" type="text" value="${note["moyenne"]}" size="1"></p>
+                                    <p>/ <input class="${note["codeMod"]}" type="text" value="${note["max"]}" size="1"></p>
+                                   
+                                </div>`
+                            }
+                            break
+                        }
+                    }
+                }
+                
+                for(note of modulesNote){
+                    for(module of modules){
+                        if(note["codeMod"] == module["codeMod"]){
+                            limit = new Date(note["edited"])
+                            limit.setDate(limit.getDate() + 1)
+                            if(note["title"] == "GENERALE"){
+                                document.getElementById(note["codeMod"]).innerHTML += `
+                                <div class="noteElement">
+                                    <p style="width: 300px;"><b>${note["login"]}</b> > <i>Generale</i>:</p>
+                                    <p><input type="text" value="${note["moyenne"]}" size="1"></p>
+                                    <p>/ <input type="text" value="${note["max"]}" size="1"></p>
+                                </div>`
+                            }
+                            break
+                        }
+                    }
+                }
+                console.log(note["codeMod"]);
+                document.getElementById(note["codeMod"]).innerHTML += '<div class="noteElement"></div>'
+            })
+            
+            for(var mod of modules){
+
+            }
+
+            selected_module = document.querySelectorAll('.selected_module')[0].innerHTML;
+            
+            
+        })
+
+
+        
+    </script>
+
+
+</body>
+</html>

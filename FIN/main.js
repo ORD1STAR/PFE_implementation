@@ -1,200 +1,14 @@
-var postsVar
-filtresVar = [true, true, true]
 
 // Profile SubMenu Handler
-
-profileDiv = document.querySelector(".profileDiv")
-profileSubMenuBtn = document.querySelector(".profilePicDiv")
-
-profileSubMenuBtn.addEventListener("click", showProfileSubMenu)
-
-async function showProfileSubMenu() {
-    profileSubMenuDiv = document.createElement('div');
-    profileSubMenuDiv.innerHTML = `
-                <a href="#"><p>Espace Personnel</p></a>
-                <a href="/msg"><p>Messagerie</p></a>
-                <a href="/edt"><p>Emploie du temps</p></a>
-                <a href="/notes"><p>Délibération</p></a>
-                <div class="delimiteur"></div>
-                <a href="#" onclick="showParametres()"><p>Parametres</p></a>
-                <a href="#"><p>se déconecter</p></a>`;
-    document.body.appendChild(profileSubMenuDiv)
-    profileSubMenuDiv.classList.add('profileSubMenu');
-    
-    toggleBackground(false)
-    await new Promise(r => setTimeout(r,10));
-    profileSubMenuDiv.classList.add('profileSubMenuSHOWN');
-
-    document.addEventListener('click', hideProfileSubMenu);
-
-}
-
-async function hideProfileSubMenu(e) {
-    if (!profileSubMenuDiv.contains(e.target) && e.target != profileSubMenuBtn) {
-        profileSubMenuDiv.classList.remove('profileSubMenuSHOWN');
-        document.removeEventListener('click', hideProfileSubMenu)
-        await new Promise(r => setTimeout(r, 300))
-        profileSubMenuDiv.remove();
-        toggleBackground(true);
-    }
-}
+var postsVar
+filtresVar = [true, true, true]
+profileSubMenu = document.querySelector(".profileSubMenu")
+profileSubMenuBtn = document.getElementById("profileSubMenuBtn")
 
 
-
-
-
-// Module Select (in menu)
-modulesBtns = document.querySelectorAll('.moduleElement');
-modulesBtns.forEach(moduleBtn => {
-    moduleBtn.addEventListener('click', () => {
-        modulesBtns.forEach(moduleBtn => {moduleBtn.classList.remove("selected_module")})
-        moduleBtn.classList.add("selected_module")
-    })
+profileSubMenuBtn.addEventListener("click", () => {
+    profileSubMenu.classList.toggle("profileSubMenuSHOWN")
 })
-
-
-
-// Toggle Background
-
-leftMenu = document.getElementById('leftMenu');
-imgBtnToogleMenu = document.getElementById('imgBtnToogleMenu');
-popUpBackground = document.getElementById("popUpBackground");
-var numberOfPopUps = 0;
-
-function toggleBackground(isBackgroundShown) {
-    // isShown = true => remove background
-    // isShown = false => show background
-    if (isBackgroundShown) {
-        numberOfPopUps -= 1;
-        if (numberOfPopUps == 0) {
-            popUpBackground.style.display = "none";
-            popUpBackground.style.pointerEvents = "none";
-        }
-    } else {
-        numberOfPopUps += 1;
-        popUpBackground.style.display = "block";
-        popUpBackground.style.pointerEvents = "all";
-    }
-};
-
-
-
-// Toggle Menu
-
-function toogleMenu() {
-    if (leftMenu.classList.contains('leftMenuVisible')) {
-    } else {
-        leftMenu.classList.add('leftMenuVisible');
-        document.addEventListener('click', hideMenu);
-        toggleBackground(false);
-    }
-}
-
-function hideMenu(e) {
-    if (!leftMenu.contains(e.target) && e.target.id != "imgBtnToogleMenu") {
-        leftMenu.classList.remove('leftMenuVisible');
-        document.removeEventListener('click', hideMenu)
-        toggleBackground(true);
-    }
-}
-
-
-
-
-
-
-// params menu
-
-parametresDiv = document.getElementById('parametresDiv');
-parametresDiv.addEventListener('click', showParametres);
-
-
-
-async function showParametres() {
-    let parametresPopUp = document.createElement('div')
-    parametresPopUp.innerHTML = `
-    
-        <div class="popUpTop">
-            <h3>Parametres</h3>
-            <button onclick="hideParametres()">X</button>
-        </div>
-        <!-- <div class="parametresBodySplit">
-            <div class="paramCategories">
-                <button>General</button>
-                <button>Affichage</button>
-            </div>
-            <div class="paramCore">
-
-            </div>
-        </div> -->
-        <div class="parametresBody">
-            <h3>Parametres généraux</h3>
-            <div class="paramElement">
-                <p>- Rester connecter</p>
-                <input type="checkbox" id="resterConnecterCheckBox">
-            </div>
-            <div class="ParamSeparateur"></div>
-            <h3>Affichage</h3>
-            <div class="paramElement">
-                <p>- Theme</p>
-                <div class="themeSelect">
-                    <button class="themeBtn" onclick="selectTheme('0')">Foncé</button>
-                    <button class="themeBtn selectedTheme" onclick="selectTheme('1')">Mixte</button>
-                    <button class="themeBtn" onclick="selectTheme('2')">Claire</button>
-                </div>
-            </div>
-            <div class="paramElement">
-                <p>- Bordures</p>
-                <input type="range" name="" id="borderRadiusScale" min="0" max="20" oninput="updateBorderRadius(event)">
-            </div>
-            <div class="paramElement">
-                <button id="resetParamBtn" onclick='resetParametres()'>Parametres par défaut</button>
-            </div>
-        </div>
-    `
-    document.body.appendChild(parametresPopUp);
-    parametresPopUp.classList.add("popUp");
-    parametresPopUp.classList.add("parametresPopup");
-    await new Promise(r => setTimeout(r, 10));
-    parametresPopUp.classList.add("popUpVisible");
-    toggleBackground(false);
-}
-
-async function hideParametres() {
-    let parametresPopUp = document.querySelector('.popUpVisible');
-    parametresPopUp.classList.remove("popUpVisible");
-    await new Promise(r => setTimeout(r,100));
-    parametresPopUp.remove();
-    toggleBackground(true);
-}
-
-function selectTheme(themeIndex) {
-    // changement sur l'interface
-    let themeBtns = document.querySelectorAll('.themeBtn');
-    console.log(themeBtns);
-    themeBtns.forEach(element => {
-        element.classList.remove('selectedTheme');
-    })
-    themeBtns[themeIndex].classList.add('selectedTheme');
-
-    // changement theme
-    // ...
-}
-
-var cssRoot = document.querySelector(':root');
-function updateBorderRadius(e) {
-    console.log(e.target.value);
-    cssRoot.style.setProperty('--common_border_radius', e.target.value + "px");
-}
-
-function resetParametres() {
-    cssRoot.style.setProperty('--common_border_radius', "10px");
-    selectTheme("1");
-    hideParametres();
-}
-
-
-
 
 function refrechFiles(){
     files = document.getElementById("fileInput").files
@@ -279,13 +93,11 @@ function writePoste(module, type, prof, content, postID, lens, names, date, comm
                 curs += parseInt(lens[i])
                 size = parseInt(lens[i]) <= 1024 ? parseInt(lens[i]) : (parseFloat(lens[i])/1024 <= 1024 ? (parseFloat(lens[i])/1024).toFixed(2) : (parseFloat(lens[i])/(1024*1024)).toFixed(2))
                 size = `${size} ${parseInt(lens[i]) < 1024 ? "octets" : (parseInt(lens[i]) < 1024*1024 ? "Ko" : "Mo")}`
-                pj_extension = names[i].split(".")[1]
-                pj_name = names[i].length > 10 ? names[i].slice(0, 10) + `...${pj_extension}` : names[i]
                 pjsHTML += `
                     <a href="" class="pieceJointeElement" id="${postID}|${names[i]}">
                         <div class="PJimg"> </div>
                         <div class="PJtext">
-                            <p>${pj_name}</p>
+                            <p>${names[i].length > 10 ? names[i].slice(0, 10) + "..." : names[i]}</p>
                             <p>${size}</p>
                         </div>
                     </a>
@@ -622,4 +434,62 @@ function getPostsE(filtre){
     socket.on("getPostsE", (data) => {
         setPostsE(data)
     })
+}
+
+// Module Select (in menu)
+const modulesBtns = document.querySelectorAll('.moduleElement');
+modulesBtns.forEach(moduleBtn => {
+    moduleBtn.addEventListener('click', () => {
+        modulesBtns.forEach(moduleBtn => {moduleBtn.classList.remove("selected_module")})
+        moduleBtn.classList.add("selected_module")
+    })
+})
+
+
+
+
+// Toggle Background
+
+leftMenu = document.getElementById('leftMenu');
+imgBtnToogleMenu = document.getElementById('imgBtnToogleMenu');
+// const popUpBackground = document.getElementById("popUpBackground");
+var numberOfPopUps = 0;
+
+function toggleBackground(isBackgroundShown) {
+    // isShown = true => remove background
+    // isShown = false => show background
+    if (isBackgroundShown) {
+        numberOfPopUps -= 1;
+        if (numberOfPopUps == 0) {
+            popUpBackground.style.display = "none";
+            popUpBackground.style.pointerEvents = "none";
+        }
+    } else {
+        numberOfPopUps += 1;
+        popUpBackground.style.display = "block";
+        popUpBackground.style.pointerEvents = "all";
+    }
+}
+
+// export { toggleBackground }
+
+
+
+// Toggle Menu
+
+function toogleMenu() {
+    if (leftMenu.classList.contains('leftMenuVisible')) {
+    } else {
+        leftMenu.classList.add('leftMenuVisible');
+        document.addEventListener('click', hideMenu);
+        toggleBackground(false);
+    }
+}
+
+function hideMenu(e) {
+    if (!leftMenu.contains(e.target) && e.target.id != "imgBtnToogleMenu") {
+        leftMenu.classList.remove('leftMenuVisible');
+        document.removeEventListener('click', hideMenu)
+        toggleBackground(true);
+    }
 }

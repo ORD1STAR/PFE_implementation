@@ -186,13 +186,12 @@ body {
 
 .mainPart .Top {
     background-color: var(--background_Dark);
-    border-radius: var(--common_border_radius);
+    border-radius: 10px;
     position: relative;
     height: var(--TopBarSize);
-    /* width: 98%;                      */
-    width: calc(100% - 20px);
-    /* max-width: 1300px;                      */
-    align-self: center;                     
+    width: 98%;                     /* might change */
+    max-width: 1300px;                     /* might change */
+    align-self: center;                     /* might change */
     margin: 10px;
     display: flex;
 }
@@ -211,10 +210,6 @@ body {
     filter: invert(70%);
     width: 40px;
     padding: 5px;
-}
-
-.contactMenuBtn {
-    display: none;
 }
 
 .mainPart .Top h1 {
@@ -315,14 +310,14 @@ body {
     margin: 0px;
     padding: 10px 0px 5px 15px;
     user-select: none;
-    font-size: 14px;
 }
 
 .TPTDmoduleSection > .arrow {
     position: absolute;
     top: -5px;
     right: 10px;
-    color: rgba(255, 255, 255, 0.8);
+    color: white;
+    font-weight: bold;
     transform: rotate(180deg);
     cursor: pointer;
     user-select: none;
@@ -331,19 +326,23 @@ body {
 .TPTDmoduleSection .moduleTPTD {
     display: flex;
     opacity: 0;
+    cursor: pointer;
+    transition: all 0.1s ease-in-out;
+}
+.TPTDmoduleSection .moduleTPTD:hover {
+    background-color: rgba(0, 0, 0, 0.15);
 }
 
 .TPTDmoduleSection .moduleTPTD h4 {
-    font-size: 12px;
     background-color: rgba(0, 0, 0, 0.1);
     margin: 0px;
-    padding: 5px;
+    padding: 0px;
+    padding: 10px;
     border-radius: 5px;
     margin: 5px;
 }
 
 .TPTDmoduleSection .moduleTPTD p {
-    font-size: 12px;
     margin: 0px;
     height: 100%;
     align-self: center;
@@ -431,8 +430,7 @@ body {
     margin: 10px;
     border: none;
     border-radius: var(--common_border_radius);
-    /* flex-grow: 1; */
-    width: 100%;
+    flex-grow: 1;
 }
 
 .msgTxtSection .msgWritingSection input[type="text"]:focus {
@@ -443,7 +441,7 @@ body {
     border: none;
     border-radius: var(--common_border_radius);
     margin: 10px;
-    font-size: 16px;
+    font-size: 18px;
     font-weight: bold;
     padding: 10px 10px;
 }
@@ -529,10 +527,39 @@ body {
 }
 
 
+/* .msgTxtSectionTop {
+    display: flex;
+    position: relative;
+    width: 100%;
+    background-color: var(--background_Neutral);
+}
+.msgTxtSectionTop select {
+    margin: 3px;
+    border-radius: var(--common_border_radius);
+    padding: 5px;
+    font-size: 18px;
+    background-color: var(--background_Dark);
+    color: white;
+}
+.msgTxtSectionTop select:focus {
+    outline: none;
+}
+.msgTxtSectionTop option {
+    padding: 5px;
+    font-size: 18px;
+}
+.msgTxtSectionTop h3 {
+    padding: 12px 5px 5px 5px;
+    background-color: transparent;
+}
+.msgTxtSectionTop p {
+    position: absolute;
+    right: 20px;
+    padding: 0px
+} */
 
 .msgTxtSectionTop {
     display: flex;
-    flex-basis: 1fr 2fr 1fr;
     justify-content: space-between;
     align-items: center;
     width: 100%;
@@ -541,14 +568,10 @@ body {
 
 .msgTxtSectionTop h3 {
     background-color: transparent;
-    font-size: 12px;
-    margin-left: 15px;
-    padding: 0px;
 }
 
 .msgTxtSectionTop .TPTD_select {
     height: fit-content;
-    min-width: fit-content;
     padding: 5px 6px;
     margin: 3px;
     border-radius: var(--common_border_radius);
@@ -573,7 +596,7 @@ body {
     background-color: transparent;
     color: white;
     width: 50px;
-    z-index: 40;
+    z-index: 99;
     position: relative;
 }
 
@@ -677,16 +700,15 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    right: 10px;
-    /* left: 150px; */
-    width: 210px;
-    top: 90px;
+    right: 0px;
+    left: 0px;
+    top: 80px;
     overflow: hidden;
+    z-index: 10;
     transform: translateY(-200px);
     transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out 0.1s;
     opacity: 0;
-    /* pointer-events: none; */
-    z-index: 55;
+    pointer-events: none;
 }
 
 .profileSubMenu .delimiteur {
@@ -734,15 +756,11 @@ body {
 
 
 .rightPart {
-    background-color: red;
     background-color: var(--background_Light);
     min-width: 230px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    height: 100vh;
-    position: sticky;
-    top: 0;
 }
 
 .rightPart .profileDiv {        /*   specific to right part   */
@@ -839,12 +857,8 @@ body {
 
 .posts {
     flex-grow: 1;
-    /* max-width: 1400px; */
-    width: 100%;
+    max-width: 1400px;
     align-self: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
 }
 
 .postElement {
@@ -852,8 +866,6 @@ body {
     padding: 10px;
     background-color: rgba(0, 0, 0, 0.1);
     border-radius: var(--common_border_radius);
-    max-width: 700px;
-    min-width: 85%;
 }
 
 .postElement .postTop {
@@ -897,7 +909,6 @@ body {
     padding: 10px;
     border-radius: var(--common_border_radius);
     flex-grow: 2;
-    /* min-width: 350px; */
 }
 
 .postElement .postCore .postPieceJointe {
@@ -905,12 +916,6 @@ body {
     border-radius: var(--common_border_radius);
     flex-grow: 1;
     min-width: 200px;
-    padding-bottom: 20px;
-    
-}
-.postElement .postCore:not(.extendedPJ) .postPieceJointe{
-    max-width: 200px;
-    
 }
 
 .postElement .postCore .postPieceJointe h4 {
@@ -923,8 +928,8 @@ body {
     border-radius: var(--common_border_radius);
     display: flex;
     align-items: center;
-    color: black;
     text-decoration: none;
+    color: black;
 }
 
 .postElement .postCore .postPieceJointe .pieceJointeElement .PJimg {
@@ -948,7 +953,7 @@ body {
 
 .extendedPJ {
     flex-wrap: wrap;
-    flex-direction: column;
+    /*flex-direction: column;   !!!!!!!! */ 
 }
 
 .postElement .extendedPJ .postPieceJointe {
@@ -1034,10 +1039,6 @@ body {
 
 /*  Post Prof Side  */
 
-.postElement_profSide {
-    width: calc(100% - 40px);
-}
-
 .postElement_profSide .postTop .postTitle {
     margin: 0px;
 }
@@ -1085,7 +1086,6 @@ body {
 .optionPost {
     margin: 8px 0px 30px 0px;
     padding: 0px 10px;
-    width: calc(100% - 20px);
 }
 
 .optionPost h2 {
@@ -1120,25 +1120,6 @@ body {
     margin: 0px 0px 10px 5px;
     color: rgba(0, 0, 0, 0.6);
     font-size: 14px;
-}
-
-.rightPart .categorieDiv {
-    max-width: 210px;
-    margin-top: 30px;
-    opacity: 0;
-    pointer-events: none;
-    transform: translateY(-100px);
-    transition: transform 0.2s ease-in-out, opacity 0.2s ease-in-out;
-}
-
-.rightPart .categorieDiv h3 {
-    font-size: 16px;
-}
-
-.rightPart .categorieDiv.visibleCategorieDiv {
-    opacity: 1;
-    transform: translateX(0px);
-    pointer-events: all;
 }
 
 .filterDiv {
@@ -1180,8 +1161,6 @@ body {
 
 #popUpBackground {
     display: none;
-    z-index: 50;
-    backdrop-filter: blur(1px);
 }
 
 .container {
@@ -1193,34 +1172,7 @@ body {
 
 
 
-
-
-
-
-
-
-
 /*      POST Comments      */
-/* .popUp {
-    position: fixed;
-    top: 50%;
-    bottom: 50%;
-    right: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
-
-.popUp::before {
-    content: '';
-    position: absolute;
-    background-color: red;
-    top: -200px;
-    bottom: -200px;
-    right: -200px;
-    left: -200px;
-    z-index: -1;
-} */
-
 .commentPopUp {
     position: fixed;
     background-color: var(--background_Light);
@@ -1231,8 +1183,7 @@ body {
     bottom: 10%;
     margin-left: auto;
     margin-right: auto;
-    width: 450px;
-    max-width: 95%;
+    width: 400px;
     z-index: 10;
     border-radius: var(--common_border_radius);
     overflow: hidden;
@@ -1262,7 +1213,7 @@ body {
 }
 
 .commentPopUp .commentTop h3 {
-    margin: 10px;
+    margin: 10px 10px;
     font-size: 18px;
     color: white;
 }
@@ -1348,61 +1299,17 @@ body {
 
 
 
-
-
-.popUp {
-    position: fixed;
-    background-color: var(--background_Light);
-    margin: auto;
-    left: 0;
-    right: 0;
-    top: 20%;
-    bottom: 20%;
-    margin-left: auto;
-    margin-right: auto;
-    width: 450px;
-    max-width: 95%;
-    z-index: 10;
-    border-radius: var(--common_border_radius);
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    transform: translateY(1000px);
-    opacity: 0;
-    transition: transform 0.3s ease-in-out, opacity 0.5s;
-    box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.2);
-}
-
-
 .popUpVisible {
     transform: translateY(0px);
     opacity: 1;
-    z-index: 55;
 }
 
-.popUpTop {
-    background-color: var(--background_Dark);
-    display: flex;
-    align-items: center;
-}
 
-.popUpTop h3 {
-    margin: 10px;
-    font-size: 18px;
-    color: white;
-}
 
-.popUpTop button {
-    margin: 5px;
-    padding: 5px 10px;
-    margin-left: auto;
-    border: none;
-    border-radius: var(--common_border_radius);
-    background-color: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    color: white;
-}
+
+
+
+
 
 
 
@@ -1415,99 +1322,10 @@ body {
     background-color: rgba(0, 0, 0, 0.4);
     width: 100%;
     height: 100%;
-    z-index: 50;
+    z-index: 2;
     pointer-events: none;
     display: none;
 }
-
-
-
-
-
-
-
-
-/*       Parametres         */
-
-/* .parametresBodySplit {
-    width: 100%;
-    height: 100%;
-    display: flex;
-} */
-
-.paramCategories {
-    display: flex;
-    flex-direction: column;
-    width: 25%;
-}
-
-.paramCategories button {
-    margin: 3px 5px;
-    padding: 5px;
-}
-
-.parametresBody {
-    padding: 0px 20px;
-    flex-grow: 1;
-}
-
-.paramElement {
-    display: flex;
-    width: 90%;
-    margin: 5px auto;
-    /* background-color: rebeccapurple; */
-}
-
-.paramElement p {
-    margin: 0px;
-}
-
-.paramElement #resterConnecterCheckBox {
-    width: 25px;
-    /* margin: 10px; */
-    margin-left: auto;
-    transform: scale(1.3);
-    cursor: pointer;
-}
-
-.ParamSeparateur {
-    width: 100%;
-    height: 40px;
-}
-
-.themeSelect {
-    margin-left: auto;
-}
-
-.themeSelect button {
-    padding: 4px 8px;
-    border: none;
-    border-radius: var(--common_border_radius);
-    background-color: rgba(0, 0, 0, 0.05);
-    border: 1px solid rgba(0, 0, 0, 0.2);
-    cursor: pointer;
-}
-
-.themeSelect button.selectedTheme {
-    background-color: var(--background_Dark);
-    color: white;
-}
-
-.paramElement #borderRadiusScale {
-    width: 170px;
-    margin: 5px 0px 0px auto;
-}
-
-#resetParamBtn {
-    margin: auto;
-    padding: 5px 15px;
-    border: none;
-    border-radius: var(--common_border_radius);
-    background-color: var(--background_Neutral);
-    margin-top: 20px;
-    color: white;
-}
-
 
 
 
@@ -1542,7 +1360,6 @@ body {
     .leftMenu {
         position: absolute;
         left: -300px;
-        z-index: 10;
     }
     
     .categorieDiv a p {
@@ -1553,12 +1370,10 @@ body {
         /* position: relative; */
         display: block;
     }
-
-
     
     .leftMenuVisible {
         left: 0;
-        z-index: 55;
+        z-index: 10;
         box-shadow: 5px 0px 500px rgba(0, 0, 0, 0.5);
         position: fixed;
     }
@@ -1581,7 +1396,28 @@ body {
         background-color: rgba(0, 0, 0, 0.1);
         z-index: -1;
     } */
+    
+}
 
+
+
+/*      phone screen      */
+
+@media only screen and (max-width: 600px) {
+    .rightPart {
+        position: absolute;
+        left: -400px;          /* nrmlnm right part mais ... */
+    }
+
+    .postElement .postTop {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .postElement .postTop .postTitle {
+        margin: 10px 0px 5px 5px;
+    }
+    
     .postElement .postCore {
         flex-wrap: wrap;
     }
@@ -1610,62 +1446,6 @@ body {
         height: 40px;
         width: 40px;
     }
-    
-}
-
-
-
-/*      phone screen      */
-
-@media only screen and (max-width: 650px) {
-    .rightPart {
-        position: absolute;
-        left: -400px;          /* nrmlnm right part mais ... */
-    }
-
-    .postElement {
-        width: calc(100% - 40px);
-        margin: 10px;
-    }
-
-    .postElement .postTop {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-    .postElement .postTop .postTitle {
-        margin: 10px 0px 5px 5px;
-    }
-
-    .rightPart .profileDiv {
-        left: calc(400px + 145px);
-        background-color: transparent;
-        position: relative;
-    }
-    
-    .rightPart .profileDiv .profileTextDiv {
-        display: none;
-    }
-    
-    .rightPart .profileDiv .profilePicDiv {
-        height: 50px;
-        width: 50px;
-        margin: auto 5px auto auto;
-    }
-
-    .mainPart .Top h1 {
-        font-size: 24px;
-        max-width: 210px;
-        margin: auto 0px;
-        padding: 0px;
-        padding-left: 5px;
-    }
-
-    .postCore {
-        flex-direction: column;
-    }
-
-    
 
     /*   Messagerie Part   */
 
@@ -1674,7 +1454,7 @@ body {
         position: absolute;
         height: 97.8%;   /* trash solution */
         flex-grow: 1;
-        z-index: 49;
+        z-index: 20;
         left: -200px;
         transition: left 0.2s ease-in-out;
         /* box-shadow: 0px 0px 10px rgba(0, 0, 0, 1); */
@@ -1690,39 +1470,6 @@ body {
 
     .TPTDmoduleSection > * {
         font-size: 14px;
-    }
-
-    .msgTxtSection .msgContainer .msgLine .msgerIcon {
-        width: 40px;
-        height: 40px;
-        border-radius: 30px;
-        background-color: rgba(0, 0, 0, 0.2);
-        margin: 5px;
-    }
-
-
-
-    
-    .contactMenuBtn {
-        display: block;
-        position: absolute;
-        right: 14px;
-        top: 155px;
-        z-index: 45;
-        background-color: transparent;
-        border: none;
-        border-radius: var(--common_border_radius);
-        background-color: var(--background_Dark);
-        border: 1px solid rgba(255, 255, 255, 0.5);
-        padding: 3px 5px;
-        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
-    }
-
-    .contactMenuBtn img {
-        aspect-ratio: 1;
-        height: 40px;
-        width: 40px;
-        filter: invert(75%);
     }
 
 }
