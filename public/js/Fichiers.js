@@ -43,14 +43,14 @@ function setFiles(Files){
     }
 }
 function getFiles(filtre){
-    socket.emit("getFiles", [document.cookie.split("=")[1], filtre])
+    socket.emit("getFiles", [document.cookie.split('; ')[1].split('=')[1], filtre])
     socket.on("getFiles", (data) => {
         setFiles(data)
     })
 }
 function getFilesE(filtre, secID){
     nomMod = filtre.split("|")[0]
-    socket.emit("getFilesE", [document.cookie.split("=")[1], nomMod, secID])
+    socket.emit("getFilesE", [document.cookie.split('; ')[1].split('=')[1], nomMod, secID])
     socket.on("getFilesE", (data) => {
         setFiles(data)
     })

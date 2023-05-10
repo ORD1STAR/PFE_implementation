@@ -93,7 +93,7 @@ function hideCommentSection() {
 
 function addComment(postID) {
     if(document.getElementById("commentWritingSection").value != ""){
-        socket.emit("sendComment", [document.cookie.split("=")[1], document.getElementById("commentWritingSection").value, postID])
+        socket.emit("sendComment", [document.cookie.split('; ')[1].split('=')[1], document.getElementById("commentWritingSection").value, postID])
         socket.on("setComment", (sender) =>  {
     
             commentContainer = commentSection.children[1];
@@ -134,28 +134,3 @@ function togglePieceJointes() {
 
 //profSideOptionBtns[1].addEventListener('click', togglePieceJointes)
 
-
-// Drive, messagerie, Notes btns changing place when scroll
-const optionPosts = document.querySelector('.categorieDiv');
-const optionPostsHTML = optionPosts.innerHTML;
-
-function isVisible(element) {
-    let bordures = element.getBoundingClientRect();
-    return(bordures.bottom > 0)
-}
-
-var optionDivVisible = true;
-const rightOptionPosts = document.querySelector('.rightPart .categorieDiv');
-
-document.addEventListener('scroll', () => {
-    optionDivVisibleOLD = optionDivVisible
-    optionDivVisible = isVisible(optionPosts)
-    
-    if (optionDivVisible != optionDivVisibleOLD) {
-        if (optionDivVisible) {
-            rightOptionPosts.classList.remove('visibleCategorieDiv')
-        } else {
-            rightOptionPosts.classList.add('visibleCategorieDiv')
-        }
-    }
-})

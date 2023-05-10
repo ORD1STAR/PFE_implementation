@@ -97,7 +97,7 @@ sendBtn.addEventListener("click", () => {
     if (textEntry == "") {return}
 
     //add the message in the data base, for that we will send a socket to the server
-    socket.emit("addMessage", [document.cookie.split("=")[1], document.getElementById("discutID").classList[0], textEntry, document.getElementById("nomProf").innerHTML])
+    socket.emit("addMessage", [document.cookie.split('; ')[1].split('=')[1], document.getElementById("discutID").classList[0], textEntry, document.getElementById("nomProf").innerHTML])
 
     writeMsg(textEntry, 0)
 
@@ -136,7 +136,7 @@ contactSectionBtn.addEventListener('click', () => {
 })
 
 function openChat(login, module, type){
-    token = document.cookie.split("=")[1]
+    token = document.cookie.split('; ')[1].split('=')[1]
 
     if(type==1){
         const TPTDselectBtns = document.querySelectorAll(".TPTDselectBtn")
@@ -200,7 +200,7 @@ function openChat(login, module, type){
 
 }
 function openChatE(hisLogin, module, type){
-    myToken = document.cookie.split("=")[1]
+    myToken = document.cookie.split('; ')[1].split('=')[1]
 
     if(type==1){
         const TPTDselectBtns = document.querySelectorAll(".TPTDselectBtn")

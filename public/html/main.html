@@ -9,7 +9,7 @@
 </head>
 <body>
     <div id="leftMenu" class="leftMenu">
-        <div class="titleDiv">
+        <div class="titleDiv" onclick="location.href = '/home'">
             <h1 id="Section">GTR L3</h1>
         </div>
 
@@ -98,6 +98,17 @@
             </div>
         </div>
 
+        <div class="categorieDiv">
+            <a href="/files">
+                <h3>Drive</h3>
+            </a>
+            <a href="/notes">
+                <h3>Notes</h3>
+            </a>
+            <a href="/msg">
+                <h3>Messagerie</h3>
+            </a>
+        </div>
 
     </div>
     
@@ -176,7 +187,7 @@
             modules = data[1]           //get the modules from the data
             modDiv = document.getElementById("moduleMenu")  //get the module menu div
             for(var module of modules){ //for each module in the modules array add a button to the module menu
-                modDiv.innerHTML += `<div class="moduleElement" id="mod${module["idSec"]} ${module["codeMod"]}"><p>L${module["niveau"]} ${module["specialite"]}| ${module['nom']}</p><div class="notifDiv"></div></div>`
+                modDiv.innerHTML += `<div class="moduleElement" id="mod${module["idSec"]} ${module["codeMod"]} ${module["type"]}"><p>L${module["niveau"]} ${module["specialite"]}| ${module['nom']}</p><div class="notifDiv"></div></div>`
             }
             //add the event listener to the module buttons to change the selected module
             const modulesBtns = document.querySelectorAll('.moduleElement');
@@ -217,11 +228,34 @@
             
             
         })
+    // Drive, messagerie, Notes btns changing place when scroll
+    optionPosts = document.querySelector('.categorieDiv');
+    optionPostsHTML = optionPosts.innerHTML;
 
+    function isVisible(element) {
+        let bordures = element.getBoundingClientRect();
+        return(bordures.bottom > 0)
+    }
 
+    var optionDivVisible = true;
+    rightOptionPosts = document.querySelector('.rightPart .categorieDiv');
+
+    document.addEventListener('scroll', () => {
+        optionDivVisibleOLD = optionDivVisible
+        optionDivVisible = isVisible(optionPosts)
+
+        if (optionDivVisible != optionDivVisibleOLD) {
+            if (optionDivVisible) {
+                rightOptionPosts.classList.remove('visibleCategorieDiv')
+            } else {
+                rightOptionPosts.classList.add('visibleCategorieDiv')
+            }
+        }
+    })
 </script>
 
 <script src="/js/main.js"></script>
+<script src="/js/posts.js" defer></script>
    
 </body>
 </html>

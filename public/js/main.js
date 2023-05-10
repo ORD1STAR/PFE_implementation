@@ -1,3 +1,26 @@
+function setCookie(name, value, days) {
+    document.cookie = `${name}=${value}; path=/`;
+  }
+  
+function addOrUpdateCookie(name, value) {
+  const cookies = document.cookie.split('; ');
+  let cookieExists = false;
+  for (let i = 0; i < cookies.length; i++) {
+    const cookie = cookies[i].split('=');
+    if (cookie[0] === name) {
+      setCookie(name, value);
+      cookieExists = true;
+      break;
+    }
+  }
+  if (!cookieExists) {
+    setCookie(name, value);
+  }
+}
+  
+  
+
+
 var postsVar
 filtresVar = [true, true, true]
 
@@ -17,7 +40,7 @@ async function showProfileSubMenu() {
                 <a href="/notes"><p>Délibération</p></a>
                 <div class="delimiteur"></div>
                 <a href="#" onclick="showParametres()"><p>Parametres</p></a>
-                <a href="#"><p>se déconecter</p></a>`;
+                <a href="/disconnect"><p>se déconecter</p></a>`;
     document.body.appendChild(profileSubMenuDiv)
     profileSubMenuDiv.classList.add('profileSubMenu');
     
@@ -112,6 +135,21 @@ parametresDiv.addEventListener('click', showParametres);
 
 async function showParametres() {
     let parametresPopUp = document.createElement('div')
+    selected = 1
+    cookies = document.cookie.split('; ');
+    for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].split('=');
+        if (cookie[0] === "theme") {
+            if(cookie[1] == "0") {
+                selected = 0
+            } else if (cookie[1] == "1") {
+                selected = 1
+            }else if (cookie[1] == "2") {
+                selected = 2
+            }
+            break;
+        }
+    }
     parametresPopUp.innerHTML = `
     
         <div class="popUpTop">
@@ -138,9 +176,9 @@ async function showParametres() {
             <div class="paramElement">
                 <p>- Theme</p>
                 <div class="themeSelect">
-                    <button class="themeBtn" onclick="selectTheme('0')">Foncé</button>
-                    <button class="themeBtn selectedTheme" onclick="selectTheme('1')">Mixte</button>
-                    <button class="themeBtn" onclick="selectTheme('2')">Claire</button>
+                    <button class="themeBtn${selected==0? " selectedTheme": ""}" onclick="selectTheme('0')">Foncé</button>
+                    <button class="themeBtn${selected==1? " selectedTheme": ""}" onclick="selectTheme('1')">Mixte</button>
+                    <button class="themeBtn${selected==2? " selectedTheme": ""}" onclick="selectTheme('2')">Claire</button>
                 </div>
             </div>
             <div class="paramElement">
@@ -168,20 +206,73 @@ async function hideParametres() {
     toggleBackground(true);
 }
 
+var cssRoot = document.querySelector(':root');
+
+function updateTheme(themeIndex){
+    // changement theme
+    if (themeIndex == 0) {
+        cssRoot.style.setProperty('--background_Light', '#434656');
+        cssRoot.style.setProperty('--LeftMenuBackground', '#505366');
+        cssRoot.style.setProperty('--Top', 'var(--accent_Light)');
+
+        cssRoot.style.setProperty("--textColorPureWhite", 'black');
+        cssRoot.style.setProperty("--textColorPureBlack", 'white');
+        cssRoot.style.setProperty("--textColorBlack", 'white');
+        cssRoot.style.setProperty("--textColorWhite", '#2f3854');
+        cssRoot.style.setProperty("--textColorMidWhite", 'rgba(0, 0 ,0 ,0.5)');
+        cssRoot.style.setProperty("--textColorMidBlack", 'rgba(255, 255 ,255 ,0.5)');
+
+        cssRoot.style.setProperty("--NeutralBackground", 'rgba(131, 156, 236, 0.3)');
+        cssRoot.style.setProperty("--neutralBackground_ontTOP", 'rgba(255, 255 ,255 ,0.1)');
+
+        cssRoot.style.setProperty("--important", 'var(--accent_Lighter)');
+        cssRoot.style.setProperty("--important_Low", 'var(--accent_Lighter_05)');
+        
+    } else if (themeIndex == 1) {
+        cssRoot.style.setProperty('--background_Light', 'rgb(241, 241, 241)');
+        cssRoot.style.setProperty('--LeftMenuBackground', '#434656');
+        cssRoot.style.setProperty('--Top', 'var(--LeftMenuBackground)');
+
+        cssRoot.style.setProperty("--textColorPureWhite", 'white');
+        cssRoot.style.setProperty("--textColorPureBlack", 'black');
+        cssRoot.style.setProperty("--textColorBlack", '#2f3854');
+        cssRoot.style.setProperty("--textColorWhite", 'white');
+        cssRoot.style.setProperty("--textColorMidWhite", 'rgba(255, 255 ,255 ,0.5)');
+        cssRoot.style.setProperty("--textColorMidBlack", 'rgba(0, 0 ,0 ,0.5)');
+
+        cssRoot.style.setProperty("--NeutralBackground", 'var(--accent_Lighter_015)');
+        cssRoot.style.setProperty("--neutralBackground_ontTOP", 'var(--accent_Light_01)');
+
+        cssRoot.style.setProperty("--important", 'var(--accent_Light)');
+        cssRoot.style.setProperty("--important_Low", 'var(--accent_Light_05)');
+    }
+}
+
 function selectTheme(themeIndex) {
     // changement sur l'interface
     let themeBtns = document.querySelectorAll('.themeBtn');
-    console.log(themeBtns);
     themeBtns.forEach(element => {
         element.classList.remove('selectedTheme');
+        addOrUpdateCookie("theme", themeIndex)
     })
     themeBtns[themeIndex].classList.add('selectedTheme');
+    updateTheme(themeIndex);
 
-    // changement theme
-    // ...
+    
 }
 
-var cssRoot = document.querySelector(':root');
+cookies = document.cookie.split('; ');
+let cookieExists = false;
+for (let i = 0; i < cookies.length; i++) {
+    const cookie = cookies[i].split('=');
+    if (cookie[0] === "theme") {
+        updateTheme(cookie[1])
+        cookieExists = true;
+        break;
+    }
+}
+
+
 function updateBorderRadius(e) {
     console.log(e.target.value);
     cssRoot.style.setProperty('--common_border_radius', e.target.value + "px");
@@ -226,6 +317,7 @@ function EnvoyerLePoste() {
     contenu = document.getElementById("postContent").value
     contenu = "##" + titre + "##" + contenu
     files = document.getElementById("fileInput").files
+    type = document.getElementsByClassName("selected_module")[0].id.split(" ")[2]
     section = document.querySelectorAll('.selected_module')[0].innerHTML.split("| ")[0].replace("<p>", "");
     secID = document.querySelectorAll('.selected_module')[0].id.split(" ")[0].replace("mod", "")
     codeMod = document.querySelectorAll('.selected_module')[0].id.split(" ")[1]
@@ -236,7 +328,7 @@ function EnvoyerLePoste() {
         filesNames.push(file.name)
         filesLens.push(file.size)
     }
-    socket.emit("setPost", [document.cookie.split("=")[1], window.ensID, contenu, codeMod, files, filesLens, filesNames, comvB, travB])
+    socket.emit("setPost", [document.cookie.split('; ')[1].split('=')[1], window.ensID, contenu, codeMod, files, filesLens, filesNames, comvB, travB, type])
     document.getElementById("postTitle").value = ""
     document.getElementById("postContent").value = ""
     document.getElementById("fileInput").value = ""
@@ -406,7 +498,30 @@ function writePoste(module, type, prof, content, postID, lens, names, date, comm
             })
         })
     }
-    
+    // Drive, messagerie, Notes btns changing place when scroll
+    optionPosts = document.querySelector('.categorieDiv');
+    optionPostsHTML = optionPosts.innerHTML;
+
+    function isVisible(element) {
+        let bordures = element.getBoundingClientRect();
+        return(bordures.bottom > 0)
+    }
+
+    var optionDivVisible = true;
+    rightOptionPosts = document.querySelector('.rightPart .categorieDiv');
+
+    document.addEventListener('scroll', () => {
+        optionDivVisibleOLD = optionDivVisible
+        optionDivVisible = isVisible(optionPosts)
+
+        if (optionDivVisible != optionDivVisibleOLD) {
+            if (optionDivVisible) {
+                rightOptionPosts.classList.remove('visibleCategorieDiv')
+            } else {
+                rightOptionPosts.classList.add('visibleCategorieDiv')
+            }
+        }
+    })
 
 }
 function setPosts(posts){
@@ -441,7 +556,7 @@ function setPosts(posts){
     }
 }
 function getPosts(module){
-    socket.emit("getPosts", [module, document.cookie.split("=")[1]])
+    socket.emit("getPosts", [module, document.cookie.split('; ')[1].split('=')[1]])
     socket.on("getPosts", (data) => {
         postsVar = data
         setPosts(data)
@@ -453,7 +568,7 @@ function writePosteE(module, type, prof, content, postID, lens, names, date, com
     extended = ""
     commSec = comm == 1 ? `<button onclick="showCommentSection(${postID})" class='commentSectionBtn'>Commenter</button>"` : ""
     travSec = trav == 1 ? "<button class='travSectionBtn'>Remettre le travail demandé</button>" : ""
-    if(lens.split("/").length > 0){
+    if(lens.split("/").length > 0 && lens != ""){
         lens = lens.split("/")
         names = names.split("/")
         
@@ -550,6 +665,30 @@ function writePosteE(module, type, prof, content, postID, lens, names, date, com
         trav.innerHTML = trav.innerHTML == "Travail a remettre (X)" ? "Travail a remettre (V)" : "Travail a remettre (X)"
         travB = travB ? false : true
     })
+        // Drive, messagerie, Notes btns changing place when scroll
+        optionPosts = document.querySelector('.categorieDiv');
+        optionPostsHTML = optionPosts.innerHTML;
+    
+        function isVisible(element) {
+            let bordures = element.getBoundingClientRect();
+            return(bordures.bottom > 0)
+        }
+    
+        var optionDivVisible = true;
+        rightOptionPosts = document.querySelector('.rightPart .categorieDiv');
+    
+        document.addEventListener('scroll', () => {
+            optionDivVisibleOLD = optionDivVisible
+            optionDivVisible = isVisible(optionPosts)
+    
+            if (optionDivVisible != optionDivVisibleOLD) {
+                if (optionDivVisible) {
+                    rightOptionPosts.classList.remove('visibleCategorieDiv')
+                } else {
+                    rightOptionPosts.classList.add('visibleCategorieDiv')
+                }
+            }
+        })
 
 }
 function setPostsE(posts){
@@ -618,7 +757,7 @@ function setPostsE(posts){
 }
 function getPostsE(filtre){
     secID = document.querySelectorAll('.selected_module')[0].id.split(" ")[0].replace("mod", "")
-    socket.emit("getPostsE", [document.cookie.split("=")[1], filtre, secID])
+    socket.emit("getPostsE", [document.cookie.split('; ')[1].split('=')[1], filtre, secID])
     socket.on("getPostsE", (data) => {
         setPostsE(data)
     })

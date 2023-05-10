@@ -11,7 +11,7 @@
 </head>
 <body>
     <div id="leftMenu" class="leftMenu">
-        <div class="titleDiv">
+        <div class="titleDiv" onclick="location.href = '/home'">
             <h1 id="Section">GTR L3</h1>
         </div>
 
@@ -464,7 +464,7 @@
             notesDiv.innerHTML = notesHtml
 
 
-            socket.emit("getNotes", document.cookie.split("=")[1])
+            socket.emit("getNotes", document.cookie.split('; ')[1].split('=')[1])
             socket.on("getNotes", (data) => {
                 modulesNote = data
 
@@ -567,7 +567,7 @@
             }
             notesDiv.innerHTML = notesHtml
 
-            socket.emit("getNotesE", document.cookie.split("=")[1])
+            socket.emit("getNotesE", document.cookie.split('; ')[1].split('=')[1])
             socket.on("getNotesE", (data) => {
                 modulesNote = data
                 for(note of modulesNote){

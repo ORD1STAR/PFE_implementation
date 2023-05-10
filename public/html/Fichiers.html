@@ -10,8 +10,8 @@
 </head>
 <body>
     <div class="leftMenu" id="leftMenu">
-        <div class="titleDiv">
-            <h1 id="Section" onclick="location.href = '/home'">GTR L3</h1>
+        <div class="titleDiv" onclick="location.href = '/home'">
+            <h1 id="Section">GTR L3</h1>
         </div>
         <h3>Menu :</h3>
 
@@ -137,8 +137,20 @@
             </div>
         </div>
 
+        <div class="categorieDiv">
+            <a href="/files">
+                <h3>Drive</h3>
+            </a>
+            <a href="/notes">
+                <h3>Notes</h3>
+            </a>
+            <a href="/msg">
+                <h3>Messagerie</h3>
+            </a>
+        </div>
+
     </div>
-    <script src="/js/main.js" defer></script>
+    <script src="/js/main.js"></script>
     <script src="/socket.io/socket.io.js"></script>
     <script src="/js/Fichiers.js"></script>
     <script>
@@ -225,6 +237,30 @@
             
         })
 
+            // Drive, messagerie, Notes btns changing place when scroll
+        optionPosts = document.querySelector('.categorieDiv');
+        optionPostsHTML = optionPosts.innerHTML;
+
+        function isVisible(element) {
+            let bordures = element.getBoundingClientRect();
+            return(bordures.bottom > 0)
+        }
+
+        var optionDivVisible = true;
+        rightOptionPosts = document.querySelector('.rightPart .categorieDiv');
+
+        document.addEventListener('scroll', () => {
+            optionDivVisibleOLD = optionDivVisible
+            optionDivVisible = isVisible(optionPosts)
+
+            if (optionDivVisible != optionDivVisibleOLD) {
+                if (optionDivVisible) {
+                    rightOptionPosts.classList.remove('visibleCategorieDiv')
+                } else {
+                    rightOptionPosts.classList.add('visibleCategorieDiv')
+                }
+            }
+        })
     </script>
 
 </body>

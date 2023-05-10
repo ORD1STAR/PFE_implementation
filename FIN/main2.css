@@ -9,55 +9,10 @@ body {
 }
 
 :root {
-    /* --background_Dark : rgb(87, 87, 87);
-    --background_Neutral : rgb(143, 143, 143);
-    --background_Light : rgb(241, 241, 241); */
-    
-    --background_Dark : #434656;        /*rgb(67, 70, 86)*/
+    --background_Dark : rgb(87, 87, 87);
     --background_Neutral : rgb(143, 143, 143);
     --background_Light : rgb(241, 241, 241);
 
-    --accent_Darker : #1a1f2e;  /*rgb(26, 31, 46)*/
-    --accent_Dark : #2f3854;     /*rgb(47, 56, 84)*/
-    --accent_Neutral : #44517a;     /*rgb(68, 81, 122)*/
-    --accent_Light : #596aa0;       /*rgb(89, 106, 160)*/
-    --accent_Lighter : #839cec;     /*rgb(131, 156, 236)*/
-    
-    --accent_Dark_01 : rgba(26, 31, 46, 0.1);
-    --accent_Neutral_01 : rgba(68, 81, 122, 0.1);
-    --accent_Light_01 : rgba(89, 106, 160, 0.1);
-    --accent_Lighter_01 : rgba(131, 156, 236, 0.1);
-    
-    --accent_Dark_015 : rgba(26, 31, 46, 0.15);
-    --accent_Neutral_015 : rgba(68, 81, 122, 0.15);
-    --accent_Light_015 : rgba(89, 106, 160, 0.1);
-    --accent_Lighter_015 : rgba(131, 156, 236, 0.15);
-    
-    --accent_Dark_05 : rgba(26, 31, 46, 0.5);
-    --accent_Neutral_05 : rgba(68, 81, 122, 0.5);
-    --accent_Light_05 : rgba(100, 118, 179, 0.3);
-    --accent_Lighter_05 : rgba(131, 156, 236, 0.5);
-
-    --LeftMenuBackground : #434656;
-    --Top : var(--LeftMenuBackground);
-
-    --important : var(--accent_Light);
-    --important_Low : var(--accent_Light_05);
-    --important_interacted : var(--accent_Neutral_05);
-
-    --NeutralBackground : var(--accent_Lighter_015);
-    --neutralBackground_ontTOP : var(--accent_Light_01);
-
-    --textColorPureWhite : White;
-    --textColorPureBlack : black;
-    --textColorMidWhite: rgba(255, 255 ,255 ,0.5);
-    --textColorMidBlack: rgba(0, 0 ,0 ,0.5);
-    --textColorBlack : var(--accent_Dark);
-    --textColorWhite : var(--textColorPureWhite);
-
-
-    
-    
     --common_border_radius : 10px;
 
     --TopBarSize : 70px
@@ -66,7 +21,7 @@ body {
 
 
 .leftMenu {
-    background-color: var(--LeftMenuBackground);
+    background-color: var(--background_Dark);
     min-width: 180px;
     display: flex;
     flex-direction: column;
@@ -160,7 +115,7 @@ body {
     border-radius: 10px;
     right: 10px;
     top: 14px;
-    background-color: var(--accent_Lighter);
+    background-color: var(--background_Light);
 }
 
 .leftMenu .leftMenuInfoDiv {
@@ -230,8 +185,7 @@ body {
 }
 
 .mainPart .Top {
-    /* background-color: var(--background_Dark); */
-    background-color: var(--Top);
+    background-color: var(--background_Dark);
     border-radius: var(--common_border_radius);
     position: relative;
     height: var(--TopBarSize);
@@ -321,7 +275,7 @@ body {
 }
 
 .mainPart .contactSection {
-    background-color: var(--NeutralBackground);
+    background-color: rgba(0, 0, 0, 0.2);
     width: 30%;
     margin: 10px;
     border-radius: var(--common_border_radius);
@@ -349,7 +303,7 @@ body {
 
 .TPTDmoduleSection {
     position: relative;
-    background-color: var(--neutralBackground_ontTOP);
+    background-color: rgba(0, 0, 0, 0.1);
     border-radius: var(--common_border_radius);
     margin-bottom: 10px;
     max-height: 200px;
@@ -362,7 +316,6 @@ body {
     padding: 10px 0px 5px 15px;
     user-select: none;
     font-size: 14px;
-    color: var(--textColorBlack);
 }
 
 .TPTDmoduleSection > .arrow {
@@ -382,8 +335,7 @@ body {
 
 .TPTDmoduleSection .moduleTPTD h4 {
     font-size: 12px;
-    background-color: var(--accent_Lighter_05);
-    color: var(--textColorBlack);
+    background-color: rgba(0, 0, 0, 0.1);
     margin: 0px;
     padding: 5px;
     border-radius: 5px;
@@ -395,7 +347,6 @@ body {
     margin: 0px;
     height: 100%;
     align-self: center;
-    color: var(--textColorBlack);
 }
 
 .TPTDmoduleSection .moduleTPTD .arrow {
@@ -447,7 +398,7 @@ body {
 
 .msgTxtSection {
     position: relative;
-    background-color: var(--NeutralBackground);
+    background-color: rgba(0, 0, 0, 0.1);
     width: 70%;
     margin: 10px;
     border-radius: var(--common_border_radius);
@@ -471,7 +422,7 @@ body {
     width: 100%;
     display: flex;
     padding-bottom: 5px;
-    background: linear-gradient(180deg, rgba(0,0,0,0) 0%, var(--accent_Dark_05) 75%);
+    background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.3) 75%);
 }
 
 .msgTxtSection .msgWritingSection input[type="text"] {
@@ -491,17 +442,12 @@ body {
 .msgTxtSection .msgWritingSection button {
     border: none;
     border-radius: var(--common_border_radius);
-    background-color: var(--important);
-    color: white;
     margin: 10px;
     font-size: 16px;
     font-weight: bold;
     padding: 10px 10px;
 }
 
-.msgTxtSection .msgWritingSection button:hover {
-    background-color: var(--accent_Light);
-}
 
 .msgTxtSection .msgContainer {
     flex-grow: 1;
@@ -517,7 +463,7 @@ body {
 
 .msgTxtSection .msgContainer::-webkit-scrollbar-track {
     height: 20%;
-    background: transparent;
+    background: rgba(0, 0, 0, 0);
 }
 
 .msgTxtSection .msgContainer::-webkit-scrollbar-thumb {
@@ -535,7 +481,7 @@ body {
     width: 50px;
     height: 50px;
     border-radius: 30px;
-    background-color: var(--accent_Light_05);
+    background-color: rgba(0, 0, 0, 0.2);
     margin: 10px;
 }
 
@@ -547,10 +493,9 @@ body {
 }
 
 .msgTxtSection .msgContainer .msgLine .msgTxt p {
-    background-color: var(--accent_Lighter_05);
+    background-color: rgba(0, 0, 0, 0.1);
     padding: 10px;
     border-radius: var(--common_border_radius);
-    color: var(--textColorPureBlack);
     margin: 2px 0px;
     width: fit-content;
 }
@@ -564,7 +509,7 @@ body {
 }
 
 .msgTxtSection .msgContainer .ownMsgLine .msgTxt p {
-    background-color: var(--accent_Neutral);
+    background-color: rgba(0, 0, 0, 0.2);
     color: white;
     margin-right: 15px;
 }
@@ -591,7 +536,7 @@ body {
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    background-color: var(--accent_Neutral);
+    background-color: var(--background_Neutral);
 }
 
 .msgTxtSectionTop h3 {
@@ -607,7 +552,7 @@ body {
     padding: 5px 6px;
     margin: 3px;
     border-radius: var(--common_border_radius);
-    background-color: var(--accent_Light);
+    background-color: var(--background_Dark);
     position: relative;
 }
 
@@ -615,7 +560,7 @@ body {
     position: absolute;
     width: 50px;
     height: 30px;
-    background-color: var(--accent_Lighter);
+    background-color: var(--background_Light);
     border-radius: var(--common_border_radius);
     top: 3px;
     transition: transform 0.2s linear;
@@ -630,14 +575,12 @@ body {
     width: 50px;
     z-index: 40;
     position: relative;
-    cursor: pointer;
-    color: var(--textColorMidWhite);
 }
 
 .msgTxtSectionTop .TPTD_select .selected_TPTD {
     /* background-color: var(--background_Light); */
     border-radius: var(--common_border_radius);
-    color: white;
+    color: black;
     font-weight: bold;
 }
 .msgTxtSectionTop .TPTDselectBtn:nth-of-type(1).selected_TPTD ~ .indic{
@@ -654,7 +597,7 @@ body {
 .msgTxtSectionTop p {
     padding: 5px;
     margin: 10px;
-    color: white;
+    color: whitesmoke;
 }
 
 
@@ -673,7 +616,8 @@ body {
 .profileDiv {
     position: relative;
     width: 300px;
-    background-color: var(--accent_Light);
+    background-color: rgba(0, 0, 0, 0.2);
+    /* background-color: var(--background_Dark); */
     border-radius: var(--common_border_radius);
     display: flex;
     justify-content: space-between;
@@ -683,7 +627,6 @@ body {
 
 .profileDiv > * {
     margin: 0px;
-    color: white;
 }
 
 .profileDiv .profilePicDiv {
@@ -692,9 +635,9 @@ body {
     border-radius: 50%;
     background-color: rgba(255, 255, 255, 0.3);
     margin: 5px;
-    /* filter: invert(50%); */
+    filter: invert(50%);
     box-sizing: border-box;
-    border: 2px solid var(--accent_Light);
+    border: 2px solid grey;
     aspect-ratio: 1 / 1;
 }
 
@@ -712,14 +655,12 @@ body {
 
 .profileDiv .profileTextDiv button {
     width: 80%;
-    background-color: rgba(255, 255, 255, 0.1);
-    color: rgba(255, 255, 255, 0.5);
+    background-color: rgba(255, 255, 255, 0.4);
     border: none;
     border-radius: var(--common_border_radius);
     padding: 2px 0px;
-    margin-top: 5px;
     color: rgba(255, 255, 255, 0.0.2);
-    font-size: 10px;
+    font-size: 11px;
 }
 
 .profileDiv .profileTextDiv button:hover {
@@ -729,7 +670,7 @@ body {
 
 /*   Profile subMenu   */
 .profileSubMenu {
-    position: fixed;
+    position: absolute;
     background-color: var(--background_Dark);
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
     border-radius: var(--common_border_radius);
@@ -811,22 +752,67 @@ body {
     color: white; */
 }
 
+/*.rightPart .profileDiv {
+    width: 90%;
+    margin-top: 10px;
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    height: var(--TopBarSize);
+}
+
+.rightPart .profileDiv .profilePicDiv {
+    width: 60px;
+    height: var(--TopBarSize);
+    background-image: url(https://www.w3schools.com/howto/img_avatar.png);
+    border-radius: 100px;
+    margin: 5px;
+    aspect-ratio: 1 / 1;
+}
+
+.rightPart .profileDiv .profileTextDiv {
+    display: flex;
+    width: 70%;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.rightPart .profileDiv .profileTextDiv p {
+    margin: 0px;
+} 
+
+.rightPart .profileDiv .profileTextDiv a {
+    width: 80%;
+    text-decoration: none;
+    background-color: rgba(0, 0, 0, 0.2);
+    padding: 5px 10px;
+    color: white;
+    font-size: 14px;
+    border-radius: 10px;
+    margin-top: 5px;
+}
+
+.rightPart .profileDiv .profileTextDiv a:hover {
+    background-color: var(--background_Dark);
+}*/
+
 
 .rightPart .travaux {
-    background-color: var(--NeutralBackground);
+    background-color: rgba(0, 0, 0, 0.05);
     width: 90%;
     border-radius: 10px;
     box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.2);
 }
 
 .rightPart h3 {
-    color: var(--textColorBlack);
     width: 90%;
     margin: 30px 0px 10px 0px;
 }
 
 .rightPart .travaux .travauxElement {
-    background-color: var(--neutralBackground_ontTOP);
+    background-color: rgba(0, 0, 0, 0.05);
     margin: 10px;
     border-radius: 10px;
 }
@@ -835,14 +821,13 @@ body {
     padding: 10px 0px 0px 10px;
     margin: 0px;
     font-size: 16px;
-    color: var(--textColorBlack);
 }
 
 .rightPart .travaux .travauxElement p {
     padding: 0px 0px 10px 10px;
     margin: 0px;
     font-size: 12px;
-    color: var(--textColorMidBlack);
+    color: rgba(0, 0, 0, 0.6);
 }
 
 
@@ -865,11 +850,10 @@ body {
 .postElement {
     margin: 10px;
     padding: 10px;
-    /* background-color: rgba(0, 0, 0, 0.1); */
-    background-color: var(--NeutralBackground);
+    background-color: rgba(0, 0, 0, 0.1);
     border-radius: var(--common_border_radius);
     max-width: 700px;
-    min-width: 700px;
+    min-width: 85%;
 }
 
 .postElement .postTop {
@@ -879,7 +863,7 @@ body {
 }
 
 .postElement .postTop .moduleTitleDiv {
-    background-color: var(--accent_Light);
+    background-color: rgba(0, 0, 0, 0.1);
     border-radius: var(--common_border_radius);
     width: max-content;
     padding: 5px 10px;
@@ -887,19 +871,16 @@ body {
 
 .postElement .postTop .moduleTitleDiv h3 {
     margin: 0px;
-    color: white;
 }
 
 .postElement .postTop .moduleTitleDiv p {
     margin: 0px;
-    /* color: rgba(0, 0, 0, 0.6); */
-    color: var(--accent_Lighter);
+    color: rgba(0, 0, 0, 0.6);
     font-size: 14px;
 }
 
 .postElement .postTop .postTitle {
     margin: 0px 0px 0px 15px;
-    color: var(--textColorBlack);
 }
 
 
@@ -909,11 +890,10 @@ body {
     display: flex;
     /* flex-wrap: wrap; */
     gap: 10px;
-    color: var(--textColorBlack);
 }
 
 .postElement .postCore .postText {
-    background-color: var(--neutralBackground_ontTOP);
+    background-color: rgba(0, 0, 0, 0.1);
     padding: 10px;
     border-radius: var(--common_border_radius);
     flex-grow: 2;
@@ -921,33 +901,34 @@ body {
 }
 
 .postElement .postCore .postPieceJointe {
-    background-color: var(--neutralBackground_ontTOP);
+    background-color: rgba(0, 0, 0, 0.1);
     border-radius: var(--common_border_radius);
     flex-grow: 1;
     min-width: 200px;
-    padding: 2px;
+    padding-bottom: 20px;
+    
+}
+.postElement .postCore:not(.extendedPJ) .postPieceJointe{
+    max-width: 200px;
+    
 }
 
 .postElement .postCore .postPieceJointe h4 {
     margin: 10px;
-    color: var(--textColorBlack);
-}
-
-.postElement .postCore:not(.extendedPJ) .postPieceJointe{
-    max-width: 200px;
 }
 
 .postElement .postCore .postPieceJointe .pieceJointeElement {
-    background-color: var(--neutralBackground_ontTOP);
+    background-color: rgba(0, 0, 0, 0.1);
     margin: 5px 6px;
     border-radius: var(--common_border_radius);
     display: flex;
     align-items: center;
+    color: black;
     text-decoration: none;
 }
 
 .postElement .postCore .postPieceJointe .pieceJointeElement .PJimg {
-    background-color: var(--neutralBackground_ontTOP);
+    background-color: rgba(0, 0, 0, 0.1);
     width: 50px;
     height: 50px;
     margin: 5px;
@@ -956,11 +937,10 @@ body {
 
 .postElement .postCore .postPieceJointe .pieceJointeElement p:first-child {
     margin: 5px 5px 5px 0px;
-    color: var(--textColorBlack);
 }
 
 .postElement .postCore .postPieceJointe .pieceJointeElement p:nth-child(2) {
-    color: var(--textColorMidBlack);
+    color: rgba(0, 0, 0, 0.6);
     font-size: 12px;
     margin: 0px 0px 5px 0px;
 }
@@ -986,7 +966,6 @@ body {
     width: 150px;
     flex-grow: 1;
     max-width: 200px;
-    color: var(--textColorBlack);
 }
 
 .postElement .extendedPJ .postPieceJointe .pieceJointeElement p:first-child {
@@ -1013,24 +992,17 @@ body {
 }
 
 .postBottomDiv button {
-    background-color: var(--important_Low);
+    background-color: rgba(0, 0, 0, 0.1);
     border-radius: var(--common_border_radius);
     flex-grow: 1;
     padding: 10px 10px;
     border: none;
     transition: 0.2s ease-in-out;
-    color: var(--textColorBlack);
 }
 
 .postBottomDiv button:hover {
     background-color: rgba(0, 0, 0, 0.2);
-    background-color: var(--accent_Light);
     flex-grow: 2;
-    color: white;
-}
-
-.postBottomDiv .travailDemandeBtn {
-    background-color: var(--accent_Light);
     color: white;
 }
 
@@ -1063,7 +1035,7 @@ body {
 /*  Post Prof Side  */
 
 .postElement_profSide {
-    min-width: 700px;
+    width: calc(100% - 40px);
 }
 
 .postElement_profSide .postTop .postTitle {
@@ -1073,26 +1045,20 @@ body {
 .postElement_profSide .postTop input {
     background-color: transparent;
     border: none;
-    background-color: var(--neutralBackground_ontTOP);
+    background-color: rgba(0, 0, 0, 0.05);
     font-size: 18px;
     padding: 8px;
     border-radius: var(--common_border_radius);
     flex-grow: 1;
     margin-left: 5px;
-    width: calc(100% - 80px);
-}
-
-.postElement_profSide input::placeholder,
-.postElement_profSide textarea::placeholder {
-    color: var(--textColorMidBlack);
 }
 
 .postElement_profSide textarea {
     background-color: transparent;
     border: none;
-    background-color: var(--neutralBackground_ontTOP);
+    background-color: rgba(0, 0, 0, 0.05);
     border-radius: var(--common_border_radius);
-    width: calc(100% - 20px);
+    width: 100%;
     padding: 10px;
     resize: none;
 }
@@ -1101,21 +1067,12 @@ body {
     background-color: transparent;
     border: none;
     border-radius: var(--common_border_radius);
-    background-color: var(--important_Low);
+    background-color: rgba(0, 0, 0, 0.15);
     margin: 5px;
     width: 30px;
     font-size: 24px;
     cursor: pointer;
     justify-self: flex-end;
-}
-
-.postElement_profSide .postBottomDiv button {
-    background-color: var(--important_Low);
-}
-
-.postElement_profSide .postBottomDiv button:last-child {
-    background-color: var(--important);
-    color: white;
 }
 
 
@@ -1142,8 +1099,7 @@ body {
 }
 
 .categorieDiv a {
-    /* background-color: rgba(0, 0, 0, 0.06); */
-    background-color: var(--accent_Lighter_015);
+    background-color: rgba(0, 0, 0, 0.06);
     flex-grow: 1;
     border-radius: var(--common_border_radius);
     padding: 0px 10px;
@@ -1152,18 +1108,17 @@ body {
 }
 
 .categorieDiv a:hover {
-    background-color: var(--accent_Lighter_05);
+    background-color: rgba(0, 0, 0, 0.1);
 }
 
 .categorieDiv a h3 {
-    color: var(--textColorBlack);
     margin: 10px 5px;
     font-size: 22px;
 }
 
 .categorieDiv a p {
     margin: 0px 0px 10px 5px;
-    color: var(--textColorMidBlack);
+    color: rgba(0, 0, 0, 0.6);
     font-size: 14px;
 }
 
@@ -1185,7 +1140,6 @@ body {
     transform: translateX(0px);
     pointer-events: all;
 }
-
 .filterDiv {
     display: flex;
     justify-content: flex-end;
@@ -1195,31 +1149,29 @@ body {
     font-size: 16px;
     margin: 10px;
     font-weight: 100;
-    color: var(--textColorBlack);
-    /* color: var(--accent_Dark); */
+    color: rgba(0, 0, 0, 0.6);
     justify-self: flex-start;
 }
 
 .filterDiv button {
     border: none;
-    /* background-color: rgba(0, 0, 0, 0.15); */
-    background-color: var(--accent_Lighter_015);
-    color: var(--textColorMidBlack);
+    background-color: rgba(0, 0, 0, 0.15);
+    color: rgba(0, 0, 0, 0.5);
     margin: 5px;
     padding: 0px 10px;
     border-radius: var(--common_border_radius);
     cursor: pointer;
 }
 
-/* .filterDiv button:hover {
+.filterDiv button:hover {
     border: 1px solid rgba(0, 0, 0, 0.15);
-    background-color: var(--accent_Light_015);
-} */
+    background-color: rgba(0, 0, 0, 0.1);
+}
 
 .filterDiv .filterSelected {
-    border: 1px solid var(--accent_Light_05);
-    background-color: var(--accent_Light_05);
-    color: var(--textColorBlack);
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    background-color: rgba(0, 0, 0, 0.05);
+    color: black;
 }
 
 
@@ -1228,7 +1180,7 @@ body {
 #popUpBackground {
     display: none;
     z-index: 50;
-    backdrop-filter: blur(2px);
+    backdrop-filter: blur(1px);
 }
 
 .container {
@@ -1496,11 +1448,6 @@ body {
 .parametresBody {
     padding: 0px 20px;
     flex-grow: 1;
-    background-color: var(--neutralBackground_ontTOP);
-}
-
-.parametresBody h3 {
-    color: var(--textColorBlack);
 }
 
 .paramElement {
@@ -1512,7 +1459,6 @@ body {
 
 .paramElement p {
     margin: 0px;
-    color: var(--textColorPureBlack);
 }
 
 .paramElement #resterConnecterCheckBox {
@@ -1539,11 +1485,10 @@ body {
     background-color: rgba(0, 0, 0, 0.05);
     border: 1px solid rgba(0, 0, 0, 0.2);
     cursor: pointer;
-    color: var(--textColorMidBlack);
 }
 
 .themeSelect button.selectedTheme {
-    background-color: var(--important);
+    background-color: var(--background_Dark);
     color: white;
 }
 
@@ -1557,10 +1502,9 @@ body {
     padding: 5px 15px;
     border: none;
     border-radius: var(--common_border_radius);
-    background-color: var(--accent_Light_05);
+    background-color: var(--background_Neutral);
     margin-top: 20px;
     color: white;
-    cursor: pointer;
 }
 
 
@@ -1673,15 +1617,14 @@ body {
 /*      phone screen      */
 
 @media only screen and (max-width: 650px) {
-    .postElement {
-        min-width: calc(100% - 40px);
-    }
-    .postCore {
-        flex-direction: column;
-    }
     .rightPart {
         position: absolute;
         left: -400px;          /* nrmlnm right part mais ... */
+    }
+
+    .postElement {
+        width: calc(100% - 40px);
+        margin: 10px;
     }
 
     .postElement .postTop {
@@ -1717,20 +1660,21 @@ body {
         padding-left: 5px;
     }
 
-        
+    .postCore {
+        flex-direction: column;
+    }
 
     
 
     /*   Messagerie Part   */
 
     .msgSection .contactSection {
-        background-color: var(--LeftMenuBackground);
+        background-color: rgb(173, 173, 173);
         position: absolute;
-        height: 96.8%;   /* trash solution */
-        width: 220px;
+        height: 97.8%;   /* trash solution */
         flex-grow: 1;
         z-index: 49;
-        left: -300px;
+        left: -200px;
         transition: left 0.2s ease-in-out;
         /* box-shadow: 0px 0px 10px rgba(0, 0, 0, 1); */
     }

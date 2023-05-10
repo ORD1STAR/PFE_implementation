@@ -34,10 +34,10 @@ connection.connect(function(err) {
     console.log("Connected to the MySQL server");
 });
 
-io = require('socket.io')(http);
+io = require('socket.io')(http, {maxHttpBufferSize:1*1024*1024*10});
 
 app.get('/', (req, res) => {
-    if(req.cookies["login"]){
+    if(req.cookies["token"]){
         res.redirect("/home");
     }else{
         res.redirect("/login");
@@ -108,6 +108,10 @@ app.get("/notes", (req, res) => {
 app.get("/edt", (req, res) => {
     res.sendFile(path.join(__dirname, 'public/html/EDTpage.html'));
 })
+app.get("/disconnect", (req, res) => {
+    res.clearCookie("token");
+    res.redirect("/");
+})
 
 //const fileBuffer1 = fs.readFileSync('test.txt');
 //const fileBuffer2 = fs.readFileSync('test2.txt');
@@ -130,7 +134,7 @@ app.get("/edt", (req, res) => {
 io.on('connection', (socket) => {
 
     socket.on('connected', (cookie) => {
-        token = cookie[0].split('=')[1];
+        token = cookie[0].split('; ')[1].split('=')[1];
         connection.query("SELECT role FROM user WHERE token = ?", [token], function(err, result, fields){
             if(err){
                 console.log(err.message);
@@ -266,8 +270,7 @@ io.on('connection', (socket) => {
     });
 
     socket.on("setPost", (data) => {
-        
-        req = "INSERT INTO `postes`(`contenu`, `ensID`, `codeModule`, `PJ`, `PJ_lens`, `PJ_names`, `comm`, `traveauRendre`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
+        req = "INSERT INTO `postes`(`contenu`, `ensID`, `codeModule`, `PJ`, `PJ_lens`, `PJ_names`, `comm`, `traveauRendre`, `type`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"
         
         files = data[4]
         buffers = []
@@ -275,6 +278,7 @@ io.on('connection', (socket) => {
         names = ""
         comm = data[7]
         travb = data[8]
+        type = data[9]
         for(var i = 0; i < Object.keys(files).length; i++){
             fileBuffer = Buffer.from(files[i], 'base64');
             buffers.push(fileBuffer)
@@ -285,7 +289,7 @@ io.on('connection', (socket) => {
         names = names.slice(0, -1)
         combinedBuffer = Buffer.concat(buffers);
         const combinedBase64 = combinedBuffer.toString('base64');
-        connection.query(req, [data[2], data[1], data[3], combinedBuffer, lens, names, comm ? 1:0, travb ? 1:0], function(err, result, fields){
+        connection.query(req, [data[2], data[1], data[3], combinedBuffer, lens, names, comm ? 1:0, travb ? 1:0, type], function(err, result, fields){
             if(err){
                 console.log(err.message);
             }
