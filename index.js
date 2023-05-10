@@ -134,7 +134,14 @@ app.get("/disconnect", (req, res) => {
 io.on('connection', (socket) => {
 
     socket.on('connected', (cookie) => {
-        token = cookie[0].split('; ')[1].split('=')[1];
+        console.log(cookie);
+        cookies = cookie[0].split('; ')
+        cookies.forEach(function(c){
+            if(c.startsWith('token=')){
+                token = c.split('=')[1]
+            }
+        })
+        console.log(token);
         connection.query("SELECT role FROM user WHERE token = ?", [token], function(err, result, fields){
             if(err){
                 console.log(err.message);

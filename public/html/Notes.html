@@ -463,8 +463,14 @@
             }
             notesDiv.innerHTML = notesHtml
 
-
-            socket.emit("getNotes", document.cookie.split('; ')[1].split('=')[1])
+            token = ""
+            cookies = document.cookie.split('; ')
+            cookies.forEach(function(c){
+                if(c.startsWith('token=')){
+                    token = c.split('=')[1]
+                }
+            })
+            socket.emit("getNotes", token)
             socket.on("getNotes", (data) => {
                 modulesNote = data
 
@@ -566,8 +572,14 @@
                 `
             }
             notesDiv.innerHTML = notesHtml
-
-            socket.emit("getNotesE", document.cookie.split('; ')[1].split('=')[1])
+            token = ""
+            cookies = document.cookie.split('; ')
+            cookies.forEach(function(c){
+                if(c.startsWith('token=')){
+                    token = c.split('=')[1]
+                }
+            })
+            socket.emit("getNotesE", token)
             socket.on("getNotesE", (data) => {
                 modulesNote = data
                 for(note of modulesNote){

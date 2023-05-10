@@ -261,7 +261,14 @@
             modDiv = document.getElementById("contactSection")  //get the module menu div
             filtreSelectDiv = document.getElementById("TPTD_select")
             
-            socket.emit("getDMs", document.cookie.split("=")[1])
+            token = ""
+            cookies = document.cookie.split('; ')
+            cookies.forEach(function(c){
+                if(c.startsWith('token=')){
+                    token = c.split('=')[1]
+                }
+            })
+            socket.emit("getDMs", token)
             socket.on("getDMs", (data) =>{
                 studentDiv = ""
                 for(var spe of data[2]){

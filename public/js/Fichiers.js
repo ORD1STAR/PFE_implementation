@@ -43,14 +43,28 @@ function setFiles(Files){
     }
 }
 function getFiles(filtre){
-    socket.emit("getFiles", [document.cookie.split('; ')[1].split('=')[1], filtre])
+    token = ""
+    cookies = document.cookie.split('; ')
+    cookies.forEach(function(c){
+        if(c.startsWith('token=')){
+            token = c.split('=')[1]
+        }
+    })
+    socket.emit("getFiles", [token, filtre])
     socket.on("getFiles", (data) => {
         setFiles(data)
     })
 }
 function getFilesE(filtre, secID){
     nomMod = filtre.split("|")[0]
-    socket.emit("getFilesE", [document.cookie.split('; ')[1].split('=')[1], nomMod, secID])
+    token = ""
+    cookies = document.cookie.split('; ')
+    cookies.forEach(function(c){
+        if(c.startsWith('token=')){
+            token = c.split('=')[1]
+        }
+    })
+    socket.emit("getFilesE", [token, nomMod, secID])
     socket.on("getFilesE", (data) => {
         setFiles(data)
     })

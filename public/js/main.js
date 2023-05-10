@@ -328,7 +328,14 @@ function EnvoyerLePoste() {
         filesNames.push(file.name)
         filesLens.push(file.size)
     }
-    socket.emit("setPost", [document.cookie.split('; ')[1].split('=')[1], window.ensID, contenu, codeMod, files, filesLens, filesNames, comvB, travB, type])
+    token = ""
+    cookies = document.cookie.split('; ')
+    cookies.forEach(function(c){
+        if(c.startsWith('token=')){
+            token = c.split('=')[1]
+        }
+    })
+    socket.emit("setPost", [token, window.ensID, contenu, codeMod, files, filesLens, filesNames, comvB, travB, type])
     document.getElementById("postTitle").value = ""
     document.getElementById("postContent").value = ""
     document.getElementById("fileInput").value = ""
@@ -556,7 +563,15 @@ function setPosts(posts){
     }
 }
 function getPosts(module){
-    socket.emit("getPosts", [module, document.cookie.split('; ')[1].split('=')[1]])
+    token = ""
+    cookies = document.cookie.split('; ')
+    cookies.forEach(function(c){
+        if(c.startsWith('token=')){
+            token = c.split('=')[1]
+        }
+    })
+    
+    socket.emit("getPosts", [module, token])
     socket.on("getPosts", (data) => {
         postsVar = data
         setPosts(data)
@@ -757,7 +772,14 @@ function setPostsE(posts){
 }
 function getPostsE(filtre){
     secID = document.querySelectorAll('.selected_module')[0].id.split(" ")[0].replace("mod", "")
-    socket.emit("getPostsE", [document.cookie.split('; ')[1].split('=')[1], filtre, secID])
+    token = ""
+    cookies = document.cookie.split('; ')
+    cookies.forEach(function(c){
+        if(c.startsWith('token=')){
+            token = c.split('=')[1]
+        }
+    })
+    socket.emit("getPostsE", [token, filtre, secID])
     socket.on("getPostsE", (data) => {
         setPostsE(data)
     })

@@ -61,7 +61,14 @@ function addMultiGroupedCase(where, types, groups, modules, classes){
     final += `</div></td>`
     
 }
-socket.emit("getEDT", document.cookie.split("=")[1])
+token = ""
+    cookies = document.cookie.split('; ')
+    cookies.forEach(function(c){
+        if(c.startsWith('token=')){
+            token = c.split('=')[1]
+        }
+    })
+socket.emit("getEDT", token)
 socket.on("getEDT", (data) => { 
 
     if(data){

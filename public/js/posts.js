@@ -93,7 +93,14 @@ function hideCommentSection() {
 
 function addComment(postID) {
     if(document.getElementById("commentWritingSection").value != ""){
-        socket.emit("sendComment", [document.cookie.split('; ')[1].split('=')[1], document.getElementById("commentWritingSection").value, postID])
+        token = ""
+        cookies = document.cookie.split('; ')
+        cookies.forEach(function(c){
+            if(c.startsWith('token=')){
+                token = c.split('=')[1]
+            }
+        })
+        socket.emit("sendComment", [token, document.getElementById("commentWritingSection").value, postID])
         socket.on("setComment", (sender) =>  {
     
             commentContainer = commentSection.children[1];
