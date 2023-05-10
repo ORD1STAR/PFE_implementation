@@ -1,0 +1,26 @@
+.postElement {
+        min-width: 85%;
+}
+.postCore {
+        flex-direction: column;
+}
+in media 650
+
+
+
+min-width: 700px;
+in .postElement
+
+
+flex-direction: column;
+in .extendedPJ
+
+
+min-width: 200px;
+padding-bottom: 20px;
+in .postElement .postCore .postPieceJointe
+
+
+.postElement .postCore:not(.extendedPJ) .postPieceJointe{
+    max-width: 200px;
+}
