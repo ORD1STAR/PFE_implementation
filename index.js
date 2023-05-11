@@ -3,7 +3,6 @@ const path = require('path')
 const app = express();
 const http = require('http').createServer(app);
 const mysql = require('mysql')
-const fs = require('fs')
 const crypto = require('crypto')
 const cookieParser = require('cookie-parser')
 
@@ -134,14 +133,12 @@ app.get("/disconnect", (req, res) => {
 io.on('connection', (socket) => {
 
     socket.on('connected', (cookie) => {
-        console.log(cookie);
         cookies = cookie[0].split('; ')
         cookies.forEach(function(c){
             if(c.startsWith('token=')){
                 token = c.split('=')[1]
             }
         })
-        console.log(token);
         connection.query("SELECT role FROM user WHERE token = ?", [token], function(err, result, fields){
             if(err){
                 console.log(err.message);
@@ -206,7 +203,8 @@ io.on('connection', (socket) => {
             }
 
         })
-    }); // TODO: Les profs peuvent pas envoyer des postes + je dois travailler sur EDT + travaux actuels
+    
+    }); // TODO: je dois travailler sur EDT + travaux actuels
 
     socket.on("getPosts", (data) => {
         args = []
@@ -248,6 +246,7 @@ io.on('connection', (socket) => {
             }
             socket.emit("getPosts", result);
         })
+        
     });
 
     socket.on("getPostsE", (data) => {
@@ -512,7 +511,6 @@ io.on('connection', (socket) => {
                     if(err){
                         console.log(err.message);
                     }
-                    console.log(result);
                     socket.emit("getDMs", [result, myID, result2])
                 })
 
@@ -550,7 +548,6 @@ io.on('connection', (socket) => {
         notes = data[1]
         codeMod = data[2]
 
-        console.log(notes);
     })
 
     socket.on("getEDT", (token) => {
@@ -559,16 +556,45 @@ io.on('connection', (socket) => {
             if(err){
                 console.log(err.message);
             }
-            socket.emit("getEDT", result)
+            if(result.length == 0){
+                socket.emit("getEDT", "empty")
+            }else{
+                socket.emit("getEDT", readEDT(result[0]["edtFile"]))
+            }
 
         })
     })
 });
 
 
-
-
 http.listen(3000, () => {
     console.log('Server is running on port 3000');
     }
 );
+
+
+//config start end
+function readEDT(file){
+    const xlsx = require('xlsx');
+    const fs = require('fs');
+    const start = "A1"
+    const end = "F6"
+    var EDT = []
+
+    const workbook = xlsx.read(file, { type: 'buffer' });
+
+    const sheetName = workbook.SheetNames[0];
+    const sheet = workbook.Sheets[sheetName];
+
+    const range = xlsx.utils.decode_range(start+":"+end);
+    for (let row = range.s.r; row <= range.e.r; row++) {
+        var ligne = []
+        for (let col = range.s.c; col <= range.e.c; col++) {
+            const cellAddress = xlsx.utils.encode_cell({ r: row, c: col });
+            const cellValue = sheet[cellAddress]? sheet[cellAddress].v : "///";
+            ligne.push(cellValue)
+        }
+        EDT.push(ligne)
+    }
+    return EDT
+}

@@ -54,5 +54,123 @@
     flex-direction: row;
 }
 .moduleSection{
-    width: 500px;
+    width: 350px;
+    margin: 10px;
+
+}
+
+
+@media only screen and (max-width: 650px) {
+
+    .fileSection{
+        flex-direction: column;
+    }
+    
+    .postElement {
+        min-width: calc(100% - 40px);
+    }
+    .postCore {
+        flex-direction: column;
+    }
+    .rightPart {
+        position: absolute;
+        left: -400px;          /* nrmlnm right part mais ... */
+    }
+
+    .postElement .postTop {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .postElement .postTop .postTitle {
+        margin: 10px 0px 5px 5px;
+    }
+
+    .rightPart .profileDiv {
+        left: calc(400px + 145px);
+        background-color: transparent;
+        position: relative;
+    }
+    
+    .rightPart .profileDiv .profileTextDiv {
+        display: none;
+    }
+    
+    .rightPart .profileDiv .profilePicDiv {
+        height: 50px;
+        width: 50px;
+        margin: auto 5px auto auto;
+    }
+
+    .mainPart .Top h1 {
+        font-size: 24px;
+        max-width: 210px;
+        margin: auto 0px;
+        padding: 0px;
+        padding-left: 5px;
+    }
+
+        
+
+    
+
+    /*   Messagerie Part   */
+
+    .msgSection .contactSection {
+        background-color: var(--LeftMenuBackground);
+        position: absolute;
+        height: 96.8%;   /* trash solution */
+        width: 220px;
+        flex-grow: 1;
+        z-index: 49;
+        left: -300px;
+        transition: left 0.2s ease-in-out;
+        /* box-shadow: 0px 0px 10px rgba(0, 0, 0, 1); */
+    }
+
+    .msgSection .msgTxtSection {
+        width: 100%;
+    }
+
+    .msgSection .contactSectionVisible {
+        left: 0px;
+    }
+
+    .TPTDmoduleSection > * {
+        font-size: 14px;
+    }
+
+    .msgTxtSection .msgContainer .msgLine .msgerIcon {
+        width: 40px;
+        height: 40px;
+        border-radius: 30px;
+        background-color: rgba(0, 0, 0, 0.2);
+        margin: 5px;
+    }
+
+
+
+    
+    .contactMenuBtn {
+        display: block;
+        position: absolute;
+        right: 14px;
+        top: 155px;
+        z-index: 45;
+        background-color: transparent;
+        border: none;
+        border-radius: var(--common_border_radius);
+        background-color: var(--background_Dark);
+        border: 1px solid rgba(255, 255, 255, 0.5);
+        padding: 3px 5px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .contactMenuBtn img {
+        aspect-ratio: 1;
+        height: 40px;
+        width: 40px;
+        filter: invert(75%);
+    }
+
 }

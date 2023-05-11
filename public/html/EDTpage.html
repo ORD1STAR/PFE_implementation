@@ -17,7 +17,7 @@
 
         <h3>Menu :</h3>
         <div class="moduleMenu" id="moduleMenu">
-            <div class="moduleElement" onclick="location.href = '/edt'">
+            <div class="moduleElement selected_module" onclick="location.href = '/edt'">
                 <p>Emploi du temps</p>
                 <div class="notifDiv"></div>
             </div>
@@ -29,7 +29,7 @@
                 <p>Documents</p>
                 <div class="notifDiv"></div>
             </div>
-            <div class="moduleElement selected_module" onclick="location.href = '/notes'">
+            <div class="moduleElement" onclick="location.href = '/notes'">
                 <p>Notes</p>
                 <div class="notifDiv"></div>
             </div>
@@ -79,213 +79,8 @@
             <div class="EDT_optionBar">
                 
             </div>
-            <table class="EDT">
-                <tr>
-                    <th></th>
-                    <th>8h 9h30</th>
-                    <th>9h40 11h10</th>
-                    <th>11h20 12h50</th>
-                    <th>13h 14h30</th>
-                    <th>14h40 16h10</th>
-                    <th>16h20 17h50</th>
-                </tr>
-                <tr>
-                    <td>Samedi</td>
-                    <td><div class="EDTcase">
-                        <div class="EDT_module">
-                            <div class="moduleGroupes"><p>G1</p><p>G2</p></div>
-                            <div class="moduleContent">
-                                <div class="moduleTitleDiv">
-                                    <p class="moduleType">TP</p>
-                                    <p class="moduleTitle">BDD</p>
-                                </div>
-                                <p class="moduleClass">TP122</p>
-                            </div>
-                        </div>
-                        <div class="EDT_module">
-                            <div class="moduleGroupes"><p>G3</p></div>
-                            <div class="moduleContent">
-                                <div class="moduleTitleDiv">
-                                    <p class="moduleType">TP</p>
-                                    <p class="moduleTitle">BDD</p>
-                                </div>
-                                <p class="moduleClass">TP122</p>
-                            </div>
-                        </div>
-                    </div></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>Dimanche</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>Lundi</td>
-                    <td><div class="EDTcase">
-                        <div class="EDT_module">
-                            <div class="moduleContent">
-                                <div class="moduleTitleDiv">
-                                    <p class="moduleTitle">BDD</p>
-                                </div>
-                                <p class="moduleClass">113D</p>
-                            </div>
-                        </div>
-                    </div></td>
-                    <td><div class="EDTcase">
-                        <div class="EDT_module">
-                            <div class="moduleContent">
-                                <div class="moduleTitleDiv">
-                                    <p class="moduleTitle">Sécurité</p>
-                                </div>
-                                <p class="moduleClass">103D</p>
-                            </div>
-                        </div>
-                    </div></td>
-                    <td><div class="EDTcase">
-                        <div class="EDT_module">
-                            <div class="moduleContent">
-                                <div class="moduleTitleDiv">
-                                    <p class="moduleTitle">QoS</p>
-                                </div>
-                                <p class="moduleClass">Salle de conférences</p>
-                            </div>
-                        </div>
-                    </div></td>
-                    <td><div class="EDTcase">
-                        <div class="EDT_module">
-                            <div class="moduleGroupes"><p>G3</p></div>
-                            <div class="moduleContent">
-                                <div class="moduleTitleDiv">
-                                    <p class="moduleType">TP</p>
-                                    <p class="moduleTitle">Sécurité</p>
-                                </div>
-                                <p class="moduleClass">TP122</p>
-                            </div>
-                        </div>
-                    </div></td>
-                    <td><div class="EDTcase">
-                        <div class="EDT_module">
-                            <div class="moduleGroupes"><p>G2</p></div>
-                            <div class="moduleContent">
-                                <div class="moduleTitleDiv">
-                                    <p class="moduleType">TP</p>
-                                    <p class="moduleTitle">Sécurité</p>
-                                </div>
-                                <p class="moduleClass">TP122</p>
-                            </div>
-                        </div>
-                    </div></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>Mardi</td>
-                    <td><div class="EDTcase">
-                            <div class="EDT_module">
-                                <div class="moduleGroupes"><p>G1</p></div>
-                                <div class="moduleContent">
-                                    <div class="moduleTitleDiv">
-                                        <p class="moduleType">TP</p>
-                                        <p class="moduleTitle">Sécurité</p>
-                                    </div>
-                                    <p class="moduleClass">TP122</p>
-                                </div>
-                            </div>
-                            <div class="EDT_module">
-                                <div class="moduleGroupes"><p>G2</p><p>G3</p></div>
-                                <div class="moduleContent">
-                                    <div class="moduleTitleDiv">
-                                        <p class="moduleType">TD</p>
-                                        <p class="moduleTitle">QoS</p>
-                                    </div>
-                                    <p class="moduleClass">446</p>
-                                </div>
-                            </div>
-                    </div></td>
-                    <td><div class="EDTcase">
-                        <div class="EDT_module">
-                            <div class="moduleGroupes"><p>G1</p></div>
-                            <div class="moduleContent">
-                                <div class="moduleTitleDiv">
-                                    <p class="moduleType">TP</p>
-                                    <p class="moduleTitle">QoS</p>
-                                </div>
-                                <p class="moduleClass">310</p>
-                            </div>
-                        </div>
-                        <div class="EDT_module">
-                            <div class="moduleGroupes"><p>G2</p></div>
-                            <div class="moduleContent">
-                                <div class="moduleTitleDiv">
-                                    <p class="moduleType">TD</p>
-                                    <p class="moduleTitle">BDD</p>
-                                </div>
-                                <p class="moduleClass">TP C4</p>
-                            </div>
-                        </div>
-                    </div></td>
-                    <td><div class="EDTcase">
-                        <div class="EDT_module">
-                            <div class="moduleContent">
-                                <div class="moduleTitleDiv">
-                                    <p class="moduleTitle">Sécurité</p>
-                                </div>
-                                <p class="moduleClass">103D</p>
-                            </div>
-                        </div>
-                    </div></td>
-                    <td><div class="EDTcase">
-                        <div class="EDT_module">
-                            <div class="moduleGroupes"><p>G1</p></div>
-                            <div class="moduleContent">
-                                <div class="moduleTitleDiv">
-                                    <p class="moduleType">TP</p>
-                                    <p class="moduleTitle">BDD</p>
-                                </div>
-                                <p class="moduleClass">TP130</p>
-                            </div>
-                        </div>
-                    </div></td>
-                    <td><div class="EDTcase">
-                        <div class="EDT_module">
-                            <div class="moduleGroupes"><p>G3</p></div>
-                            <div class="moduleContent">
-                                <div class="moduleTitleDiv">
-                                    <p class="moduleType">TP</p>
-                                    <p class="moduleTitle">BDD</p>
-                                </div>
-                                <p class="moduleClass">TP130</p>
-                            </div>
-                        </div>
-                    </div></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>Mercredi</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>Jeudi</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
+            <table class="EDT" id="EDT">
+                
             </table>
         </div>
         
@@ -293,6 +88,7 @@
 
     <script src="/socket.io/socket.io.js"></script>
     <script src="/js/main.js"></script>
+    <script src="/js/edt.js" defer></script>
     <script>
         //connection to the socket
         socket = io()

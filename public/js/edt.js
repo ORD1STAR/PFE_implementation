@@ -1,38 +1,45 @@
 
+// GROUPS|TYPE|MODULE|CLASS
+
+
 function addSimpleCase(where, type, module, classe){
     return `
-    <td id="${where}"><div class="EDTcase">
-        <div class="EDT_module">
-            <div class="moduleContent">
-                <div class="moduleTitleDiv">
-                    ${type == "Cours" ? "" : `<p class="moduleType">${type}</p>`}
-                    <p class="moduleTitle">${module}</p>
-                </div>
-                <p class="moduleClass">${classe}</p>
-            </div>
-        </div>
-    </div></td>
+                    <td>
+                        <div class="EDTcase">
+                            <div class="EDT_module">
+                                <div class="moduleContent">
+                                    <div class="moduleTitleDiv">
+                                        <p class="moduleType">${type}</p>
+                                        <p class="moduleTitle">${module}</p>
+                                    </div>
+                                    <p class="moduleClass">${classe}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
     `
 }
 
 function addSimpleGroupedCase(where, type, groups, module, classe){
     grp = ""
-    for(g in groups){
+    for(g of groups){
         grp += `<p>${g}</p>`
     }
     return `
-    <td id="${where}"><div class="EDTcase">
-        <div class="EDT_module">
-            <div class="moduleGroupes">${grp}</div>
-            <div class="moduleContent">
-                <div class="moduleTitleDiv">
-                    ${type == "Cours" ? "" : `<p class="moduleType">${type}</p>`}
-                    <p class="moduleTitle">${module}</p>
+    <td id="${where}">
+        <div class="EDTcase">
+            <div class="EDT_module">
+                <div class="moduleGroupes">${grp}</div>
+                <div class="moduleContent">
+                    <div class="moduleTitleDiv">
+                        <p class="moduleType">${type}</p>
+                        <p class="moduleTitle">${module}</p>
+                    </div>
+                    <p class="moduleClass">${classe}</p>
                 </div>
-                <p class="moduleClass">${classe}</p>
             </div>
         </div>
-    </div></td>
+    </td>
     `
 }
 
@@ -41,7 +48,7 @@ function addMultiGroupedCase(where, types, groups, modules, classes){
     final = `<td id="${where}"><div class="EDTcase">`
     for(var i = 0; i < modules.length; i++){
         grp = ""
-        for(g in groups[i]){
+        for(g of groups[i]){
             grp += `<p>${g}</p>`
         }
         final += `
@@ -59,7 +66,7 @@ function addMultiGroupedCase(where, types, groups, modules, classes){
     }
 
     final += `</div></td>`
-    
+    return final
 }
 token = ""
     cookies = document.cookie.split('; ')
@@ -69,43 +76,78 @@ token = ""
         }
     })
 socket.emit("getEDT", token)
+
 socket.on("getEDT", (data) => { 
-
-    if(data){
-        const blob = new Blob([data[0]]);
-        const fileReader = new FileReader();
-
-        fileReader.onload = function(event) {
-          const arrayBuffer = event.target.result;
-          const workbook = XLSX.read(arrayBuffer, {type: 'array'});
-          const sheetName = workbook.SheetNames[0];
-          const sheet = workbook.Sheets[sheetName];
-          data = XLSX.utils.sheet_to_json(sheet);
-          console.log(data);
-        };
-
-        fileReader.readAsArrayBuffer(blob);
-
-
-        //file = data[0].decode("utf-8")
-        //console.log(file);
-    
-        edtTable = document.getElementById('EDT')
-        days = ["Samedi", "Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi"]
-    
-        for(day of days){
-            edtTable.innerHTML += `
-            <tr>
-                <td>${day}</td>
-                <td id="sam1"></td>
-                <td id="sam2"></td>
-                <td id="sam3"></td>
-                <td id="sam4"></td>
-                <td id="sam5"></td>
-                <td id="sam6"></td>
-            </tr>
-            `
-        
+    if(data == "empty"){
+        document.getElementById("EDT").innerHTML = "<p>Vous n'avez pas d'emploi du temps</p>"
+    }else{
+        if(data.length != 6){
+            for(var i = data.length; i < 6; i++){
+                data.push(["///", "///", "///", "///", "///", "///"])
+            }
         }
+        for(var i = 0; i < 6; i++){ 
+            if(data[i].length != 6){
+                for(var j = data[i].length; j < 6; j++){
+                    data[i].push("///")
+                }
+            }
+        }
+        edtHTML = `<tr>
+            <th></th>
+            <th>8h 9h30</th>
+            <th>9h40 11h10</th>
+            <th>11h20 12h50</th>
+            <th>13h 14h30</th>
+            <th>14h40 16h10</th>
+            <th>16h20 17h50</th>
+        </tr>`
+        for(var row = 0; row < 6; row++){
+            edtHTML += `<tr><td>${row == 0 ? "samedi" : row == 1 ? "dimanche" : row == 2 ? "lundi" : row == 3 ? "mardi" : row == 4 ? "mercredi" : "jeudi"}</td>`
+            for(var col = 0; col< data[row].length; col++){
+                if(data[row][col] == "///"){
+                    edtHTML += "<td></td>"
+                }else{
+                    seances = data[row][col].split("#")
+
+                    if(seances.length == 1){
+                        jour = seances[0].split("|")
+                        groups = jour[0] != "" ? jour[0].split(";") : ""
+                        type = jour[1]
+                        module = jour[2]
+                        classe = jour[3]
+                        if(groups == ""){
+                            edtHTML += addSimpleCase(row, type, module, classe)
+                        }else{
+                            edtHTML += addSimpleGroupedCase(row, type, groups, module, classe)
+                        }   
+                        
+                    }else{
+                        var Ftypes = [], Fgroups = [], Fmodules = [], Fclasses = []
+                        for(var i = 0; i < seances.length; i++){
+                            jour = seances[i].split("|")
+                            groups = jour[0] != "" ? jour[0].split(";") : ""
+                            type = jour[1]
+                            module = jour[2]
+                            classe = jour[3]
+
+                            Ftypes.push(type)
+                            Fmodules.push(module)
+                            Fclasses.push(classe)
+                            Fgroups.push(groups)
+                            
+                        }
+                        edtHTML += addMultiGroupedCase(row, Ftypes, Fgroups, Fmodules, Fclasses)
+                    }
+                }
+            }
+            edtHTML += "</tr>"
+        }
+
+        document.getElementById("EDT").innerHTML = edtHTML
     }
+
+
+
+        
 })

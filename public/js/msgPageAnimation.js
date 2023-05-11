@@ -280,12 +280,12 @@ function openChatE(hisLogin, module, type){
         }
     })
 
-}
+} 
 
 socket.on("recvMessage", (data) => {
     hisLogin = data[0]
     centent = data[1]
-
+    console.log(data);
     if(document.getElementById("nomProf").innerHTML == hisLogin){
         writeMsg(centent, 1)
     }
