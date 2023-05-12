@@ -405,6 +405,7 @@
     </div>
 
     <script src="/js/main.js" defer></script>
+    <script src="/js/notes.js" defer></script>
 
     <script src="/socket.io/socket.io.js"></script>
     
@@ -565,7 +566,7 @@
                     <div class="moduleNoteSide">
                         <button>Les copies</button>
                         <button onclick="console.log('test')">Les Recours</button>
-                        <button onclick="methode=prompt('Quel été votre methode de calcule:')">La Méthode de calcule</button>
+                        <button onclick="showMethode('scan')">Méthode de calcule</button>
                         <button onclick="socket.emit('saveNotes', [methode, document.getElementsByClassName('${codeMod}')], '${codeMod}')">Sauvegarder les notes du module</button>
                     </div>
                 </div>

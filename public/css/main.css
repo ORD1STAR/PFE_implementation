@@ -1401,12 +1401,14 @@ body {
     position: fixed;
     background-color: var(--background_Light);
     margin: auto;
-    left: 0;
-    right: 0;
-    top: 20%;
-    bottom: 20%;
-    margin-left: auto;
-    margin-right: auto;
+    /* left: 0;
+    right: 0; */
+    /* top: 20%;
+    bottom: 20%; */
+    inset: 0;
+    /* margin-left: auto;
+    margin-right: auto; */
+    height: fit-content;
     width: 450px;
     max-width: 95%;
     z-index: 10;
@@ -1553,12 +1555,11 @@ body {
 }
 
 #resetParamBtn {
-    margin: auto;
     padding: 5px 15px;
     border: none;
     border-radius: var(--common_border_radius);
     background-color: var(--accent_Light_05);
-    margin-top: 20px;
+    margin: 20px auto;
     color: white;
     cursor: pointer;
 }

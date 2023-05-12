@@ -107,6 +107,15 @@ app.get("/notes", (req, res) => {
 app.get("/edt", (req, res) => {
     res.sendFile(path.join(__dirname, 'public/html/EDTpage.html'));
 })
+app.get("/pagePersonelle", (req, res) => {
+    res.sendFile(path.join(__dirname, 'public/html/pagePerso.html'));
+})
+app.get("/Admin_Doleances", (req, res) => {
+    res.sendFile(path.join(__dirname, 'public/html/Admin_Doleances.html'));
+})
+app.get("/listeEtudiants", (req, res) => {
+    res.sendFile(path.join(__dirname, 'public/html/listeEtudiants.html'));
+})
 app.get("/disconnect", (req, res) => {
     res.clearCookie("token");
     res.redirect("/");

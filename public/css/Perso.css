@@ -32,27 +32,36 @@
     margin-top: 15px;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    /* justify-content: center; */
+    min-height: calc(100vh - 90px);
     align-items: center;
+    margin: auto;
+    max-width: calc(100% - 20px);
+    overflow-x: auto;
+    position: relative;
 }
 
 .EDT {
-    background-color: rgba(0,0,0,0.1);
+    background-color: var(--NeutralBackground);
     border-collapse: collapse;
-    width: 90%;
+    flex-grow: 1;
+    width: 100%;
     border-radius: var(--common_border_radius);
 }
 
 .EDT th {
-    background-color: rgba(0,0,0,0.1);
+    background-color: var(--accent_Light);
+    color: white;
+    padding: 3px 0px;
 }
 
 .EDT td {
-    border: 1px solid white;
+    border: 1px solid var(--textColorMidWhite);
     font-size: 16px;
-    width: 100px;
+    min-width: 100px;
     height: 120px;
     position: relative;
+    color: var(--textColorBlack);
 }
 
 .EDT td .EDTcase {
@@ -75,13 +84,14 @@
 
 .EDT .EDTcase .EDT_module {
     /* background-color: rgba(0,0,0,0.1); */
-    background-color: rgb(186, 186, 186);
+    background-color: var(--NeutralBackground);
     width: 95%;
     height: 50px;
     display: flex;
     padding: 3px 1px;
     border-radius: 5px;
     transition: transform 0.2s ease;
+    cursor: default;
 }
 
 .EDT .EDTcase .EDT_module:hover {
@@ -103,7 +113,7 @@
     margin: 0px;
     padding: 5px;
     font-size: 12px;
-    background-color: rgba(0,0,0,0.2);
+    background-color: var(--accent_Lighter_05);
     border-radius: 5px;
     font-weight: bold;
 }
@@ -125,7 +135,7 @@
 
 .EDT .EDTcase .EDT_module .moduleContent .moduleTitleDiv .moduleType {
     padding: 5px;
-    background-color: rgba(0,0,0,0.2);
+    background-color: var(--accent_Lighter_05);
     border-radius: 5px;
     margin: 0px 5px 0px 0px;
 }
@@ -138,7 +148,7 @@
     margin: 0px;
     font-weight: lighter;
     font-size: 14px;
-    color: rgba(0,0,0,0.5);
+    color: var(--textColorMidBlack);
 }
 
 
@@ -171,6 +181,258 @@
     
 }
 
+.EDT th {
+    min-width: 150px;
+}
+
+
+
+
+
+/*   Informations Personnels   */
+
+.profileWrapper {
+    flex-grow: 1;
+    width: 100%;
+    max-width: 700px;
+    display: flex;
+    gap: 2px;
+    border-radius: var(--common_border_radius);
+    overflow: hidden;
+    margin-top: 30px;
+}
+
+.profileLeftSection {
+    background-color: var(--NeutralBackground);
+    min-width: 180px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.bigProfilePicImg {
+    background-color: var(--accent_Light);
+    width: 120px;
+    height: 120px;
+    margin: 20px auto;
+    border-radius: 50%;
+}
+
+.profileLeftSection .profileEditBtn {
+    margin: 10px auto;
+    padding: 8px 10px;
+    border: none;
+    border-radius: var(--common_border_radius);
+    background-color: var(--accent_Lighter_05);
+    color: var(--textColorBlack);
+    border: 1px solid var(--accent_Lighter_05);
+}
+
+
+
+
+
+.profileRightSection {
+    background-color: var(--NeutralBackground);
+    flex-grow: 1;
+    padding: 0px 20px;
+}
+
+.profileRightSection h2 {
+    color: var(--textColorBlack);
+}
+
+.informationElement {
+    display: flex;
+    margin: 10px 30px;
+}
+
+.informationElement p {
+    margin: 0px;
+    color: var(--textColorBlack);
+}
+
+.informationElement p:nth-child(1) {
+    width: 180px;
+    color: var(--textColorMidBlack);
+}
+
+.informationElement p:nth-child(3) {
+    margin: 0px 10px;
+
+}
+
+.EspaceEntreInformations {
+    height: 1px;
+    background-color: var(--accent_Lighter_015);
+    margin: 10px 10px;
+}
+
+.EditInfoBtn {
+    background-color: var(--important);
+    color: white;
+    padding: 7px 12px;
+    border: none;
+    border-radius: var(--common_border_radius);
+    margin: 10px 0px 10px auto;
+    cursor: pointer;
+}
+
+.EditInfoBtn:hover {
+    background-color: var(--important_Low);
+}
+
+.informationElement input {
+    border: none;
+    border-radius: var(--common_border_radius);
+    margin-left: 5px;
+    background-color: var(--NeutralBackground);
+    width: 180px;
+    color: var(--textColorBlack);
+    padding: 3px 5px;
+    display: none;
+}
+
+.informationElement input:focus {
+    outline: none;
+}
+
+.informationElement.onlyInEditMode {
+    display: none;
+}
+
+
+
+
+.informationElement .editModeBtns {
+    display: none;
+}
+
+.profileEditMode .informationElement .EditInfoBtn:nth-child(1) {
+    display: none;
+}
+
+.profileEditMode .informationElement input {
+    display: block;
+}
+
+.profileEditMode .informationElement .infoModifiable {
+    display: none;
+}
+
+.profileEditMode .editModeBtns {
+    display: block;
+    margin: 10px;
+}
+
+.profileEditMode .editModeBtns:nth-child(2) {
+    background-color: transparent;
+    border: 1px solid var(--important);
+    margin-left: auto;
+    color: var(--textColorBlack);
+}
+
+.profileEditMode .editModeBtns:nth-child(2):hover {
+    background-color: var(--important_Low);
+}
+
+.profileEditMode .onlyInEditMode {
+    display: block;
+    display: flex;
+}
+
+
+
+.doleancesTitle {
+    font-size: 20px;
+    width: 100%;
+    max-width: 700px;
+    margin: 40px 0px 10px 0px;
+    color: var(--textColorBlack);
+}
+
+.doleancesContainer {
+    background-color: var(--NeutralBackground);
+    margin: 0px 0px 30px 0px;
+    width: 100%;
+    max-width: 700px;
+    border-radius: var(--common_border_radius);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.doleancesTop {
+    width: 100%;
+    display: flex;
+}
+
+.doleancesTop h3 {
+    color: var(--textColorBlack);
+    margin: 15px 10px;
+}
+
+.doleancesTop input,
+.doleancesTop input:focus {
+    color: var(--textColorBlack);
+    padding: 10px;
+    outline: none;
+    margin: 10px 10px 10px 0px;
+    flex-grow: 1;
+    margin: 10px;
+    border: none;
+    border-radius: var(--common_border_radius);
+    background-color: var(--NeutralBackground);
+}
+
+.doleancesContainer textarea,
+.doleancesContainer textarea:focus {
+    outline: none;
+    background-color: var(--NeutralBackground);
+    border-radius: var(--common_border_radius);
+    color: var(--textColorBlack);
+    flex-grow: 1;
+    border: none;
+    margin: 0px 10px;
+    padding: 10px;
+}
+
+.doleancesContainer button {
+    background-color: var(--important);
+    border: none;
+    border-radius: var(--common_border_radius);
+    padding: 5px 15px;
+    color: white;
+    margin: 10px;
+    margin-left: auto;
+    font-size: 16px;
+}
+
+.doleancesContainer button:hover {
+    background-color: var(--important_interacted);
+}
+
+.doleancesTop input::placeholder,
+.doleancesContainer textarea::placeholder {
+    color: var(--textColorMidBlack);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -200,5 +462,66 @@
         padding: 0px;
         padding-left: 10px;
     }
+
+    
+
+    .EDT th:first-child {
+        min-width: 50px;
+    }
+
+
+
+
+    .profileWrapper {
+        flex-direction: column-reverse;
+    }
+
+    .profileLeftSection {
+        display: flex;
+        flex-direction: row;
+        /* align-items: center; */
+    }
+    
+    .bigProfilePicImg {
+        width: 60px;
+        height: 60px;
+        margin: 10px auto;
+    }
+    
+    .profileLeftSection .profileEditBtn {
+        padding: 8px 20px;
+    }
+
+
+    
+    .informationElement {
+        display: flex;
+        /* flex-direction: column; */
+        margin: 5px 10px;
+        flex-wrap: wrap;
+    }
+    
+    .informationElement p:nth-child(1) {
+        max-width: 100px;
+    }
+
+    .informationElement p:nth-child(2) {
+        display: none;
+    }
+
+    
+    .informationElement p:nth-child(3) {
+        margin: 0px 10px;
+        max-width: 180px;
+    
+    }
+    
+    .EspaceEntreInformations {
+        height: 1px;
+        background-color: var(--accent_Lighter_01);
+        margin: 10px 10px;
+    }
+
+   
 
 }
