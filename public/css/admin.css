@@ -1,0 +1,283 @@
+
+.doleance {
+    position: relative;
+    width: 100%;
+    max-width: 700px;
+    background-color: var(--NeutralBackground);
+    border-radius: var(--common_border_radius);
+    margin-bottom: 20px;
+}
+
+.doleanceTop {
+    display: flex;
+    width: 100%;
+}
+
+.doleanceTop h3 {
+    color: var(--textColorBlack);
+    margin: 15px 10px;
+}
+
+.doleanceTop p {
+    color: var(--textColorBlack);
+    flex-grow: 1;
+}
+
+.doleanceCore {
+    background-color: var(--NeutralBackground);
+    border-radius: var(--common_border_radius);
+    margin: 0px 10px;
+    padding: 5px 10px;
+}
+
+.doleanceCore p {
+    margin: 5px;
+    color: var(--textColorPureBlack);
+}
+
+.doleanceInformations {
+    background-color: var(--NeutralBackground);
+    border-radius: var(--common_border_radius);
+    flex-grow: 1;
+    margin: 10px;
+    padding: 5px;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.doleanceInformations .doleanceInformationElement {
+    display: flex;
+    flex-wrap: wrap;
+    background-color: var(--NeutralBackground);
+    border-radius: var(--common_border_radius);
+    margin: 5px;
+    /* flex-grow: 1; */
+}
+
+.doleanceInformationElement p {
+    margin: 5px;
+    color: var(--textColorBlack);
+    font-size: 14px;
+}
+
+.doleance button {
+    position: absolute;
+    border: none;
+    border-radius: var(--common_border_radius);
+    background-color: var(--important);
+    cursor: pointer;
+    padding: 5px 8px;
+    color: white;
+    margin: 10px;
+    top: 0px;
+    right: 10px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.selectSectionWrapper {
+    margin-top: 20px;
+    /* width: 100%; */
+    max-width: 700px;
+    background-color: var(--NeutralBackground);
+    border-radius: var(--common_border_radius);
+    display: flex;
+    align-items: center;
+}
+
+.selectSectionWrapper h3 {
+    color: var(--textColorBlack);
+    margin: 10px;
+}
+
+.selectSectionWrapper select,
+.selectSectionWrapper select:focus {
+    outline: none;
+    border: none;
+    cursor: pointer;
+    border-radius: var(--common_border_radius);
+    background-color: var(--accent_Lighter_05);
+    padding: 7px 15px;
+    color: var(--textColorBlack);
+    margin: 15px 0px;
+}
+
+.selectSectionWrapper .select-selected {
+    background-color: red;
+}
+
+.selectSectionWrapper button {
+    background-color: var(--important);
+    border: none;
+    border-radius: var(--common_border_radius);
+    padding: 7px 15px;
+    font-weight: bold;
+    margin: 10px 10px 10px 20px;
+    color: white;
+}
+
+.selectSectionWrapper button:hover {
+    background-color: var(--important_interacted);
+}
+
+
+
+
+
+
+.listeContainer {
+    width: 100%;
+    max-width: 700px;
+    border-radius: var(--common_border_radius);
+    background-color: var(--NeutralBackground);
+    margin: 20px 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.etudiantElement {
+    width: calc(100% - 20px);
+    margin: 10px;
+    border-radius: var(--common_border_radius);
+    background-color: var(--NeutralBackground);
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.etudiantElement .profilePicDiv {
+    background-color: var(--accent_Lighter_05);
+    min-width: 50px;
+    min-height: 50px;
+    margin: 10px;
+    border-radius: 50%;
+
+}
+
+.etudiantElement .etudiantInformations {
+    display: flex;
+    flex-grow: 1;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+}
+
+.etudiantInformaionElement {
+    margin: 10px;
+    flex-grow: 1;
+}
+
+.etudiantInformaionElement h4 {
+    font-weight: 100;
+    color: var(--textColorMidBlack);
+    margin: 5px;
+}
+
+.etudiantInformaionElement p {
+    margin: 0px;
+    width: fit-content;
+    color: var(--textColorBlack);
+}
+
+.EtudiantOption {
+    width: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    display: none;
+}
+
+.EtudiantOption button {
+    border: none;
+    /* margin-right: 5px; */
+    border-radius: var(--common_border_radius);
+    background-color: var(--NeutralBackground);
+    color: var(--textColorMidBlack);
+    cursor: pointer;
+    padding: 5px 8px;
+    margin: 5px;
+    flex-grow: 1;
+}
+
+.EtudiantOption button:hover {
+    background-color: var(--important_interacted);
+    color: white;
+}
+
+
+
+
+
+
+
+
+.AdminView .EtudiantOption {
+    display: flex;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@media only screen and (max-width: 650px) {
+
+
+    .etudiantInformations {
+        flex-wrap: nowrap;
+        flex-direction: column;
+    }
+
+    .etudiantInformaionElement {
+        display: flex;
+        margin: 5px;
+        height: 15px;
+    }
+
+    .etudiantInformaionElement:nth-child(3) {
+        margin: 1px 0px 10px 5px;
+    }
+
+    .etudiantInformaionElement h4 {
+        margin: 0px;
+        font-size: 14px;
+        width: 60px;
+    }
+
+    .etudiantInformaionElement:nth-child(1) {
+        font-weight: bold;
+        font-size: 18px;
+        margin: 10px 0px 10px 5px;
+    }
+
+  
+
+
+
+}
+
+
+
+

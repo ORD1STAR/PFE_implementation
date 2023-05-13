@@ -1,19 +1,38 @@
 
 .mainWrapper {
-    /* flex-direction: row;
+    display: flex;
     flex-wrap: wrap;
-    align-items: flex-start;
-    justify-content: flex-start; */
-    display: block;
+    gap: 10px;
+    max-width: calc(100% - 20px);
+    margin-left: 10px;
+    min-height: calc(100vh - 90px);
+    flex-grow: 1;
+    flex-direction: row;
+    align-content: flex-start;
+    justify-items: flex-start;
+    justify-content: center;
+    background-color: var(--background_Light);
+    /* overflow-y: auto; */
 }
 
+.mainWrapper ::-webkit-scrollbar {
+    width: 5px;
+}
+
+.mainWrapper ::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.1);
+  }
+
 .moduleNoteElement {
-    background-color: rgba(0, 0, 0, 0.1);
-    max-width: 850px;
+    position: relative;
+    background-color: var(--NeutralBackground);
     display: flex;
-    margin: 10px;
     border-radius: var(--common_border_radius);
     overflow: hidden;
+    margin: 0px;
+    flex-grow: 1;
+    max-width: 500px;
+    /* margin: 10px; */
 }
 
 
@@ -23,7 +42,7 @@
 
 
 .moduleNoteMain {
-    flex-grow: 1;
+    flex-grow: 2;
     position: relative;
 }
 
@@ -35,10 +54,11 @@
 .moduleNoteMain .moduleTitleDiv .moduleTitle {
     margin: 10px 5px 10px 20px;
     font-size: 24px;
+    color: var(--textColorBlack);
 }
 
 .moduleNoteMain .moduleTitleDiv p {
-    color: rgba(0, 0, 0, 0.5);
+    color: var(--textColorMidBlack);
     margin: 5px 0px 0px 10px;
     font-size: 14px;
 }
@@ -55,30 +75,31 @@
 
 .moduleNoteMain .noteElement p:nth-child(1) {
     width: 200px;
+    color: var(--textColorPureBlack);
 }
 .moduleNoteMain .noteElement p:nth-child(2) {
     font-weight: bold;
     font-size: 18px;
+    color: var(--important);
 }
 .moduleNoteMain .noteElement p:nth-child(3) {
     margin: 5px 0px 0px 5px;
-    color: rgba(0, 0, 0, 0.5);
+    color: var(--textColorMidBlack);
     font-size: 12px;
 }
 .moduleNoteMain .noteElement p:nth-child(4) {
-    margin: 0px 0px 0px 20px;
-    background-color: rgba(0, 0, 0, 0.1);
+    margin: 0px 10px 0px 10px;
+    background-color: var(--accent_Lighter);
     border-radius: 10px;
     padding: 2px 10px;
 }
 
 .moduleNoteMain .noteElement:last-of-type {
-    /*background-color: red;*/
     margin-bottom: 50px;
 }
 
 .moduleNoteMain .moduleMoyenneDiv {
-    background-color: rgba(0, 0, 0, 0.1);
+    background-color: var(--important);
     border-radius: var(--common_border_radius);
     margin: 10px;
     position: absolute;
@@ -90,6 +111,7 @@
 }
 
 .moduleNoteMain .moduleMoyenneDiv h3 {
+    color: White;
     margin: 0px;
     font-size: 18px;
     font-weight: 400;
@@ -110,8 +132,9 @@
 
 
 .moduleNoteSide {
-    width: 200px;
-    border-left: 1px solid white;
+    /* width: 160px; */
+    flex-grow: 1;
+    border-left: 1px solid var(--background_Light);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -119,23 +142,52 @@
 }
 
 .moduleNoteSide button {
-    background-color: rgba(0, 0, 0, 0.05);
+    background-color: var(--NeutralBackground);
+    color: var(--textColorBlack);
     text-align: left;
     border: none;
     width: 90%;
     border-radius: var(--common_border_radius);
     padding: 10px;
     margin: 3px;
+    cursor: pointer;
 }
 
 .moduleNoteSide p {
     font-size: 12px;
-    color: rgba(0, 0, 0, 0.5);
+    color: var(--textColorMidBlack);
     justify-self: flex-end;
     /* margin: 5px 0px; */
     margin-top: auto;
 }
 
 .moduleNoteSide button:hover {
-    background-color: rgba(0, 0, 0, 0.1);
+    background-color: var(--accent_Lighter_05);
+}
+
+
+
+
+
+
+@media only screen and (max-width: 650px) {
+    .moduleNoteElement {
+        flex-direction: column;
+    }
+    
+    .moduleNoteElement .moduleNoteSide {
+        flex-direction: row;
+    }
+
+    .moduleNoteElement button {
+        width: fit-content;
+        flex-grow: 1;
+        margin: 0px 5px 5px 5px;
+    }
+
+    .moduleNoteSide p {
+        position: absolute;
+        top: 5px;
+        right: 10px;
+    }
 }
