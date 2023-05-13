@@ -11,35 +11,27 @@
 <body>
     <div class="leftMenu" id="leftMenu">
         <div class="titleDiv" onclick="location.href = '/home'">
-            <h1 id="Section">GTR L3</h1>
+            <h1 id="Section"></h1>
         </div>
         <h3>Menu :</h3>
 
         <div class="moduleMenu" id="moduleMenu">
             <div class="moduleElement" onclick="location.href = '/edt'">
                 <p>Emploi du temps</p>
-                <div class="notifDiv"></div>
             </div>
             <div class="moduleElement" onclick="location.href = '/msg'">
                 <p>Messagerie</p>
-                <div class="notifDiv"></div>
             </div>
             <div class="moduleElement selected_module" onclick="location.href = '/files'">
                 <p>Documents</p>
-                <div class="notifDiv"></div>
             </div>
             <div class="moduleElement" onclick="location.href = '/notes'">
                 <p>Notes</p>
-                <div class="notifDiv"></div>
-            </div>
-            <div class="moduleElement">
-                <p>Calendier</p>
-                <div class="notifDiv"></div>
             </div>
             <div class="moduleElement">
                 <p>Informations Personnels</p>
             </div>
-            <div class="moduleElement">
+            <div class="moduleElement"  onclick="downloadFile('USTHB_Plan.pdf')">
                 <p>USTHB map</p>
             </div>
            
@@ -112,10 +104,10 @@
 
     <div class="rightPart">
         <div class="profileDiv">
-            <img class="profilePicDiv" src="/icons/default_user.png">
+            <img class="profilePicDiv" id="pdp" src="/icons/default_user.png">
             <div class="profileTextDiv">
-                <p id="nom">Hannoun</p>
-                <p id="prenom">Amar Amine</p>
+                <p id="nom"></p>
+                <p id="prenom"></p>
                 <button id="profileSubMenuBtn">Mon compte</button>
             </div>
             
@@ -162,9 +154,15 @@
 
         socket.on('connectedEtu', (data) => { //get the data from the server with the acknoledgement
             login = data[0]["login"]            //get the login from the data
-            prenom = login.split('.')[0]        //get the first part of the login (the prenom)
-            nom = login.split('.')[1]           //get the second part of the login (the nom)
-            
+            prenom = data[0]["prenom"]        //get the first part of the login (the prenom)
+            nom = data[0]["nom"]              //get the second part of the login (the nom)
+            pdp = data[0]["photo"]
+            if(pdp.byteLength != 0){                    //if the user has a profile picture
+                pdpB = new Blob([pdp])
+                url = URL.createObjectURL(pdpB)
+
+                document.getElementById("pdp").src = url
+            }
             sec = "L" + data[0]["niveau"] + " " + data[0]["specialite"] //get the section (LX spé)
             idSec = data[0]["idSec"]
             
@@ -202,9 +200,16 @@
 
         socket.on('connectedEns', (data) => { //get the data from the server with the acknoledgement
             login = data[0]["login"]            //get the login from the data
-            prenom = login.split('.')[0]        //get the first part of the login (the prenom)
-            nom = login.split('.')[1]           //get the second part of the login (the nom)
+            prenom = data[0]["prenom"]        //get the first part of the login (the prenom)
+            nom = data[0]["nom"]              //get the second part of the login (the nom)
             
+            pdp = data[0]["photo"]
+            if(pdp.byteLength != 0){                    //if the user has a profile picture
+                pdpB = new Blob([pdp])
+                url = URL.createObjectURL(pdpB)
+
+                document.getElementById("pdp").src = url
+            }
             
             document.getElementById("nom").innerHTML = nom          //replace the nom with the right one
             document.getElementById("prenom").innerHTML = prenom    //replace the prenom with the right one

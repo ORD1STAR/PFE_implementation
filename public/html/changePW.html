@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/login.css">
+    <title>PFE | Changer le mot de passe</title>
+</head>
+<body>
+    <h2 align="center">changer le mot de passe</h2>
+    <div class="conainer">
+        <form action="">
+            <label for="mdp">Nouveau mot de passe</label>    
+            <input type="text" name="mdp" id="mdp">
+
+            <input type="submit" value="Recuperer mon mot de passe">
+        </form>
+        
+    </div>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const myParam = urlParams.get('error');
+        console.log(myParam);
+        if( myParam != null && myParam == "true"){
+            document.getElementById("hidden").style.display = "block";
+        }
+    </script>
+    
+</body>
+</html>

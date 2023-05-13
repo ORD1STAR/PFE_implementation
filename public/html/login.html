@@ -4,11 +4,11 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/login.css">
+    <link rel="stylesheet" href="/css/login.css">
     <title>PFE | Login page</title>
 </head>
 <body>
-
+    <h2 align="center">Log In</h2>
     <div class="conainer">
         <form action="">
             <label for="username">identifiant :</label>    
@@ -21,18 +21,23 @@
         </form>
         
         <div class="subLogin">
-            <a href="#">Mot de passe oublié</a>
-            <a href="#">Créer un compte</a>
+            <a href="/password">Mot de passe oublié</a>
+            <a href="/signin">Créer un compte</a>
         </div>
     </div>
 
+    <script src="/socket.io/socket.io.js"></script>
     <script>
+        socket = io()
         const urlParams = new URLSearchParams(window.location.search);
         const myParam = urlParams.get('error');
         console.log(myParam);
         if( myParam != null && myParam == "true"){
             document.getElementById("hidden").style.display = "block";
         }
+        socket.on("addCompte", (error)=>{
+            document.getElementById("hidden").innerHTML = "Votre mot de passe etais trop faible. Il devait contenir au moins 8 caractères, une majuscule, une minuscule, un chiffre et ne doit surtout pas contenir votre nom ou prenom";
+        })
     </script>
     
 </body>

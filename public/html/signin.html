@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/login.css">
+    <title>PFE | SignIn page</title>
+</head>
+<body>
+    <h2 align="center">SignIn</h2>
+    <div class="conainer">
+        <form action="">
+            <label for="nom">Nom :</label>    
+            <input type="text" name="nom" id="nom" required>
+            <label for="prenom">Prenom :</label>    
+            <input type="text" name="prenom" id="prenom" required>
+            <label for="mail">Email :</label>    
+            <input type="text" name="mail" id="mail" required>
+            <label for="mot de passe">mot de passe :</label>   
+            <input type="password" name="password" id="password" required>
+            <table>
+                <tr>
+                    <td><p id="8c">❌Au moins 8 caracteres</p></td>
+                    <td><p id="chiffre" style="border-left: 1px solid black;">❌Un Chiffre</p></td>
+                </tr>
+                <tr>
+                    <td><p id="maj">❌Une MAJUSCULE</p></td>
+                    <td><p id="min" style="border-left: 1px solid black;">❌Une minuscule</p></td>
+                </tr>
+                <tr>
+                    <td><p id="cnom">❌Ne contiens pas votre nom</p></td>
+                    <td><p id="cpnom" style="border-left: 1px solid black;">❌Ne  contiens pas votre prénom</p></td>
+                </tr>
+            </table>
+            
+            <label for="matri">Matricule :</label>    
+            <input type="text" name="matri" id="matri" required>
+            <label for="grp">Groupe :</label>    
+            <input type="text" name="grp" id="grp" required>
+            <label for="pdp">Photo de profile :</label>    
+            <input type="file" name="pdp" id="pdp" accept="image/*">
+            <label for="section">Section :</label>    
+            <select name="section" id="section" required>
+                <option value="2">L2 GTR</option>
+                <option value="1">L3 GTR</option>
+                <option value="3">L3 ISIL</option>
+                <option value="4">L3 ACAD</option>
+            </select>
+            <label for="role">vous etes un :</label>    
+            <select name="role" id="role" required>
+                <option value="1">Etudiant</option>
+                <option value="2">Enseignant</option>
+            </select>
+            
+            
+            <p align="center" id="error" style="margin:0;padding:0;color:rgba(0, 0, 0, 0);font-weight: bold;">Votre mot de passe est faible</p>
+            <input id="sbtn" type="submit" value="créer le compte">
+        </form>
+        
+        
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        var good = [false, false, false, false, false, false]
+
+        document.getElementById("sbtn").addEventListener("click", add)
+
+        socket = io()
+        function add(e){
+            nom = document.getElementById("nom")
+            prenom = document.getElementById("prenom")
+            section = document.getElementById("section")
+            mail = document.getElementById("mail")
+            matri = document.getElementById("matri")
+            grp = document.getElementById("grp")
+            role = document.getElementById("role")
+            password = document.getElementById("password")
+            pdp = document.getElementById("pdp")
+            if(good.includes(false)){
+                document.getElementById("error").style.color = "red"
+                e.preventDefault()
+            }
+            socket.emit("addCompte", [nom.value, prenom.value, section.value, mail.value, matri.value, grp.value, role.value, password.value, pdp.files[0]])
+        }
+
+        document.querySelectorAll("input").forEach(function(element){
+            element.addEventListener("change", check);
+            element.addEventListener("keyup", check);
+        })
+
+
+        function check(){
+            nom = document.getElementById("nom").value
+            prenom = document.getElementById("prenom").value
+            password = document.getElementById("password")
+            
+            if(password.value.length >= 8){
+                document.getElementById("8c").style.color = "green"
+                document.getElementById("8c").innerHTML = "✔️Au moins 8 caracteres"
+                good[0] = true
+            }else{
+                document.getElementById("8c").style.color = "red"
+                document.getElementById("8c").innerHTML = "❌Au moins 8 caracteres"
+                good[0] = false
+            }
+            if(password.value.match(/[0-9]/)){
+                document.getElementById("chiffre").style.color = "green"
+                document.getElementById("chiffre").innerHTML = "✔️Un Chiffre"
+                good[1] = true
+            }else{
+                document.getElementById("chiffre").style.color = "red"
+                document.getElementById("chiffre").innerHTML = "❌Un Chiffre"
+                good[1] = false
+            }
+            if(password.value.match(/[A-Z]/)){
+                document.getElementById("maj").style.color = "green"
+                document.getElementById("maj").innerHTML = "✔️Une MAJUSCULE"
+                good[2] = true
+            }else{
+                document.getElementById("maj").style.color = "red"
+                document.getElementById("maj").innerHTML = "❌Une MAJUSCULE"
+                good[2] = false
+            }
+            if(password.value.match(/[a-z]/)){
+                document.getElementById("min").style.color = "green"
+                document.getElementById("min").innerHTML = "✔️Une minuscule"
+                good[3] = true
+            }else{
+                document.getElementById("min").style.color = "red"
+                document.getElementById("min").innerHTML = "❌Une minuscule"
+                good[3] = false
+            }
+            if(password.value.includes(nom)){
+                document.getElementById("cnom").style.color = "red"
+                document.getElementById("cnom").innerHTML = "❌Ne contiens pas votre nom"
+                good[4] = false
+            }else{
+                document.getElementById("cnom").style.color = "green"
+                document.getElementById("cnom").innerHTML = "✔️Ne contiens pas votre nom"
+                good[4] = true
+            }
+            if(password.value.includes(prenom)){
+                document.getElementById("cpnom").style.color = "red"
+                document.getElementById("cpnom").innerHTML = "❌Ne contiens pas votre prénom"
+                good[5] = false
+            }else{
+                document.getElementById("cpnom").style.color = "green"
+                document.getElementById("cpnom").innerHTML = "✔️Ne contiens pas votre prénom"
+                good[5] = true
+            }
+            if(good.includes(false)){
+                password.style.border = "1px solid red"
+            }else{
+                password.style.border = "1px solid green"
+                //make that transparent
+                document.getElementById("error").style.color = "rgba(0, 0, 0, 0)"
+            }
+        }
+    </script>
+    
+</body>
+</html>

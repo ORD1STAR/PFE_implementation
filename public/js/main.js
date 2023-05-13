@@ -1,6 +1,19 @@
+function downloadFile(path) {
+    socket.emit("downloadP", path)
+    socket.on("UploadP", (data) => {
+        fileName = data[1]
+        fileb = new Blob([data[0]], {type: "application/txt"})
+        const fileUrl = URL.createObjectURL(fileb);
+        const link = document.createElement('a');
+        link.href = fileUrl;
+        link.setAttribute('download', fileName);
+        link.click()
+    })
+}
+
 function setCookie(name, value, days) {
     document.cookie = `${name}=${value}; path=/`;
-  }
+}
   
 function addOrUpdateCookie(name, value) {
   const cookies = document.cookie.split('; ');
@@ -18,8 +31,6 @@ function addOrUpdateCookie(name, value) {
   }
 }
   
-  
-
 
 var postsVar
 filtresVar = [true, true, true]
@@ -312,36 +323,52 @@ function refrechFiles(){
     
 }
 
-function EnvoyerLePoste() { 
+function EnvoyerLePoste() {
     titre = document.getElementById("postTitle").value
     contenu = document.getElementById("postContent").value
-    contenu = "##" + titre + "##" + contenu
-    files = document.getElementById("fileInput").files
-    type = document.getElementsByClassName("selected_module")[0].id.split(" ")[2]
-    section = document.querySelectorAll('.selected_module')[0].innerHTML.split("| ")[0].replace("<p>", "");
-    secID = document.querySelectorAll('.selected_module')[0].id.split(" ")[0].replace("mod", "")
-    codeMod = document.querySelectorAll('.selected_module')[0].id.split(" ")[1]
-    module = document.querySelectorAll('.selected_module')[0].innerHTML.split("| ")[1].replace('</p><div class="notifDiv"></div>', "");
-    filesNames = [];
-    filesLens = [];
-    for(file of files){
-        filesNames.push(file.name)
-        filesLens.push(file.size)
-    }
-    token = ""
-    cookies = document.cookie.split('; ')
-    cookies.forEach(function(c){
-        if(c.startsWith('token=')){
-            token = c.split('=')[1]
+    if(titre != "" && contenu != ""){
+        contenu = "##" + titre + "##" + contenu
+        files = document.getElementById("fileInput").files
+        type = document.getElementsByClassName("selected_module")[0].id.split(" ")[2]
+        section = document.querySelectorAll('.selected_module')[0].innerHTML.split("| ")[0].replace("<p>", "");
+        secID = document.querySelectorAll('.selected_module')[0].id.split(" ")[0].replace("mod", "")
+        codeMod = document.querySelectorAll('.selected_module')[0].id.split(" ")[1]
+        module = document.querySelectorAll('.selected_module')[0].innerHTML.split("| ")[1].replace('</p><div class="notifDiv"></div>', "").replace("</p>", "");
+        filesNames = [];
+        filesLens = [];
+        for(file of files){
+            filesNames.push(file.name)
+            filesLens.push(file.size)
         }
-    })
-    socket.emit("setPost", [token, window.ensID, contenu, codeMod, files, filesLens, filesNames, comvB, travB, type])
-    document.getElementById("postTitle").value = ""
-    document.getElementById("postContent").value = ""
-    document.getElementById("fileInput").value = ""
-    getPostsE(module)
+        token = ""
+        cookies = document.cookie.split('; ')
+        cookies.forEach(function(c){
+            if(c.startsWith('token=')){
+                token = c.split('=')[1]
+            }
+        })
+        socket.emit("setPost", [token, window.ensID, contenu, codeMod, files, filesLens, filesNames, comvB, travB, type])
+        document.getElementById("postTitle").value = ""
+        document.getElementById("postContent").value = ""
+        document.getElementById("fileInput").value = ""
+        getPostsE(module)
+        socket.emit("newPost", [secID, module])
+    }
 }
-
+socket.on("newPost", (module) => {
+    selected = document.getElementsByClassName("selected_module")[0].children[0].innerHTML
+    if(selected == module || selected == "General"){
+        getPosts(selected) 
+    }else{
+        Array.from(document.getElementsByClassName("moduleElement")).forEach((e) => {
+            if(e.children[0].innerHTML == module){
+                e.appendChild(document.createElement("div")).className = "notifDiv"
+            }
+        })
+        
+    }
+    
+})
 function download(id, name) {
     socket.emit("download", [id, name])
     socket.on("Upload", (data) => {
@@ -355,6 +382,7 @@ function download(id, name) {
 }
 function writePoste(module, type, prof, content, postID, lens, names, date, comm, trav) {
     filtres = Array.from(document.querySelectorAll(".filterSelected"));
+    let [titre, contenu] = content.split("##").filter(Boolean)
     for(var i = 0; i < filtres.length; i++) {
         filtres[i] = filtres[i].innerHTML.toLowerCase()
     }
@@ -362,7 +390,7 @@ function writePoste(module, type, prof, content, postID, lens, names, date, comm
     if(filtres.includes(type)){
         pjsHTML = ""
         extended = ""
-        commSec = comm == 1 ? `<button onclick="showCommentSection(${postID})" class='commentSectionBtn'>Commenter</button>` : ""
+        commSec = comm == 1 ? `<button onclick="showCommentSection(${postID}, '${titre}')" class='commentSectionBtn'>Commenter</button>` : ""
         travSec = trav == 1 ? "<button class='submitTravailBtn'>Remettre le travail demandé</button>" : ""
         if(lens.split("/").length > 0 && lens != ""){
             lens = lens.split("/")
@@ -399,7 +427,6 @@ function writePoste(module, type, prof, content, postID, lens, names, date, comm
         dateA = date.split("T")
         dateA[1] = dateA[1].split(":")
         date = dateA[0] + " " + dateA[1][0] + ":" + dateA[1][1]
-        let [titre, contenu] = content.split("##").filter(Boolean)
         postsDiv.innerHTML += `
         <div class="postElement">
         
@@ -579,9 +606,10 @@ function getPosts(module){
 }
 
 function writePosteE(module, type, prof, content, postID, lens, names, date, comm, trav) {
+    let [titre, contenu] = content.split("##").filter(Boolean)
     pjsHTML = ""
     extended = ""
-    commSec = comm == 1 ? `<button onclick="showCommentSection(${postID})" class='commentSectionBtn'>Commenter</button>"` : ""
+    commSec = comm == 1 ? `<button onclick="showCommentSection(${postID}, '${titre}')" class='commentSectionBtn'>Commenter</button>"` : ""
     travSec = trav == 1 ? "<button class='travSectionBtn'>Remettre le travail demandé</button>" : ""
     if(lens.split("/").length > 0 && lens != ""){
         lens = lens.split("/")
@@ -616,7 +644,6 @@ function writePosteE(module, type, prof, content, postID, lens, names, date, com
     dateA = date.split("T")
     dateA[1] = dateA[1].split(":")
     date = dateA[0] + " " + dateA[1][0] + ":" + dateA[1][1]
-    let [titre, contenu] = content.split("##").filter(Boolean)
     postsDiv.innerHTML += `
     <div class="postElement">
     
@@ -665,19 +692,13 @@ function writePosteE(module, type, prof, content, postID, lens, names, date, com
     comv = document.getElementById("comv")
     comv.addEventListener('click', (e) => {
         e.preventDefault();
-        comv.innerHTML = comv.innerHTML == "Commentairer (X)" ? "Commentairer (V)" : "Commentairer (X)"
+        comv.innerHTML = comv.innerHTML == "Commentairer ❌" ? "Commentairer <b style='color:green;'>✔</b>" : "Commentairer ❌"
         comvB = comvB ? false : true
-    })
-    pjv= document.getElementById("pjv")
-    pjv.addEventListener('click', (e) => {
-        e.preventDefault();
-        pjv.innerHTML = pjv.innerHTML == "Piéces jointes (X)" ? "Piéces jointes (V)" : "Piéces jointes (X)"
-        pjvB = pjvB ? false : true
     })
     trav= document.getElementById("trav")
     trav.addEventListener('click', (e) => {
         e.preventDefault();
-        trav.innerHTML = trav.innerHTML == "Travail a remettre (X)" ? "Travail a remettre (V)" : "Travail a remettre (X)"
+        trav.innerHTML = trav.innerHTML == "Travail a remettre ❌" ? "Travail a remettre <b style='color:green;'>✔</b>" : "Travail a remettre ❌"
         travB = travB ? false : true
     })
         // Drive, messagerie, Notes btns changing place when scroll
@@ -757,9 +778,8 @@ function setPostsE(posts){
             </div>
         </div>
         <div class="postBottomDiv">
-            <button id="comv" class="profSideOption">Commentairer (X)</button>
-            <button id="pjv" class="profSideOption">Piéces jointes (X)</button>
-            <button id="trav" class="profSideOption">Travail a remettre (X)</button>
+            <button id="comv" class="profSideOption">Commentairer ❌</button>
+            <button id="trav" class="profSideOption">Travail a remettre ❌</button>
             <button class="profSideOption" onclick="EnvoyerLePoste()">Envoyer</button>
         </div>
     </div>

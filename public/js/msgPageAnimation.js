@@ -1,4 +1,6 @@
 
+var picURL
+
 // module menus animation
 // const moduleElements = document.querySelectorAll(".TPTDmoduleSection")
 // 
@@ -50,9 +52,10 @@ function writeMsg(msgToWrite, owner) {
         if (owner == 0) {msgLineDiv.classList.add("ownMsgLine")}
         msgContainerDiv.appendChild(msgLineDiv)
         
-        // creating the icon
-        msgIcon = document.createElement("div")
+        
+        msgIcon = document.createElement("img")
         msgIcon.classList.add("msgerIcon")
+        msgIcon.src = picURL
         msgLineDiv.appendChild(msgIcon)
         
         // creating the msg Text Div
@@ -104,7 +107,7 @@ sendBtn.addEventListener("click", () => {
             token = c.split('=')[1]
         }
     })
-    socket.emit("addMessage", [token, document.getElementById("discutID").classList[0], textEntry, document.getElementById("nomProf").innerHTML])
+    socket.emit("addMessage", [token, document.getElementById("discutID").classList[0], textEntry, document.getElementById("nomProf").classList[0]])
 
     writeMsg(textEntry, 0)
 
@@ -171,11 +174,16 @@ function openChat(login, module, type){
         })
         document.getElementById("P").classList.add("selected_TPTD")
     }
-
-    socket.emit("getChat", [token, login])
-    socket.on("getChat", (data) => {
+    function oc(data){
         if(data[0] != "empty"){
             discutID = data[0][0]["discussionID"]
+            hisPic = data[2]
+            if(hisPic.byteLength != 0){                    //if the user has a profile picture
+                pdpB = new Blob([hisPic])
+                picURL = URL.createObjectURL(pdpB)
+            } else {
+                picURL = "/icons/default_user.png"
+            }
             document.getElementById("discutID").classList = discutID
             let msgContainerDiv = document.getElementById("msgContainer");
             
@@ -186,7 +194,9 @@ function openChat(login, module, type){
                 </div>
             </div>
             <div class="msgLineVide"></div>`
-            document.getElementById("nomProf").innerHTML = login
+            document.getElementById("nomProf").className = ""
+            document.getElementById("nomProf").classList.add(login)
+            document.getElementById("nomProf").innerHTML = data[3]
             document.getElementById("moduleName").innerHTML = module
             for(var message of data[0]){
                 if(message["sender"] == data[1]){
@@ -196,10 +206,18 @@ function openChat(login, module, type){
                 }
             }
         }else{
+            hisPic = data[2]
+            if(hisPic.byteLength != 0){                    //if the user has a profile picture
+                pdpB = new Blob([hisPic])
+                picURL = URL.createObjectURL(pdpB)
+            } else {
+                picURL = "/icons/default_user.png"
+            }
             document.getElementById("discutID").classList = data[1]
             let msgContainerDiv = document.getElementById("msgContainer");
-
-            document.getElementById("nomProf").innerHTML = login
+            document.getElementById("nomProf").className = ""
+            document.getElementById("nomProf").classList.add(login)
+            document.getElementById("nomProf").innerHTML = data[3]
             document.getElementById("moduleName").innerHTML = module
             msgContainerDiv.innerHTML = `
             <div class="msgLine firstMsg">
@@ -209,9 +227,13 @@ function openChat(login, module, type){
             </div>
             <div class="msgLineVide"></div>`
         }
-    })
+        socket.off("getChat", oc)
+    }
+    socket.emit("getChat", [token, login])
+    socket.on("getChat", oc)
 
 }
+
 function openChatE(hisLogin, module, type){
     myToken = ""
     cookies = document.cookie.split('; ')
@@ -243,10 +265,16 @@ function openChatE(hisLogin, module, type){
         document.getElementById("P").classList.add("selected_TPTD")
     }
 
-    socket.emit("getChat", [myToken, hisLogin])
-    socket.on("getChat", (data) => {
+    function oce(data){
         if(data[0] != "empty"){
             discutID = data[0][0]["discussionID"]
+            hisPic = data[2]
+            if(hisPic.byteLength != 0){                    //if the user has a profile picture
+                pdpB = new Blob([hisPic])
+                picURL = URL.createObjectURL(pdpB)
+            } else {
+                picURL = "/icons/default_user.png"
+            }
             document.getElementById("discutID").classList = discutID
             let msgContainerDiv = document.getElementById("msgContainer");
             
@@ -257,7 +285,9 @@ function openChatE(hisLogin, module, type){
                 </div>
             </div>
             <div class="msgLineVide"></div>`
-            document.getElementById("nomProf").innerHTML = hisLogin
+            document.getElementById("nomProf").className = ""
+            document.getElementById("nomProf").classList.add(hisLogin)
+            document.getElementById("nomProf").innerHTML = data[3]
             document.getElementById("moduleName").innerHTML = module
             for(var message of data[0]){
                 if(message["sender"] == data[1]){
@@ -267,9 +297,19 @@ function openChatE(hisLogin, module, type){
                 }
             }
         }else{
+            hisPic = data[2]
+            if(hisPic.byteLength != 0){                    //if the user has a profile picture
+                pdpB = new Blob([hisPic])
+                picURL = URL.createObjectURL(pdpB)
+            } else {
+                picURL = "/icons/default_user.png"
+            }
             document.getElementById("discutID").classList = data[1]
             let msgContainerDiv = document.getElementById("msgContainer");
-
+            document.getElementById("nomProf").className = ""
+            document.getElementById("nomProf").classList.add(hisLogin)
+            document.getElementById("nomProf").innerHTML = data[3]
+            document.getElementById("moduleName").innerHTML = module
             msgContainerDiv.innerHTML = `
             <div class="msgLine firstMsg">
                 <div class="msgTxt">
@@ -278,7 +318,10 @@ function openChatE(hisLogin, module, type){
             </div>
             <div class="msgLineVide"></div>`
         }
-    })
+        socket.off("getChat", oce)
+    }
+    socket.emit("getChat", [myToken, hisLogin])
+    socket.on("getChat", oce)
 
 } 
 
@@ -286,7 +329,7 @@ socket.on("recvMessage", (data) => {
     hisLogin = data[0]
     centent = data[1]
     console.log(data);
-    if(document.getElementById("nomProf").innerHTML == hisLogin){
+    if(document.getElementById("nomProf").classList[0] == hisLogin){
         writeMsg(centent, 1)
     }
 

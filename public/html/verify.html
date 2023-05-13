@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/login.css">
+    <title>PFE | Verify Code</title>
+</head>
+<body>
+    <h2 align="center">Verifier le code de verification</h2>
+    <div class="conainer">
+        <form action="">
+            <label for="code">Code</label>    
+            <input type="text" name="code" id="code">
+            <p id="hidden" align="center" style="color:red;padding:0;margin:0;display: none;">identifiant ou mot de passe incorrect</p>
+
+            <input type="submit" value="Confirm Code">
+        </form>
+        
+    </div>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const myParam = urlParams.get('error');
+        console.log(myParam);
+        if( myParam != null && myParam == "true"){
+            document.getElementById("hidden").style.display = "block";
+        }
+    </script>
+    
+</body>
+</html>

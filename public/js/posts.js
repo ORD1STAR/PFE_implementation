@@ -60,16 +60,26 @@ toggleBackground(true)
 
 // show comment section
 
- commentSection = document.getElementById("commentSectionDiv");
- comments = document.getElementById("comments")
-function showCommentSection(postID) {
+commentSection = document.getElementById("commentSectionDiv");
+comments = document.getElementById("comments")
+function showCommentSection(postID, title) {
     socket.emit("showComms", postID)
     socket.on("getComms", (data) => {
-    comments.innerHTML = ""
+
+        comments.innerHTML = ""
         for(var i = 0; i < data.length; i++) {
+
+            url = "/icons/default_user.png"
+            pic = data[i]["photo"]
+            if(pic.byteLength != 0){                    //if the user has a profile picture
+                pdpB = new Blob([pic])
+                url = URL.createObjectURL(pdpB)
+            }
+
+
             comments.innerHTML += `
             <div class="commentElement">
-                <div class="commenterImg"></div>
+                <img class="commenterImg" src="${url}"></img>
                 <div class="commenterComment">
                     <h3>${data[i]["login"]}</h3>
                     <p>${data[i]["content"]}</p>
@@ -81,6 +91,7 @@ function showCommentSection(postID) {
 
         commentSection.classList.add('popUpVisible')
         document.getElementById("sendcommButt").setAttribute("onclick", `addComment(${postID})`)
+        document.getElementById("commentTitle").innerHTML = title
         toggleBackground(false)
     })
     
@@ -101,24 +112,24 @@ function addComment(postID) {
             }
         })
         socket.emit("sendComment", [token, document.getElementById("commentWritingSection").value, postID])
-        socket.on("setComment", (sender) =>  {
-    
-            commentContainer = commentSection.children[1];
-            let newCommentElement = document.createElement('div');
-            newCommentElement.innerHTML = `<div class="commentElement">
-                                            <div class="commenterImg"></div>
-                                            <div class="commenterComment">
-                                                <h3>${sender}</h3>
-                                                <p>${document.getElementById("commentWritingSection").value}</p>
-                                            </div>
-                                           </div>`
-            commentContainer.prepend(newCommentElement)
-            document.getElementById("commentWritingSection").value = ""
-    
-        })
+        socket.on("setComment", addComm)
     }
 }
 
+function addComm(sender){
+    commentContainer = commentSection.children[1];
+    let newCommentElement = document.createElement('div');
+    newCommentElement.innerHTML = `<div class="commentElement">
+                                    <img class="commenterImg" src="${myURL}"></img>
+                                    <div class="commenterComment">
+                                        <h3>${sender}</h3>
+                                        <p>${document.getElementById("commentWritingSection").value}</p>
+                                    </div>
+                                   </div>`
+    commentContainer.prepend(newCommentElement)
+    document.getElementById("commentWritingSection").value = ""
+    socket.off("setComment", addComm)
+}
 
 
 // prof-side post option
@@ -131,7 +142,7 @@ var isTravailActive = false;
 // toggle piece jointe btn
 function togglePieceJointes() {
     isPieceJointeActive = !isPieceJointeActive;
-    profSideOptionBtns[1].textContent = "Piéce jointe " + (isPieceJointeActive ? "(V)" : "(X)");
+    profSideOptionBtns[1].textContent = "Piéce jointe " + (isPieceJointeActive ? "<b>✔</b>" : "❌");
 
     // showing / hiding pieceJointe Section
     if (isPieceJointeActive) {

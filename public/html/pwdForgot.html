@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/login.css">
+    <title>PFE | Recover Password</title>
+</head>
+<body>
+    <h2 align="center">J'ai oublié mon mot de passe</h2>
+    <div class="conainer">
+        <form action="">
+            <label for="email">email</label>    
+            <input type="text" name="email" id="email">
+            <p id="hidden" align="center" style="color:red;padding:0;margin:0;display: none;">email innexistnat</p>
+
+            <input type="submit" value="Recuperer mon mot de passe">
+        </form>
+        
+    </div>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const myParam = urlParams.get('error');
+        console.log(myParam);
+        if( myParam != null && myParam == "1"){
+            document.getElementById("hidden").style.display = "block";
+        }else if( myParam != null && myParam == "2"){
+            document.getElementById("hidden").style.display = "block";
+            document.getElementById("hidden").innerHTML = "code incorrect";
+        }
+    </script>
+    
+</body>
+</html>

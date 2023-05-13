@@ -379,7 +379,15 @@ body {
     display: flex;
     opacity: 0;
 }
-
+.TPTDmoduleSection .moduleTPTD:hover{
+    background-color: var(--accent_Lighter_05);
+    color: var(--textColorBlack);
+    border-radius: var(--common_border_radius);
+    transition: all 0.1s ease-in-out;
+}
+.selected_dm{
+    background-color: var(--accent_Lighter_05);
+}
 .TPTDmoduleSection .moduleTPTD h4 {
     font-size: 12px;
     background-color: var(--accent_Lighter_05);
@@ -633,6 +641,7 @@ body {
     cursor: pointer;
     color: var(--textColorMidWhite);
 }
+
 
 .msgTxtSectionTop .TPTD_select .selected_TPTD {
     /* background-color: var(--background_Light); */
