@@ -606,7 +606,6 @@ input::-webkit-inner-spin-button {
     width: 100%;
     background-color: var(--accent_Neutral);
 }
-
 .msgTxtSectionTop h3 {
     background-color: transparent;
     font-size: 12px;
@@ -977,6 +976,13 @@ input::-webkit-inner-spin-button {
     color: var(--textColorMidBlack);
     font-size: 12px;
     margin: 0px 0px 5px 0px;
+}
+#postDate{
+    padding:0;
+    margin:0;
+    margin-top:5px;
+    margin-left:80%;
+    color:rgb(88, 88, 88);
 }
 
 
@@ -1688,6 +1694,15 @@ input::-webkit-inner-spin-button {
 /*      phone screen      */
 
 @media only screen and (max-width: 650px) {
+    .TPTDmoduleSection h3{
+        color: var(--textColorWhite);
+    }
+    .moduleTPTD > p{
+        color: rgba(255, 255, 255, 0.8);
+    }
+    #postDate{
+        margin-left:50%;
+    }
     .postElement {
         min-width: calc(100% - 40px);
     }

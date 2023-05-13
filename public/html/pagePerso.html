@@ -29,18 +29,14 @@
                 <p>Documents</p>
                 <div class="notifDiv"></div>
             </div>
-            <div class="moduleElement selected_module" onclick="location.href = '/notes'">
+            <div class="moduleElement" onclick="location.href = '/notes'">
                 <p>Notes</p>
                 <div class="notifDiv"></div>
             </div>
-            <div class="moduleElement">
-                <p>Calendier</p>
-                <div class="notifDiv"></div>
-            </div>
-            <div class="moduleElement">
+            <div class="moduleElement selected_module" onclick="location.href = '/pagePersonelle'">
                 <p>Informations Personnels</p>
             </div>
-            <div class="moduleElement">
+            <div class="moduleElement"  onclick="downloadFile('USTHB_Plan.pdf')">
                 <p>USTHB map</p>
             </div>
         </div>
@@ -66,10 +62,10 @@
             </div>
     
             <div class="profileDiv">
-                <img class="profilePicDiv" src="/icons/default_user.png">
+                <img class="profilePicDiv" id="pdp" src="/icons/default_user.png">
                 <div class="profileTextDiv">
-                    <p id="nom">Hannoun</p>
-                    <p id="prenom">Amar Amine</p>
+                    <p id="nom"></p>
+                    <p id="prenom"></p>
                     <button id="profileSubMenuBtn">Mon compte</button>
                 </div>
             </div>
@@ -79,76 +75,82 @@
             
             <div class="profileWrapper">
                 <div class="profileLeftSection">
-                    <div class="bigProfilePicImg"></div>
-                    <button class="profileEditBtn">Editer la photo</button>
+                    <input type="file" id="fileInput" style="display: none"  accept="image/*">
+                    <img class="bigProfilePicImg" id="pdpC" src="/icons/default_user.png">
+                    <button class="profileEditBtn" onclick="changePDP()">Editer la photo</button>
                 </div>
                 <div class="profileRightSection">
                     <h2>Mes informations</h2>
                     <div class="informationElement">
                         <p>Nom</p>
                         <p>:</p>
-                        <p>monNom</p>
+                        <p id="cNom">monNom</p>
                     </div>
                     <div class="informationElement">
                         <p>Prénom</p>
                         <p>:</p>
-                        <p>monPrenom</p>
+                        <p id="cPrenom">monPrenom</p>
                     </div>
-                    <div class="informationElement">
+                    <div class="informationElement" id="matricule">
                         <p>Matricule</p>
                         <p>:</p>
-                        <p>monMatricule</p>
+                        <p id="cMatri">monMatricule</p>
                     </div>
-                    <div class="informationElement">
+                    <div class="informationElement" id="specialite">
                         <p>Section</p>
                         <p>:</p>
-                        <p>L3 GTR</p>
+                        <p id="cSection">L3 GTR</p>
                     </div>
                     <div class="EspaceEntreInformations"></div>
                     <div class="informationElement">
                         <p>Numero de telephone</p>
                         <p>:</p>
-                        <p class="infoModifiable">00000000000</p>
-                        <input type="number" value="00000000000">
+                        <p class="infoModifiable" id="cNum">0123456789</p>
+                        <input type="text" id="inNum" value="">
                     </div>
                     <div class="informationElement">
                         <p>Adress Email</p>
                         <p>:</p>
-                        <p class="infoModifiable">monAdress@gmail.com</p>
-                        <input type="text" value="monAdress">
+                        <p class="infoModifiable" id="cMail">monAdress@gmail.com</p>
+                        <input type="text" id="inMail" value="">
                     </div>
                     <div class="EspaceEntreInformations"></div>
                     <div class="informationElement">
                         <p>Mot de passe</p>
                         <p>:</p>
-                        <p class="infoModifiable">*************</p>
-                        <input type="text" value="*************">
+                        <p class="infoModifiable" id="cMDP">********</p>
+                        <input type="text" id="inMDP" value="">
                     </div>
                     <div class="informationElement onlyInEditMode">
                         <p>Nouveau mot de passe</p>
                         <p>:</p>
-                        <p class="infoModifiable">*************</p>
-                        <input type="text" value="*************">
+                        <p class="infoModifiable" id="cNMDP"></p>
+                        <input type="text" id="inNMDP" value="">
+                    </div>
+                    <div class="informationElement onlyInEditMode">
+                        <p></p>
+                        <p></p>
+                        <p id="error" style="display: none;color:red;">Une erreur s'est produite</p>
                     </div>
                     <div class="EspaceEntreInformations"></div>
                     <div class="informationElement">
                         <button class="EditInfoBtn" id="infoChangeBtn" onclick="switchToProfileEditMode()">Changer les informations</button>
                         <button class="EditInfoBtn editModeBtns" onclick="hidePorfileEditMode()">Annuler</button>
-                        <button class="EditInfoBtn editModeBtns">Envoyer</button>
+                        <button class="EditInfoBtn editModeBtns" id="submit">Envoyer</button>
                     </div>
                 </div>
             </div>
 
             <h3 class="doleancesTitle">Doleance</h3>
-            <div class="doleancesContainer">
+            <div class="doleancesContainer" id="dols">
                 <div class="doleancesTop">
                     <h3>Titre</h3>
-                    <input type="text" placeholder="Aa">
+                    <input type="text" id="title" placeholder="Aa">
                 </div>
-                <textarea rows="10" placeholder="Aa"></textarea>
-                <button>Envoyer</button>
+                <textarea id="content" rows="10" placeholder="Aa"></textarea>
+                <button onclick="dolSend()">Envoyer</button>
             </div>
-                
+            <button onclick="location.href = '/Admin_Doleances'" id="voirDols">Voir les doleances</button>
             
             
         </div>
@@ -157,6 +159,158 @@
 
     <script src="/js/main.js" defer></script>
     <script src="/js/pagePerso.js" defer></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        socket = io()
 
+        var myURL = "/icons/default_user.png"
+        socket.on('connect', () => {
+            socket.emit("connected", [document.cookie]) //get  the cookies with the connection socket
+        })
+
+
+        
+        socket.on('connectedEtu', (data) => { //get the data from the server with the acknoledgement
+            login = data[0]["login"]            //get the login from the data
+            prenom = data[0]["prenom"]    //get the first part of the login (the prenom)
+            nom = data[0]["nom"]            //get the second part of the login (the nom)
+            pdp = data[0]["photo"]
+            matricule = data[0]["matricule"]
+            email = data[0]["email"]
+            phone = data[0]["phone"]
+            if(pdp.byteLength != 0){                    //if the user has a profile picture
+                pdpB = new Blob([pdp])
+                myURL = URL.createObjectURL(pdpB)
+                document.getElementById("pdp").src = myURL
+                document.getElementById("pdpC").src = myURL
+            }
+            
+            sec = "L" + data[0]["niveau"] + " " + data[0]["specialite"] //get the section (LX spé)
+            idSec = data[0]["idSec"]
+            
+            document.getElementById("nom").innerHTML = nom          //replace the nom with the right one
+            document.getElementById("cNom").innerHTML = nom     //replace the matricule with the right one
+            document.getElementById("prenom").innerHTML = prenom    //replace the prenom with the right one
+            document.getElementById("cPrenom").innerHTML = prenom  //replace the prenom with the right one
+            document.getElementById("Section").innerHTML = sec      //replace the section with the right one
+            document.getElementById("cSection").innerHTML = sec      //replace the section with the right one
+            document.getElementById("cMatri").innerHTML = matricule      //replace the matricule with the right one
+            document.getElementById("cMail").innerHTML = email      //replace the matricule with the right one
+            document.getElementById("cNum").innerHTML = phone      //replace the matricule with the right one
+            
+            
+            //add the event listener to the module buttons to change the selected module
+            const modulesBtns = document.querySelectorAll('.moduleElement');
+            modulesBtns.forEach(moduleBtn => {
+                moduleBtn.addEventListener('click', () => {
+                    modulesBtns.forEach(moduleBtn => {moduleBtn.classList.remove("selected_module")})
+                    moduleBtn.classList.add("selected_module")
+                    //remove the div from the childs with class "notifDiv"
+                    moduleBtn.childNodes.forEach(child => {
+                        if(child.classList != undefined){
+                            if(child.classList.contains("notifDiv")){
+                                moduleBtn.removeChild(child)
+                            }
+                        }
+                    })
+                    
+                })
+            })
+        })
+    
+        socket.on('connectedEns', (data) => { //get the data from the server with the acknoledgement
+            login = data[0]["login"]            //get the login from the data
+            prenom = data[0]["prenom"]    //get the first part of the login (the prenom)
+            nom = data[0]["nom"]            //get the second part of the login (the nom)
+            pdp = data[0]["photo"]
+            email = data[0]["email"]
+            phone = data[0]["phone"]
+            if(pdp.byteLength != 0){                    //if the user has a profile picture
+                pdpB = new Blob([pdp])
+                myURL = URL.createObjectURL(pdpB)
+                document.getElementById("pdp").src = myURL
+                document.getElementById("pdpC").src = myURL
+            }
+            
+            sec = "Sections" //get the section (LX spé)
+            
+            document.getElementById("nom").innerHTML = nom          //replace the nom with the right one
+            document.getElementById("cNom").innerHTML = nom     //replace the matricule with the right one
+            document.getElementById("prenom").innerHTML = prenom    //replace the prenom with the right one
+            document.getElementById("cPrenom").innerHTML = prenom  //replace the prenom with the right one
+            document.getElementById("specialite").style.display = "none" //      //replace the section with the right one
+            document.getElementById("matricule").style.display = "none"      //replace the matricule with the right one
+            document.getElementById("cNum").innerHTML = phone      //replace the matricule with the right one
+            
+            
+            //add the event listener to the module buttons to change the selected module
+            const modulesBtns = document.querySelectorAll('.moduleElement');
+            modulesBtns.forEach(moduleBtn => {
+                moduleBtn.addEventListener('click', () => {
+                    modulesBtns.forEach(moduleBtn => {moduleBtn.classList.remove("selected_module")})
+                    moduleBtn.classList.add("selected_module")
+                    //remove the div from the childs with class "notifDiv"
+                    moduleBtn.childNodes.forEach(child => {
+                        if(child.classList != undefined){
+                            if(child.classList.contains("notifDiv")){
+                                moduleBtn.removeChild(child)
+                            }
+                        }
+                    })
+                    
+                })
+            })
+            
+            
+        })
+    
+        socket.on('connectedAdm', (data) => { //get the data from the server with the acknoledgement
+            login = data[0]["login"]            //get the login from the data
+            prenom = data[0]["prenom"]    //get the first part of the login (the prenom)
+            nom = data[0]["nom"]            //get the second part of the login (the nom)
+            pdp = data[0]["photo"]
+            email = data[0]["email"]
+            phone = data[0]["phone"]
+            if(pdp.byteLength != 0){                    //if the user has a profile picture
+                pdpB = new Blob([pdp])
+                myURL = URL.createObjectURL(pdpB)
+                document.getElementById("pdp").src = myURL
+                document.getElementById("pdpC").src = myURL
+            }
+            
+            sec = "Sections" //get the section (LX spé)
+            
+            document.getElementById("nom").innerHTML = nom          //replace the nom with the right one
+            document.getElementById("cNom").innerHTML = nom     //replace the matricule with the right one
+            document.getElementById("prenom").innerHTML = prenom    //replace the prenom with the right one
+            document.getElementById("cPrenom").innerHTML = prenom  //replace the prenom with the right one
+            document.getElementById("cMail").innerHTML = email    //replace the prenom with the right one
+            document.getElementById("specialite").style.display = "none" //      //replace the section with the right one
+            document.getElementById("matricule").style.display = "none"      //replace the matricule with the right one
+            document.getElementById("cNum").innerHTML = phone      //replace the matricule with the right one
+            document.getElementById("dols").style.display = "none"      //replace the matricule with the right one
+            document.getElementById("voirDols").style.display = "block"
+            
+            //add the event listener to the module buttons to change the selected module
+            const modulesBtns = document.querySelectorAll('.moduleElement');
+            modulesBtns.forEach(moduleBtn => {
+                moduleBtn.addEventListener('click', () => {
+                    modulesBtns.forEach(moduleBtn => {moduleBtn.classList.remove("selected_module")})
+                    moduleBtn.classList.add("selected_module")
+                    //remove the div from the childs with class "notifDiv"
+                    moduleBtn.childNodes.forEach(child => {
+                        if(child.classList != undefined){
+                            if(child.classList.contains("notifDiv")){
+                                moduleBtn.removeChild(child)
+                            }
+                        }
+                    })
+                    
+                })
+            })
+            
+            
+        })
+    </script>
 </body>
 </html>

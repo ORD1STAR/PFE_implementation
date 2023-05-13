@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PFE | Mes notes</title>
+    <title>PFE | Doleances</title>
     <link rel="stylesheet" href="/css/main.css">
     <link rel="stylesheet" href="/css/Perso.css">
     <link rel="stylesheet" href="/css/admin.css">
@@ -12,12 +12,15 @@
 <body>
     <div id="leftMenu" class="leftMenu">
         <div class="titleDiv" onclick="location.href = '/home'">
-            <h1 id="Section">GTR L3</h1>
+            <h1 id="Section"></h1>
         </div>
 
         <h3>Menu :</h3>
 
         <div class="moduleMenu" id="moduleMenu">
+            <div class="moduleElement" onclick="location.href = '/edt'">
+                <p>Doleances</p>
+            </div>
             <div class="moduleElement" onclick="location.href = '/edt'">
                 <p>Emploi du temps</p>
                 <div class="notifDiv"></div>
@@ -30,12 +33,8 @@
                 <p>Documents</p>
                 <div class="notifDiv"></div>
             </div>
-            <div class="moduleElement selected_module" onclick="location.href = '/notes'">
+            <div class="moduleElement" onclick="location.href = '/notes'">
                 <p>Notes</p>
-                <div class="notifDiv"></div>
-            </div>
-            <div class="moduleElement">
-                <p>Calendier</p>
                 <div class="notifDiv"></div>
             </div>
             <div class="moduleElement">
@@ -67,10 +66,10 @@
             </div>
     
             <div class="profileDiv">
-                <img class="profilePicDiv" src="/icons/default_user.png">
+                <img class="profilePicDiv" id="pdp" src="/icons/default_user.png">
                 <div class="profileTextDiv">
-                    <p id="nom">Hannoun</p>
-                    <p id="prenom">Amar Amine</p>
+                    <p id="nom"></p>
+                    <p id="prenom"></p>
                     <button id="profileSubMenuBtn">Mon compte</button>
                 </div>
             </div>
@@ -78,223 +77,8 @@
 
         <div class="mainWrapper" id="mainWrapper">
             <h3 class="doleancesTitle">Doléances</h3>
-            <div class="doleance">
-                <div class="doleanceTop">
-                    <h3>Titre</h3>
-                    <p>Le titre de la doléance</p>
-                </div>
-                <div class="doleanceCore">
-                    <p>bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla </p>
-                    <p>bla bla bla bla bla bla bla bla bla bla </p>
-                </div>
-                <div class="doleanceInformations">
-                    <div class="doleanceInformationElement">
-                        <p>Etudiant(e) : </p>
-                        <p>xxxxxxxxxxxxxx</p>
-                        <p>yyyyyyyy</p>
-                    </div>
-                    <div class="doleanceInformationElement">
-                        <p>Matricule : </p>
-                        <p>2020123456789</p>
-                    </div>
-                    <div class="doleanceInformationElement">
-                        <p>Section : </p>
-                        <p>L3 GTR</p>
-                    </div>
-                    <div class="doleanceInformationElement">
-                        <p>date : </p>
-                        <p>00/00/00</p>
-                        <p>00:00</p>
-                    </div>
-                </div>
-                <button onclick="deleteDoleance(event)">Suprimer</button>
-            </div>
-            <div class="doleance">
-                <div class="doleanceTop">
-                    <h3>Titre</h3>
-                    <p>Le titre de la doléance</p>
-                </div>
-                <div class="doleanceCore">
-                    <p>bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla </p>
-                    <p>bla bla bla bla bla bla bla bla bla bla </p>
-                </div>
-                <div class="doleanceInformations">
-                    <div class="doleanceInformationElement">
-                        <p>Etudiant(e) : </p>
-                        <p>xxxxxxxxxxxxxx</p>
-                        <p>yyyyyyyy</p>
-                    </div>
-                    <div class="doleanceInformationElement">
-                        <p>Matricule : </p>
-                        <p>2020123456789</p>
-                    </div>
-                    <div class="doleanceInformationElement">
-                        <p>Section : </p>
-                        <p>L3 GTR</p>
-                    </div>
-                    <div class="doleanceInformationElement">
-                        <p>date : </p>
-                        <p>00/00/00</p>
-                        <p>00:00</p>
-                    </div>
-                </div>
-                <button onclick="deleteDoleance(event)">Suprimer</button>
-            </div>
-            <div class="doleance">
-                <div class="doleanceTop">
-                    <h3>Titre</h3>
-                    <p>Le titre de la doléance</p>
-                </div>
-                <div class="doleanceCore">
-                    <p>bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla </p>
-                    <p>bla bla bla bla bla bla bla bla bla bla </p>
-                </div>
-                <div class="doleanceInformations">
-                    <div class="doleanceInformationElement">
-                        <p>Etudiant(e) : </p>
-                        <p>xxxxxxxxxxxxxx</p>
-                        <p>yyyyyyyy</p>
-                    </div>
-                    <div class="doleanceInformationElement">
-                        <p>Matricule : </p>
-                        <p>2020123456789</p>
-                    </div>
-                    <div class="doleanceInformationElement">
-                        <p>Section : </p>
-                        <p>L3 GTR</p>
-                    </div>
-                    <div class="doleanceInformationElement">
-                        <p>date : </p>
-                        <p>00/00/00</p>
-                        <p>00:00</p>
-                    </div>
-                </div>
-                <button onclick="deleteDoleance(event)">Suprimer</button>
-            </div>
-            <div class="doleance">
-                <div class="doleanceTop">
-                    <h3>Titre</h3>
-                    <p>Le titre de la doléance</p>
-                </div>
-                <div class="doleanceCore">
-                    <p>bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla </p>
-                    <p>bla bla bla bla bla bla bla bla bla bla </p>
-                </div>
-                <div class="doleanceInformations">
-                    <div class="doleanceInformationElement">
-                        <p>Etudiant(e) : </p>
-                        <p>xxxxxxxxxxxxxx</p>
-                        <p>yyyyyyyy</p>
-                    </div>
-                    <div class="doleanceInformationElement">
-                        <p>Matricule : </p>
-                        <p>2020123456789</p>
-                    </div>
-                    <div class="doleanceInformationElement">
-                        <p>Section : </p>
-                        <p>L3 GTR</p>
-                    </div>
-                    <div class="doleanceInformationElement">
-                        <p>date : </p>
-                        <p>00/00/00</p>
-                        <p>00:00</p>
-                    </div>
-                </div>
-                <button onclick="deleteDoleance(event)">Suprimer</button>
-            </div>
-            <div class="doleance">
-                <div class="doleanceTop">
-                    <h3>Titre</h3>
-                    <p>Le titre de la doléance</p>
-                </div>
-                <div class="doleanceCore">
-                    <p>bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla </p>
-                    <p>bla bla bla bla bla bla bla bla bla bla </p>
-                </div>
-                <div class="doleanceInformations">
-                    <div class="doleanceInformationElement">
-                        <p>Etudiant(e) : </p>
-                        <p>xxxxxxxxxxxxxx</p>
-                        <p>yyyyyyyy</p>
-                    </div>
-                    <div class="doleanceInformationElement">
-                        <p>Matricule : </p>
-                        <p>2020123456789</p>
-                    </div>
-                    <div class="doleanceInformationElement">
-                        <p>Section : </p>
-                        <p>L3 GTR</p>
-                    </div>
-                    <div class="doleanceInformationElement">
-                        <p>date : </p>
-                        <p>00/00/00</p>
-                        <p>00:00</p>
-                    </div>
-                </div>
-                <button onclick="deleteDoleance(event)">Suprimer</button>
-            </div>
-            <div class="doleance">
-                <div class="doleanceTop">
-                    <h3>Titre</h3>
-                    <p>Le titre de la doléance</p>
-                </div>
-                <div class="doleanceCore">
-                    <p>bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla </p>
-                    <p>bla bla bla bla bla bla bla bla bla bla </p>
-                </div>
-                <div class="doleanceInformations">
-                    <div class="doleanceInformationElement">
-                        <p>Etudiant(e) : </p>
-                        <p>xxxxxxxxxxxxxx</p>
-                        <p>yyyyyyyy</p>
-                    </div>
-                    <div class="doleanceInformationElement">
-                        <p>Matricule : </p>
-                        <p>2020123456789</p>
-                    </div>
-                    <div class="doleanceInformationElement">
-                        <p>Section : </p>
-                        <p>L3 GTR</p>
-                    </div>
-                    <div class="doleanceInformationElement">
-                        <p>date : </p>
-                        <p>00/00/00</p>
-                        <p>00:00</p>
-                    </div>
-                </div>
-                <button onclick="deleteDoleance(event)">Suprimer</button>
-            </div>
-            <div class="doleance">
-                <div class="doleanceTop">
-                    <h3>Titre</h3>
-                    <p>Le titre de la doléance</p>
-                </div>
-                <div class="doleanceCore">
-                    <p>bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla </p>
-                    <p>bla bla bla bla bla bla bla bla bla bla </p>
-                </div>
-                <div class="doleanceInformations">
-                    <div class="doleanceInformationElement">
-                        <p>Etudiant(e) : </p>
-                        <p>xxxxxxxxxxxxxx</p>
-                        <p>yyyyyyyy</p>
-                    </div>
-                    <div class="doleanceInformationElement">
-                        <p>Matricule : </p>
-                        <p>2020123456789</p>
-                    </div>
-                    <div class="doleanceInformationElement">
-                        <p>Section : </p>
-                        <p>L3 GTR</p>
-                    </div>
-                    <div class="doleanceInformationElement">
-                        <p>date : </p>
-                        <p>00/00/00</p>
-                        <p>00:00</p>
-                    </div>
-                </div>
-                <button onclick="deleteDoleance(event)">Suprimer</button>
-            </div>
+            
+            
                 
             
         </div>
@@ -303,6 +87,56 @@
 
     <script src="/js/main.js" defer></script>
     <script src="/js/doleances.js" defer></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        socket = io();
+
+        var myURL = "/icons/default_user.png"
+        socket.on('connect', () => {
+            socket.emit("connected", [document.cookie]) //get  the cookies with the connection socket
+        })
+
+
+        socket.on('connectedAdm', (data) => { //get the data from the server with the acknoledgement
+            login = data[0]["login"]            //get the login from the data
+            prenom = data[0]["prenom"]    //get the first part of the login (the prenom)
+            nom = data[0]["nom"]            //get the second part of the login (the nom)
+            pdp = data[0]["photo"]
+            if(pdp.byteLength != 0){                    //if the user has a profile picture
+                pdpB = new Blob([pdp])
+                myURL = URL.createObjectURL(pdpB)
+                document.getElementById("pdp").src = myURL
+            }
+            
+            sec = " Administration " //get the section (LX spé)
+            idSec = data[0]["idSec"]
+            
+            document.getElementById("nom").innerHTML = nom          //replace the nom with the right one
+            document.getElementById("prenom").innerHTML = prenom    //replace the prenom with the right one
+            document.getElementById("Section").innerHTML = sec      //replace the section with the right one
+            
+            
+            //add the event listener to the module buttons to change the selected module
+            const modulesBtns = document.querySelectorAll('.moduleElement');
+            modulesBtns.forEach(moduleBtn => {
+                moduleBtn.addEventListener('click', () => {
+                    modulesBtns.forEach(moduleBtn => {moduleBtn.classList.remove("selected_module")})
+                    moduleBtn.classList.add("selected_module")
+                    //remove the div from the childs with class "notifDiv"
+                    moduleBtn.childNodes.forEach(child => {
+                        if(child.classList != undefined){
+                            if(child.classList.contains("notifDiv")){
+                                moduleBtn.removeChild(child)
+                            }
+                        }
+                    })
+                    
+                })
+            })
+            
+            
+        })
+    </script>
 
 </body>
 </html>

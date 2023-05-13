@@ -37,7 +37,7 @@ connection.connect(function(err) {
         return console.error("error" + err.message);
     }
     console.log("Connected to the MySQL server");
-});
+}); 
 
 io = require('socket.io')(http, {maxHttpBufferSize:1*1024*1024*10});
 
@@ -61,38 +61,40 @@ app.get('/login', (req, res) => {
                 allTokens.push(result[i]["token"]);
             }
         })
-
         connection.query("SELECT * FROM user WHERE login = ?", [username], function(err, result, fields){
             if(err){
                 console.log(err.message);
             }
-            bcrypt.compare(password, result[0]["password"], function(err, resu) {
-                if(resu){
-                    if(result[0]["token"] == ""){
-                        token = generateToken(allTokens);
-                        connection.query("UPDATE user SET token = ?, token_expire = NOW() + INTERVAL 1 DAY WHERE idUser = ?", [token, result[0]["idUser"]], function(err, result, fields){
-                            if(err){
-                                console.log(err.message);
-                            }
-                        })
-                        res.cookie('token', token, { maxAge: 1000*60*60*24 });
-                    } else if(result[0]["token"] != "" && new Date(result[0]["token_expire"]) >= new Date()){
-                        time = new Date(result[0]["token_expire"]) - new Date();
-                        res.cookie('token', result[0]["token"], { maxAge: time });
-                    }else if(result[0]["token"] != "" && new Date(result[0]["token_expire"]) < new Date()){
-                        token = generateToken(allTokens)
-                        connection.query("UPDATE user SET token = ?, token_expire = NOW() + INTERVAL 1 DAY WHERE idUser = ?", [token, result[0]["idUser"]], function(err, result, fields){
-                            if(err){
-                                console.log(err.message);
-                            }
-                        })
-                        res.cookie('token', token, { maxAge: 1000*60*60*24 });
+            if(result.length>0){
+
+                bcrypt.compare(password, result[0]["password"], function(err, resu) {
+                    if(resu){
+                        if(result[0]["token"] == ""){
+                            token = generateToken(allTokens);
+                            connection.query("UPDATE user SET token = ?, token_expire = NOW() + INTERVAL 1 DAY WHERE idUser = ?", [token, result[0]["idUser"]], function(err, result, fields){
+                                if(err){
+                                    console.log(err.message);
+                                }
+                            })
+                            res.cookie('token', token, { maxAge: 1000*60*60*24 });
+                        } else if(result[0]["token"] != "" && new Date(result[0]["token_expire"]) >= new Date()){
+                            time = new Date(result[0]["token_expire"]) - new Date();
+                            res.cookie('token', result[0]["token"], { maxAge: time });
+                        }else if(result[0]["token"] != "" && new Date(result[0]["token_expire"]) < new Date()){
+                            token = generateToken(allTokens)
+                            connection.query("UPDATE user SET token = ?, token_expire = NOW() + INTERVAL 1 DAY WHERE idUser = ?", [token, result[0]["idUser"]], function(err, result, fields){
+                                if(err){
+                                    console.log(err.message);
+                                }
+                            })
+                            res.cookie('token', token, { maxAge: 1000*60*60*24 });
+                        }
+                        res.redirect("/home")
+                    } else{
+                        res.redirect("/login" + "?error=true");
                     }
-                    res.redirect("/home")
-                } else{
-                    res.redirect("/login" + "?error=true");
-                }
-            })
+                })
+            }
         })
     }else{
         res.sendFile(path.join(__dirname, 'public/html/login.html'));
@@ -126,39 +128,65 @@ app.get('/home', (req, res) => {
                 })
             }
         })
+    }else if(req.cookies["token"] != undefined){
+        res.sendFile(path.join(__dirname, 'public/html/main.html'));
+    }else{
+        res.redirect("/login");
     }
-    res.sendFile(path.join(__dirname, 'public/html/main.html'));
+    
 });
 app.get('/files', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public/html/Fichiers.html'));
+    if(req.cookies["token"] != undefined){
+        res.sendFile(path.join(__dirname, 'public/html/Fichiers.html'));
+    }else{
+        res.redirect("/login");
+    }
+    
 });
 app.get('/msg', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public/html/msgSection.html'));
+    
+    if(req.cookies["token"] != undefined){
+        res.sendFile(path.join(__dirname, 'public/html/msgSection.html'));
+    }else{
+        res.redirect("/login");
+    }
 });
 app.get("/notes", (req, res) => {
-    res.sendFile(path.join(__dirname, 'public/html/Notes.html'));
+    
+    if(req.cookies["token"] != undefined){
+        res.sendFile(path.join(__dirname, 'public/html/Notes.html'));
+    }else{
+        res.redirect("/login");
+    }
 })
 app.get("/edt", (req, res) => {
-    res.sendFile(path.join(__dirname, 'public/html/EDTpage.html'));
-})
-app.get("/Admin_Notes", (req, res) => {
-    res.sendFile(path.join(__dirname, 'public/html/Admin_Notes.html'));
+    if(req.cookies["token"] != undefined){
+        res.sendFile(path.join(__dirname, 'public/html/EDTpage.html'));
+    }else{
+        res.redirect("/login");
+    }
+    
 })
 app.get("/examen*", (reqs, res) => {
-    examen = reqs.url.replace("/examen", "")
-    console.log(examen);
-    req = "SELECT * FROM examens WHERE url = ?"
-    connection.query(req, [examen], function(err, result, fields){
-        if(err){
-            console.log(err.message);
-        }
-        if(result.length > 0){
-            res.cookie('exam', examen, { maxAge: 1000*60*60*24 });
-            res.sendFile(path.join(__dirname, 'public/html/exams.html'));
-        }else{
-            res.redirect("/home");
-        }
-    })
+    if(req.cookies["token"] != undefined){
+        examen = reqs.url.replace("/examen", "")
+        console.log(examen);
+        req = "SELECT * FROM examens WHERE url = ?"
+        connection.query(req, [examen], function(err, result, fields){
+            if(err){
+                console.log(err.message);
+            }
+            if(result.length > 0){
+                res.cookie('exam', examen, { maxAge: 1000*60*60*24 });
+                res.sendFile(path.join(__dirname, 'public/html/exams.html'));
+            }else{
+                res.redirect("/home");
+            }
+        })
+        
+    }else{
+        res.redirect("/login");
+    }
 })
 app.get("/signin", (req, res) => {
 
@@ -196,7 +224,6 @@ app.get("/password", (req, res) => {
         }else if(req.query["code"] != undefined){
             if(verifCode[req.cookies["id"]] == req.query["code"]){
                 
-                console.log(verifCode);
                 res.sendFile(path.join(__dirname, 'public/html/changePW.html'));
             }else{
                 res.redirect("/password?error=2");
@@ -209,6 +236,7 @@ app.get("/password", (req, res) => {
                     if(err){
                         console.log(err.message);
                     }
+                    res.clearCookie("id");
                     res.redirect("/login");
                 })
             })
@@ -222,16 +250,78 @@ app.get("/password", (req, res) => {
     
 })
 app.get("/pagePersonelle", (req, res) => {
-    res.sendFile(path.join(__dirname, 'public/html/pagePerso.html'));
+    if(req.cookies["token"] != undefined){
+        res.sendFile(path.join(__dirname, 'public/html/pagePerso.html'));
+    }else{
+        res.redirect("/login");
+    }
+    
 })
 app.get("/Admin_Doleances", (req, res) => {
-    res.sendFile(path.join(__dirname, 'public/html/Admin_Doleances.html'));
+    if(req.cookies["token"] != undefined){
+        token = req.cookies["token"];
+        reqs = "SELECT role FROM user WHERE token = ?"
+        connection.query(reqs, [token], function(err, result, fields){
+            if(err){
+                console.log(err.message);
+            }
+            if(result.length > 0){
+                if(result[0]["role"] == "admin"){
+                    res.sendFile(path.join(__dirname, 'public/html/Admin_Doleances.html'));
+                }else{
+                    res.redirect("/home");
+                }
+            }
+        })
+    }else{
+        res.redirect("/login");
+    }
 })
 app.get("/listeEtudiants", (req, res) => {
-    res.sendFile(path.join(__dirname, 'public/html/listeEtudiants.html'));
+    
+    if(req.cookies["token"] != undefined){
+        token = req.cookies["token"];
+        reqs = "SELECT role FROM user WHERE token = ?"
+        connection.query(reqs, [token], function(err, result, fields){
+            if(err){
+                console.log(err.message);
+            }
+            if(result.length > 0){
+                if(result[0]["role"] == "admin"){
+                    res.sendFile(path.join(__dirname, 'public/html/listeEtudiants.html'));
+                }else{
+                    res.redirect("/home");
+                }
+            }
+        })
+    }else{
+        res.redirect("/login");
+    }
+})
+app.get("/Admin_Notes", (req, res) => {
+    
+    if(req.cookies["token"] != undefined){
+        token = req.cookies["token"];
+        reqs = "SELECT role FROM user WHERE token = ?"
+        connection.query(reqs, [token], function(err, result, fields){
+            if(err){
+                console.log(err.message);
+            }
+            if(result.length > 0){
+                if(result[0]["role"] == "enseignant"){
+                    res.sendFile(path.join(__dirname, 'public/html/Admin_Notes.html'));
+                }else{
+                    res.redirect("/home");
+                }
+            }
+        })
+    }else{
+        res.redirect("/login");
+    }
 })
 app.get("/disconnect", (req, res) => {
     res.clearCookie("token");
+    res.clearCookie("id");
     res.redirect("/");
 })
 
@@ -271,7 +361,7 @@ io.on('connection', (socket) => {
                 const role = result[0]["role"]
                 //etudiant
                 if(role == "etudiant"){
-                    connection.query("SELECT login, nom, prenom, photo, niveau, specialite, idSec FROM user, etudiant, section WHERE user.idUser=etudiant.userID AND etudiant.section=section.idSec AND user.token = ?", [token], function(err, result1, fields){
+                    connection.query("SELECT login, nom, prenom, photo, niveau, specialite, idSec, matricule, email, phone FROM user, etudiant, section WHERE user.idUser=etudiant.userID AND etudiant.section=section.idSec AND user.token = ?", [token], function(err, result1, fields){
                         if(err){
                             console.log(err.message);
                         }
@@ -284,7 +374,7 @@ io.on('connection', (socket) => {
                                     console.log(err.message);
                                 }
                                 if(result2.length > 0){
-                                    connection.query("SELECT codeMod, type, login FROM module, typeModule, user WHERE secID=? AND typeModule.module = module.codeMod AND typeModule.enseignantID = user.idUser", [result1[0]["idSec"]], function(err, result3, fields){
+                                    connection.query("SELECT codeMod, type, login, user.nom as n, user.prenom as pn FROM module, typeModule, user WHERE secID=? AND typeModule.module = module.codeMod AND typeModule.enseignantID = user.idUser", [result1[0]["idSec"]], function(err, result3, fields){
                                         if(err){
                                             console.log(err.message);
                                         }
@@ -297,7 +387,7 @@ io.on('connection', (socket) => {
                 }
                 //enseignant
                 else if(role == "enseignant"){
-                    connection.query("SELECT login, user.nom, prenom, photo, idUser FROM user WHERE token = ?", [token], function(err, result1, fields){
+                    connection.query("SELECT login, user.nom, prenom, photo, idUser, phone, email FROM user WHERE token = ?", [token], function(err, result1, fields){
                         if(err){
                             console.log(err.message);
                         }
@@ -324,7 +414,35 @@ io.on('connection', (socket) => {
                         }
                     })
                 }
-
+                //admin
+                else if(role == "admin"){
+                    connection.query("SELECT login, user.nom, prenom, photo, idUser, email, phone FROM user WHERE token = ?", [token], function(err, result1, fields){
+                        if(err){
+                            console.log(err.message);
+                        }
+                        if(result1.length > 0){
+                            console.log("+ admin connected> " + result1[0]["login"]);
+                            socket.join(result1[0]["login"])
+                            connection.query("SELECT idSec, module.nom, niveau, specialite, codeMod, type FROM module, section, typeModule WHERE typeModule.module = module.codeMod AND module.secID = section.idSec group by codeMod", [], function(err, result2, fields){
+                                
+                                if(err){
+                                    console.log(err.message);
+                                }
+                                if(result2.length > 0){
+                                    if(result2.length > 0){
+                                        connection.query("SELECT codeMod, type, login FROM module, typeModule, user WHERE secID=? AND typeModule.module = module.codeMod AND typeModule.enseignantID = user.idUser", [result1[0]["idSec"]], function(err, result3, fields){
+                                            if(err){
+                                                console.log(err.message);
+                                            }
+                                            socket.emit('connectedAdm', [result1[0], result2, result3]);
+                                        })
+                                    }
+                                }
+                                
+                            })
+                        }
+                    })
+                }
             }
 
         })
@@ -335,7 +453,7 @@ io.on('connection', (socket) => {
         args = []
         if(data[0] == "General"){
             req = `
-            SELECT prf.login, postes.contenu, postes.postID, postes.PJ_lens, postes.PJ_names, module.nom, type, postes.date, postes.comm, postes.traveauRendre
+            SELECT prf.login, prf.nom as n, prf.prenom as pn, prf.role, postes.contenu, postes.postID, postes.PJ_lens, postes.PJ_names, module.nom, type, postes.date, postes.comm, postes.traveauRendre
             FROM user etu, user prf, postes, module, etudiant
             WHERE
             etu.token = "${data[1]}" AND
@@ -349,7 +467,7 @@ io.on('connection', (socket) => {
             `
         }else{
             req = `
-            SELECT prf.login, postes.contenu, postes.postID, postes.PJ_lens, postes.PJ_names, module.nom, type, postes.date, postes.comm, postes.traveauRendre
+            SELECT prf.login, prf.nom as n, prf.prenom as pn, prf.role, postes.contenu, postes.postID, postes.PJ_lens, postes.PJ_names, module.nom, type, postes.date, postes.comm, postes.traveauRendre
             FROM user etu, user prf, postes, module, etudiant
             WHERE
             etu.token = "${data[1]}" AND
@@ -379,7 +497,7 @@ io.on('connection', (socket) => {
         module = data[1]
         secID = data[2]
         // TODO: use UNION to get post content, end login, the module name
-        req = `SELECT prf.login, module.nom, contenu, type, postID, PJ_lens, PJ_names, date, comm, traveauRendre 
+        req = `SELECT prf.login, prf.nom as n, prf.prenom as pn, prf.role, module.nom, contenu, type, postID, PJ_lens, PJ_names, date, comm, traveauRendre 
         FROM user prf, module, postes
         WHERE
         
@@ -395,6 +513,28 @@ io.on('connection', (socket) => {
                 console.log(err.message);
             }
             socket.emit("getPostsE", result);
+        })
+    });
+
+    socket.on("getPostsA", (data) => {
+        module = data[0]
+        secID = data[1]
+        // TODO: use UNION to get post content, end login, the module name
+        req = `SELECT prf.login, prf.nom as n, prf.prenom as pn, prf.role, module.nom, contenu, type, postID, PJ_lens, PJ_names, date, comm, traveauRendre 
+        FROM user prf, module, postes
+        WHERE
+        
+        prf.idUser = postes.ensID AND
+        postes.codeModule = module.codeMod AND
+        module.secID = ? AND
+        module.nom = ?
+        
+        order by postes.date DESC`
+        connection.query(req, [secID, module], function(err, result, fields){
+            if(err){
+                console.log(err.message);
+            }
+            socket.emit("getPostsA", result);
         })
     });
 
@@ -418,6 +558,7 @@ io.on('connection', (socket) => {
         names = names.slice(0, -1)
         combinedBuffer = Buffer.concat(buffers);
         const combinedBase64 = combinedBuffer.toString('base64');
+        console.log(comm);
         connection.query(req, [data[2], data[1], data[3], combinedBuffer, lens, names, comm ? 1:0, travb ? 1:0, type], function(err, result, fields){
             if(err){
                 console.log(err.message);
@@ -518,9 +659,9 @@ io.on('connection', (socket) => {
         module = data[1] // nom module 
         req = ""
         if(module == "General"){
-            req = `SELECT postes.PJ_lens, postes.PJ_names, postID FROM postes, user ens, module, etudiant WHERE ens.token = ? AND ens.idUser = etudiant.userID AND module.codeMod = postes.codeModule AND module.secID = etudiant.section AND NOT PJ = ""`
+            req = `SELECT postes.PJ_lens, postes.PJ_names, postID FROM postes, user ens, module, etudiant WHERE ens.token = ? AND ens.idUser = etudiant.userID AND module.codeMod = postes.codeModule AND module.secID = etudiant.section AND NOT PJ = "" order by postes.date DESC`
         }else{
-            req = `SELECT postes.PJ_lens, postes.PJ_names, postID FROM postes, user ens, module, etudiant WHERE ens.token = ? AND ens.idUser = etudiant.userID AND module.codeMod = postes.codeModule AND module.secID = etudiant.section AND NOT PJ = "" AND module.nom = '${module}'`
+            req = `SELECT postes.PJ_lens, postes.PJ_names, postID FROM postes, user ens, module, etudiant WHERE ens.token = ? AND ens.idUser = etudiant.userID AND module.codeMod = postes.codeModule AND module.secID = etudiant.section AND NOT PJ = "" AND module.nom = '${module}' order by postes.date DESC`
         }
         
         
@@ -536,7 +677,7 @@ io.on('connection', (socket) => {
         token = data[0] // ta3 le prof
         module = data[1] // nom module 
         secID = data[2]
-        req = `SELECT postes.PJ_lens, postes.PJ_names, postID FROM postes, module WHERE module.nom = '${module}' AND module.secID = '${secID}' AND module.codeMod = postes.codeModule`
+        req = `SELECT postes.PJ_lens, postes.PJ_names, postID FROM postes, module WHERE module.nom = '${module}' AND module.secID = '${secID}' AND module.codeMod = postes.codeModule  order by postes.date DESC`
         
         connection.query(req, [token], function(err, result, fields){
             if(err){
@@ -774,6 +915,112 @@ io.on('connection', (socket) => {
             }
             , 1500);
         }
+    })
+
+    socket.on("changePDP", (data) => {
+        token = data[0]
+        file = data[1]
+        fb = Buffer.from(file, 'base64');
+        req = "UPDATE user SET photo = ? WHERE token = ?"
+        connection.query(req, [fb, token], function(err, result, fields){
+            if(err){
+                console.log(err.message);
+            }
+        })
+        socket.emit("success", 1)
+    })
+
+    socket.on("changeInfo", (data) =>{
+        token = data[0]
+        num = data[1]
+        mail = data[2]
+        pass = data[3]
+        newPass = data[4]
+
+        req = "SELECT password FROM user WHERE token = ?"
+        connection.query(req, [token], function(err, result, fields){
+            if(err){
+                console.log(err.message);
+            }
+            bcrypt.compare(pass, result[0].password, function(err, res) {
+                if(res){
+                    if(newPass != ""){
+                        bcrypt.hash(newPass, salt, function(err, hash) {
+                            req = "UPDATE user SET password = ? WHERE token = ?"
+                            connection.query(req, [hash, token], function(err, result, fields){
+                                if(err){
+                                    console.log(err.message);
+                                }
+                                socket.emit("success", 1)
+                            })
+                        })
+                    }
+
+                    if(mail || num ){ 
+                        req = `UPDATE user SET ${mail ? "email = ?" : ""} ${num ? `${mail? ",":""} phone = ?`: ""} WHERE token = ?`
+                        data = mail && num ? [mail, num] : mail ? [mail] : [num]
+                        data.push(token)
+                        connection.query(req, data, function(err, result, fields){
+                            if(err){
+                                console.log(err.message);
+                            }
+                            socket.emit("success", 1)
+                        })
+                    }else if(newPass == ""){
+                        socket.emit("success", 0)
+                    }
+
+                }else{
+                    socket.emit("success", 0)
+                }
+            })
+        })
+                    
+
+
+        
+    })
+
+    socket.on("dolSend", (data)=>{
+        token = data[0]
+        title = data[1]
+        content = data[2]
+
+        req = "SELECT idUser FROM user WHERE token = ?"
+        connection.query(req, [token], function(err, result, fields){
+            if(err){
+                console.log(err.message);
+            }
+            req = "INSERT INTO doleances (etudiant, titre, content) VALUES (?,?,?)"
+            connection.query(req, [result[0].idUser, title, content], function(err, result, fields){
+                if(err){
+                    console.log(err.message);
+                }
+            })
+        })
+
+
+    })
+
+    socket.on("getDoleances", ()=>{
+        req = "SELECT user.nom, user.prenom, etudiant.matricule, section.specialite, section.niveau, doleances.date, doleances.titre, doleances.content, doleances.dol_id FROM doleances, etudiant, user, section WHERE doleances.etudiant = etudiant.matricule AND etudiant.userID = user.idUser AND section.idSec = etudiant.section"
+        connection.query(req, function(err, result, fields){
+            if(err){
+                console.log(err.message);
+            }
+
+            socket.emit("getDoleances", result)
+        })
+    })
+
+    socket.on("deleteDoleance", (id)=>{
+        req = "DELETE FROM doleances WHERE dol_id = ?"
+        connection.query(req, [id], function(err, result, fields){
+            if(err){
+                console.log(err.message);
+            }
+
+        })
     })
 });
 

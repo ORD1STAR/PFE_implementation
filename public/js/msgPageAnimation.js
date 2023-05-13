@@ -175,6 +175,7 @@ function openChat(login, module, type){
         document.getElementById("P").classList.add("selected_TPTD")
     }
     function oc(data){
+        console.log(data);
         if(data[0] != "empty"){
             discutID = data[0][0]["discussionID"]
             hisPic = data[2]

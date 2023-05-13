@@ -178,25 +178,30 @@
             for(var module of modules){ //for each module in the modules array add a button to the module menu
                 cours = false
                 prfCours = ""
+                nprfCours = ""
                 td = false 
                 prfTd = ""
+                nprfTd = ""
                 tp = false
                 prfTp = "" 
+                nprfTp = ""
                 for(var types of data[2]){
                     if(types["codeMod"] == module["codeMod"]){ 
                         if(types["type"] == "cours"){
                             cours = true
                             prfCours = types["login"]
+                            nprfCours = types["n"] + " " + types["pn"]
                             
                         }
                         if(types["type"] == "td"){
                             td = true
                             prfTd = types["login"]
-                            
+                            nprfTd = types["n"] + " " + types["pn"]
                         }
                         if(types["type"] == "tp"){
                             tp = true
                             prfTp = types["login"]
+                            nprfTp = types["n"] + " " + types["pn"]
                             
                         }
                     }
@@ -205,9 +210,9 @@
                 <div class="TPTDmoduleSection closed">
                     <h3>${module["nom"]}</h3>
                     <p class="arrow">V</p>
-                    ${cours ? `<div class="moduleTPTD" onclick="openChat('${prfCours}', '${module["nom"]}', 1)"><h4>cours</h4><p>${prfCours}</p><p class="arrow">></p></div>` : ""}
-                    ${td ? `<div class="moduleTPTD" onclick="openChat('${prfTd}', '${module["nom"]}', 2)"><h4>TD</h4><p>${prfTd}</p><p class="arrow">></p></div>` : ""}
-                    ${tp ? `<div class="moduleTPTD" onclick="openChat('${prfTp}', '${module["nom"]}', 3)"><h4>TP</h4><p>${prfTp}</p><p class="arrow">></p></div>` : ""}
+                    ${cours ? `<div class="moduleTPTD" onclick="openChat('${prfCours}', '${module["nom"]}', 1)"><h4>cours</h4><p>${nprfCours}</p><p class="arrow">></p></div>` : ""}
+                    ${td ? `<div class="moduleTPTD" onclick="openChat('${prfTd}', '${module["nom"]}', 2)"><h4>TD</h4><p>${nprfTd}</p><p class="arrow">></p></div>` : ""}
+                    ${tp ? `<div class="moduleTPTD" onclick="openChat('${prfTp}', '${module["nom"]}', 3)"><h4>TP</h4><p>${nprfTp}</p><p class="arrow">></p></div>` : ""}
                 </div>
                 `
             }

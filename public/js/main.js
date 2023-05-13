@@ -45,13 +45,13 @@ profileSubMenuBtn.addEventListener("click", showProfileSubMenu)
 async function showProfileSubMenu() {
     profileSubMenuDiv = document.createElement('div');
     profileSubMenuDiv.innerHTML = `
-                <a href="#"><p>Espace Personnel</p></a>
+                <a href="/pagePersonelle"><p>Espace Personnel</p></a>
                 <a href="/msg"><p>Messagerie</p></a>
                 <a href="/edt"><p>Emploie du temps</p></a>
                 <a href="/notes"><p>Délibération</p></a>
                 <div class="delimiteur"></div>
                 <a href="#" onclick="showParametres()"><p>Parametres</p></a>
-                <a href="/disconnect"><p>se déconecter</p></a>`;
+                <a href="/disconnect"><p>se déconnecter</p></a>`;
     document.body.appendChild(profileSubMenuDiv)
     profileSubMenuDiv.classList.add('profileSubMenu');
     
@@ -351,6 +351,8 @@ function EnvoyerLePoste() {
         document.getElementById("postTitle").value = ""
         document.getElementById("postContent").value = ""
         document.getElementById("fileInput").value = ""
+        comvB = false
+        travB = false
         getPostsE(module)
         socket.emit("newPost", [secID, module])
     }
@@ -380,7 +382,7 @@ function download(id, name) {
         link.click()
     })
 }
-function writePoste(module, type, prof, content, postID, lens, names, date, comm, trav) {
+function writePoste(module, type, prof, content, postID, lens, names, date, comm, trav, role) {
     filtres = Array.from(document.querySelectorAll(".filterSelected"));
     let [titre, contenu] = content.split("##").filter(Boolean)
     for(var i = 0; i < filtres.length; i++) {
@@ -433,7 +435,7 @@ function writePoste(module, type, prof, content, postID, lens, names, date, comm
             <div class="postTop">
                 <div class="moduleTitleDiv">
                     <h3>${module}| ${type}</h3>
-                    <p>${prof}</p>
+                    <p ${role == "admin" ? "style='color:rgb(255, 102, 102);'" : ""}>${role == "admin" ? "Administrateur:" : ""} ${prof}</p>
                 </div>
                 <h3 class="postTitle">${titre}</h3>
             </div>
@@ -462,7 +464,7 @@ function writePoste(module, type, prof, content, postID, lens, names, date, comm
             --> 
             ${pjsHTML}
                         </div>
-                        <p style='padding:0;margin:0;margin-left:80%;color:grey;'> ${date}</p>
+                        <p id="postDate"> ${date}</p>
                         <div class="postBottomDiv">
                         ${commSec}
                         ${travSec}
@@ -586,7 +588,8 @@ function setPosts(posts){
     </div>
     `
     for(var post of posts){
-        writePoste(post["nom"], post["type"],  post["login"], post["contenu"], post["postID"], post["PJ_lens"], post["PJ_names"], post["date"], post["comm"], post["traveauRendre"])
+        nom = post.n + " " +post.pn
+        writePoste(post["nom"], post["type"],  nom, post["contenu"], post["postID"], post["PJ_lens"], post["PJ_names"], post["date"], post["comm"], post["traveauRendre"], post["role"])
     }
 }
 function getPosts(module){
@@ -605,7 +608,7 @@ function getPosts(module){
     })
 }
 
-function writePosteE(module, type, prof, content, postID, lens, names, date, comm, trav) {
+function writePosteE(module, type, prof, content, postID, lens, names, date, comm, trav, role) {
     let [titre, contenu] = content.split("##").filter(Boolean)
     pjsHTML = ""
     extended = ""
@@ -650,7 +653,7 @@ function writePosteE(module, type, prof, content, postID, lens, names, date, com
         <div class="postTop">
             <div class="moduleTitleDiv">
                 <h3>${module}| ${type}</h3>
-                <p>${prof}</p>
+                <p ${role == "admin" ? "style='color:rgb(255, 102, 102);'" : ""}>${role == "admin" ? "Administrateur:" : ""} ${prof}</p>
             </div>
             <h3 class="postTitle">${titre}</h3>
         </div>
@@ -787,7 +790,8 @@ function setPostsE(posts){
 
     
     for(var post of posts){
-        writePosteE(post["nom"], post["type"], post["login"], post["contenu"], post["postID"], post["PJ_lens"], post["PJ_names"], post["date"], post["comm"], post["traveauRendre"])
+        nom = post.n + " " +post.pn
+        writePosteE(post["nom"], post["type"], nom, post["contenu"], post["postID"], post["PJ_lens"], post["PJ_names"], post["date"], post["comm"], post["traveauRendre"], post["role"])
     }
 }
 function getPostsE(filtre){
@@ -801,6 +805,15 @@ function getPostsE(filtre){
     })
     socket.emit("getPostsE", [token, filtre, secID])
     socket.on("getPostsE", (data) => {
+        setPostsE(data)
+    })
+}
+
+function getPostsA(filtre){
+    secID = document.querySelectorAll('.selected_module')[0].id.split(" ")[0].replace("mod", "")
+    socket.emit("getPostsA", [filtre, secID])
+    socket.on("getPostsA", (data) => {
+        
         setPostsE(data)
     })
 }
