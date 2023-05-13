@@ -101,8 +101,10 @@
     margin: 10px;
 }
 
-.selectSectionWrapper select,
-.selectSectionWrapper select:focus {
+/* .selectSectionWrapper select,
+.selectSectionWrapper select:focus { */
+select,
+select.focus {
     outline: none;
     border: none;
     cursor: pointer;
@@ -238,6 +240,386 @@
 
 
 
+/*   Page de creation / affectation des notes   */
+
+.sectionIsHidden {
+    display: none !important;
+}
+
+
+/*      Partie Affectation des notes        */
+
+.normalContainer.affectationSelect {
+    margin: 20px 0px;
+    /* justify-content: space-evenly; */
+    justify-content: center;
+    align-items: center;
+}
+.normalContainer.affectationSelect h3 {
+    width: fit-content;
+    /* margin: 10px 5px 10px 10px; */
+    /* margin: 0px; */
+    margin: 10px;
+}
+
+.normalContainer.affectationSelect button {
+    background-color: var(--important);
+    border: none;
+    border-radius: var(--common_border_radius);
+    padding: 5px 10px;
+    color: white;
+    font-weight: bold;
+    height: fit-content;
+    font-size: 16px;
+    margin: 0px 10px;
+    cursor: pointer;
+}
+
+
+
+
+
+.normalContainer.affectationWrapper {
+    /* justify-content: center; */
+    width: fit-content;
+    flex-direction: column;
+    flex-wrap: nowrap;
+}
+
+.normalContainer.affectationWrapper button {
+    margin: 20px;
+    padding: 10px 20px;
+    background-color: var(--important);
+    color: white;
+    border: none;
+    border-radius: var(--common_border_radius);
+    cursor: pointer;
+}
+
+.normalContainer.affectationWrapper button:hover {
+    background-color: var(--important_interacted);
+}
+
+.normalContainer.affectationWrapper .affectationNoteElement {
+    margin: 10px;
+    background-color: var(--NeutralBackground);
+    border-radius: var(--common_border_radius);
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.affectationNoteElement .profilePicDiv {
+    min-width: 50px;
+    min-height: 50px;
+    background-color: var(--accent_Light);
+    border-radius: 50%;
+    margin: 10px 5px;
+}
+
+.affectationNoteElement .informationEtudiant {
+    max-width: 220px;
+    flex-grow: 1;
+}
+
+.affectationNoteElement .informationEtudiant h3 {
+    margin: 5px;
+    font-size: 16px;
+}
+
+.affectationNoteElement .informationEtudiant p {
+    margin: 5px;
+    color: var(--textColorMidBlack);
+    font-size: 14px;
+}
+
+.affectationNoteElement input {
+    display: block !important;
+    background-color: var(--NeutralBackground);
+    border: none;
+    border-radius: var(--common_border_radius);
+    padding: 10px;
+    font-size: 18px;
+    width: 6ch;
+    color: var(--textColorBlack);
+}
+
+.affectationNoteElement > h3 {
+    max-width: fit-content;
+    color: var(--textColorMidBlack) !important;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+/*    Partie Creation des notes      */
+
+.normalContainer {
+    position: relative;
+    background-color: var(--NeutralBackground);
+    width: 100%;
+    max-width: 700px;
+    border-radius: var(--common_border_radius);
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.normalContainer .createAffectationBtn {
+    flex-grow: 1;
+    border: none;
+    margin: 10px;
+    border-radius: var(--common_border_radius);
+    padding: 10px;
+    background-color: var(--NeutralBackground);
+    border: 1px solid var(--accent_Light);
+    color: var(--textColorBlack);
+    font-weight: bold;
+}
+
+.normalContainer .createAffectationBtn:hover {
+    background-color: var(--accent_Lighter);
+
+}
+
+.normalContainer .selectedBtn {
+    background-color: var(--accent_Light);
+    color: white;
+    border: none;
+}
+
+
+
+
+.adminNotesContainer {
+    background-color: var(--NeutralBackground);
+    border-radius: var(--common_border_radius);
+    /* width: 100%; */
+    max-width: 700px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px 0px;
+}
+
+.noteSlotElement {
+    background-color: var(--NeutralBackground);
+    border-radius: var(--common_border_radius);
+    /* width: calc(100% - 20px); */
+    margin: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+}
+
+.noteSlotElementElement {
+    margin: 8px 10px;
+    display: flex;
+    flex-grow: 1;
+}
+
+.noteSlotElement p {
+    padding: 10px 8px;
+    color: var(--textColorPureBlack);
+    margin: 0px;
+    display: block;
+}
+
+
+.noteSlotElementElement h3 {
+    margin: 5px;
+    color: var(--textColorBlack);
+    font-size: 14px;
+    align-self: center;
+}
+
+.noteSlotElementElement input {
+    display: none;
+    background-color: var(--neutralBackground_ontTOP);
+    border: none;
+    border-radius: var(--common_border_radius);
+    width: 100%;
+    padding: 10px 8px;
+}
+
+.noteSlotElementElement input[type="number"] {
+    width: 4ch;
+}
+
+.isEditMode .noteSlotElement p,
+.isEditMode .normalBtns {
+    display: none;
+}
+
+.editOnlyBtns {
+    display: none;
+}
+
+.isEditMode .noteSlotElement input,
+.isEditMode .optionBtnsDiv .editOnlyBtns {
+    display: block;
+}
+
+.adminNotesContainer .optionBtnsDiv {
+    width: 100%;
+    display: flex;
+}
+
+.adminNotesContainer .optionBtnsDiv .optionBtns {
+    margin: 5px;
+    flex-grow: 1;
+    background-color: var(--important);
+    border: none;
+    border-radius: var(--common_border_radius);
+    padding: 5px ;
+    color: white;
+}
+
+.adminNotesContainer .optionBtnsDiv .optionBtns:nth-child(1),
+.adminNotesContainer .optionBtnsDiv .optionBtns:nth-child(3),
+.adminNotesContainer .optionBtnsDiv .optionBtns:nth-child(5) {
+    background-color: var(--NeutralBackground);
+    border: 1px solid var(--important);
+    color: var(--textColorBlack);
+}
+
+.adminNotesContainer .optionBtnsDiv .optionBtns:hover {
+    background-color: var(--important_interacted);
+    color: white;
+    border: none;
+}
+
+
+
+
+
+.onlyWhenAjout {
+    display: none;
+}
+
+.isAjoutMode .onlyWhenAjout {
+    display: block;
+}
+
+.isAjoutMode .normalBtns {
+    display: none;
+}
+
+.adminNotesContainer.isAjoutMode .ajoutDraftDiv input{
+    display: block;
+}
+
+.adminNotesContainer.isAjoutMode .ajoutDraftDiv p {
+    display: none;
+}
+
+.adminNotesContainer.isAjoutMode .noteSlotElement {
+    width: calc(100% - 20px);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+/*      methode de calcule saisie section      */
+
+.normalContainer h3 {
+    width: 100%;
+    margin: 20px;
+    color: var(--textColorBlack);
+}
+
+.normalContainer p {
+    margin: 10px 20px 20px 20px;
+    color: var(--textColorPureBlack);
+}
+
+.normalContainer input {
+    display: none;
+}
+
+.normalContainer .methodeOptionBtnDiv {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    margin: 10px;
+    display: flex;
+    gap: 5px;
+}
+
+.normalContainer .methodeOptionBtnDiv .methodeOptionBtn {
+    padding: 5px 10px;
+    background-color: var(--important);
+    border: none;
+    border-radius: var(--common_border_radius);
+    color: white;
+}
+
+.normalContainer .methodeOptionBtnDiv .methodeOptionBtn:nth-child(2) {
+    background-color: var(--NeutralBackground);
+    border: 1px solid var(--important);
+    color: var(--textColorBlack);
+}
+
+.normalContainer .methodeOptionBtnDiv .editOnlyBtn {
+    display: none;
+}
+
+.normalContainer textarea {
+    width: 100%;
+    margin: 0px 10px 10px 10px;
+    border-radius: var(--common_border_radius);
+    background-color: var(--NeutralBackground);
+    border: none;
+    padding: 10px;
+    resize: none;
+    display: none;
+}
+
+.normalContainer textarea::placeholder {
+    color: var(--textColorMidBlack);
+}
+
+
+.normalContainer.isEditMode p {
+    display: none;
+}
+
+.normalContainer.isEditMode textarea {
+    display: block;
+}
+
+.normalContainer.isEditMode .methodeOptionBtnDiv .methodeOptionBtn {
+    display: none;
+}
+.normalContainer.isEditMode .methodeOptionBtnDiv .editOnlyBtn {
+    display: block;
+}
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -274,7 +656,32 @@
 
   
 
+    .noteSlotElementElement input[type="number"] {
+        width: 100%;
+    }
 
+    .noteSlotElementElement h3 {
+        width: 105px;
+    }
+
+
+
+
+    .affectationNoteElement .profilePicDiv {
+        min-width: 35px;
+        min-height: 35px;
+    }
+
+    .affectationNoteElement .informationEtudiant {
+    }
+    .affectationNoteElement .informationEtudiant h3 {
+        font-size: 14px;
+        max-width: 140px;
+    }
+    .affectationNoteElement .informationEtudiant p {
+        font-size: 12px;
+    }
+    
 
 }
 

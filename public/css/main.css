@@ -43,7 +43,7 @@ body {
 
     --important : var(--accent_Light);
     --important_Low : var(--accent_Light_05);
-    --important_interacted : var(--accent_Neutral_05);
+    --important_interacted : var(--accent_Dark);
 
     --NeutralBackground : var(--accent_Lighter_015);
     --neutralBackground_ontTOP : var(--accent_Light_01);
@@ -63,6 +63,11 @@ body {
     --TopBarSize : 70px
 }
 
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
 
 
 .leftMenu {

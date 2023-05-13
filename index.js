@@ -141,6 +141,9 @@ app.get("/notes", (req, res) => {
 app.get("/edt", (req, res) => {
     res.sendFile(path.join(__dirname, 'public/html/EDTpage.html'));
 })
+app.get("/Admin_Notes", (req, res) => {
+    res.sendFile(path.join(__dirname, 'public/html/Admin_Notes.html'));
+})
 app.get("/examen*", (reqs, res) => {
     examen = reqs.url.replace("/examen", "")
     console.log(examen);
