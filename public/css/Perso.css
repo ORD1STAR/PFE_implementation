@@ -409,7 +409,7 @@
     background-color: var(--important_interacted);
 }
 
-.doleancesTop input::placeholder,
+input::placeholder,
 .doleancesContainer textarea::placeholder {
     color: var(--textColorMidBlack);
 }

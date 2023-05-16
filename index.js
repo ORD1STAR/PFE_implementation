@@ -168,7 +168,7 @@ app.get("/edt", (req, res) => {
     
 })
 app.get("/examen*", (reqs, res) => {
-    if(req.cookies["token"] != undefined){
+    if(reqs.cookies["token"] != undefined){
         examen = reqs.url.replace("/examen", "")
         console.log(examen);
         req = "SELECT * FROM examens WHERE url = ?"
