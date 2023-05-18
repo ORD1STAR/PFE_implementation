@@ -35,10 +35,6 @@
                 <div class="notifDiv"></div>
             </div>
             <div class="moduleElement">
-                <p>Calendier</p>
-                <div class="notifDiv"></div>
-            </div>
-            <div class="moduleElement">
                 <p>Informations Personnels</p>
             </div>
             <div class="moduleElement">
@@ -67,7 +63,7 @@
             </div>
     
             <div class="profileDiv">
-                <img class="profilePicDiv" src="/icons/default_user.png">
+                <img class="profilePicDiv" id="pdp" src="/icons/default_user.png">
                 <div class="profileTextDiv">
                     <p id="nom">Hannoun</p>
                     <p id="prenom">Amar Amine</p>
@@ -243,12 +239,56 @@
                 <button>Enregister</button>
 
             </div>
-
         </div>
     </div>
 
     <script src="/js/main.js" defer></script>
     <script src="/js/noteCreationPage.js" defer></script>
 
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        //connection to the socket
+        socket = io()
+        socket.on('connect', () => {
+            socket.emit("connected", [document.cookie]) //get  the cookies with the connection socket
+        })
+
+
+        m = "<%= s %>"
+        alert(m)
+        socket.on('connectedEns', (data) => { //get the data from the server with the acknoledgement
+            login = data[0]["login"]            //get the login from the data
+            prenom = data[0]["prenom"]        //get the first part of the login (the prenom)
+            nom = data[0]["nom"]              //get the second part of the login (the nom)
+            pdp = data[0]["photo"]
+            if(pdp.byteLength != 0){                    //if the user has a profile picture
+                pdpB = new Blob([pdp])
+                url = URL.createObjectURL(pdpB)
+
+                document.getElementById("pdp").src = url
+            }
+            
+            
+            document.getElementById("nom").innerHTML = nom          //replace the nom with the right one
+            document.getElementById("prenom").innerHTML = prenom    //replace the prenom with the right one
+            document.getElementById("Section").innerHTML = "Sections"      //replace the section with the right one
+            
+            
+            //add the event listener to the module buttons to change the selected module
+            const modulesBtns = document.querySelectorAll('.moduleElement');
+            modulesBtns.forEach(moduleBtn => {
+                moduleBtn.addEventListener('click', () => {
+                    modulesBtns.forEach(moduleBtn => {moduleBtn.classList.remove("selected_module")})
+                    moduleBtn.classList.add("selected_module")
+                    // change the main part menu title
+                    document.getElementById("mainTitle").innerHTML = `Actualité ${moduleBtn.children[0].innerHTML}`
+                })
+            })
+            selected_module = document.querySelectorAll('.selected_module')[0].innerHTML;
+            
+            
+            
+        })
+    </script>
 </body>
 </html>

@@ -191,3 +191,7 @@
         right: 10px;
     }
 }
+
+.adminNotesContainer{
+    min-width: 100%;
+}

@@ -371,7 +371,6 @@ select.focus {
     display: flex;
     flex-wrap: wrap;
 }
-
 .normalContainer .createAffectationBtn {
     flex-grow: 1;
     border: none;
@@ -412,11 +411,12 @@ select.focus {
 .noteSlotElement {
     background-color: var(--NeutralBackground);
     border-radius: var(--common_border_radius);
-    /* width: calc(100% - 20px); */
+    width: calc(100% - 20px);
     margin: 10px;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-evenly;
+    /*width: 100%;*/
 }
 
 .noteSlotElementElement {
@@ -610,7 +610,12 @@ select.focus {
     display: block;
 }
 
-
+.general{
+    background-color: var(--neutralBackground);
+}
+.noteSlotElementElement{
+    justify-content: space-between;
+}
 
 
 

@@ -731,6 +731,7 @@ function writePosteE(module, type, prof, content, postID, lens, names, date, com
 
 }
 function setPostsE(posts){
+    codeMod = document.querySelectorAll('.selected_module')[0].id.split(" ")[1]
     postsDiv = document.getElementById("posts")
     postsDiv.innerHTML = `
     <div class="optionPost">
@@ -744,7 +745,7 @@ function setPostsE(posts){
                 <h3>Messagerie</h3>
                 <p>Contacter vos professeurs du module</p>
             </a>
-            <a href="/notes">
+            <a href="/notes/${codeMod}">
                 <h3>Notes</h3>
                 <p>Consulter vos notes d'évaluation</p>
             </a>

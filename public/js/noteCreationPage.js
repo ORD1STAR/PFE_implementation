@@ -57,13 +57,11 @@ function switchToNormalMode() {
 const noteSlotElmenetHTML = `
 <div class="noteSlotElementElement">
     <h3>Nom</h3>
-    <p>interrogation 1</p>
-    <input type="text">
+    <input type="text" id="newTitle">
 </div>
 <div class="noteSlotElementElement">
     <h3>Note maximale</h3>
-    <p>20</p>
-    <input type="number">
+    <input type="number" id="newMax">
 </div>
 `
 function ajouterNoteDraft() {
@@ -77,6 +75,19 @@ function ajouterNoteDraft() {
 function switchToAjoutMode() {
     containerCreation.classList.add('isAjoutMode');
     ajouterNoteDraft();
+}
+
+function addConfirm(mod){
+    title = document.getElementById('newTitle').value;
+    noteMax = document.getElementById('newMax').value;
+    if (title != '' && noteMax != '') {
+        socket.emit("addNote", {module:mod, title: title, noteMax: noteMax});
+        socket.on("success", (s) => {
+            if(s == 1){
+                cancelAjout()
+            }
+        })
+    }
 }
 
 function cancelAjout() {

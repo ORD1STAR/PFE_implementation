@@ -8,6 +8,7 @@ const cookieParser = require('cookie-parser')
 const salt = 14
 app.use(cookieParser())
 app.use(express.static(path.join(__dirname, 'public')))
+app.set('view engine', 'ejs');
 
 const nodemailer = require('nodemailer');
 
@@ -298,8 +299,7 @@ app.get("/listeEtudiants", (req, res) => {
         res.redirect("/login");
     }
 })
-app.get("/Admin_Notes", (req, res) => {
-    
+app.get("/notes/*", (req, res) => {
     if(req.cookies["token"] != undefined){
         token = req.cookies["token"];
         reqs = "SELECT role FROM user WHERE token = ?"
@@ -309,7 +309,33 @@ app.get("/Admin_Notes", (req, res) => {
             }
             if(result.length > 0){
                 if(result[0]["role"] == "enseignant"){
-                    res.sendFile(path.join(__dirname, 'public/html/Admin_Notes.html'));
+                    mod = req.url.replace("/notes/", "")
+                    reqs = "SELECT * FROM module WHERE codeMod = ?"
+                    connection.query(reqs, [mod], function(err, result, fields){
+                        if(err){
+                            console.log(err.message);
+                        }
+                        if(result.length > 0){
+
+                            reqs = "SELECT codeMod, title, max from note group by codeMod,title,max order by edited desc"
+                            connection.query(reqs, function(err, result2, fields){
+                                if(err){
+                                    console.log(err.message);
+                                }
+                                if(result2.length > 0){
+                                    myData = []
+                                    result2.forEach(element => {
+                                        d = {}
+                                        d["codeMod"] = element["codeMod"]
+                                        d["title"] = element["title"]
+                                        d["max"] = element["max"]
+                                        myData.push(d)
+                                    });
+                                    res.render("Admin_Notes.ejs", {data: myData, section:result[0]["secID"], module: mod})
+                                }
+                            })
+                        }else {res.redirect("/home");}
+                    })
                 }else{
                     res.redirect("/home");
                 }
@@ -1021,6 +1047,30 @@ io.on('connection', (socket) => {
             }
 
         })
+    })
+
+    socket.on("addNote", (data) => { 
+        module = data.module
+        title = data.title
+        noteMax = data.noteMax
+        console.log(module);
+        req = "SELECT matricule FROM etudiant, module WHERE etudiant.section = module.secID AND module.codeMod = ?"
+        connection.query(req, [module], function(err, matricules, fields){
+            if(err){
+                console.log(err.message);
+            }
+            matricules.forEach(matricule => {
+                req = "INSERT INTO note (codeMod, matricule, title, max) VALUES (?,?,?,?)"
+                connection.query(req, [module, matricule.matricule, title, noteMax], function(err, result, fields){
+                    if(err){
+                        console.log(err.message);
+                    }else{
+                        socket.emit("success", 1)
+                    }
+                })
+            });
+        })
+
     })
 });
 
