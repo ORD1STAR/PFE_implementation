@@ -612,7 +612,7 @@ function writePosteE(module, type, prof, content, postID, lens, names, date, com
     let [titre, contenu] = content.split("##").filter(Boolean)
     pjsHTML = ""
     extended = ""
-    commSec = comm == 1 ? `<button onclick="showCommentSection(${postID}, '${titre}')" class='commentSectionBtn'>Commenter</button>"` : ""
+    commSec = comm == 1 ? `<button onclick="showCommentSection(${postID}, '${titre}')" class='commentSectionBtn'>Commenter</button>` : ""
     travSec = trav == 1 ? "<button class='travSectionBtn'>Remettre le travail demandé</button>" : ""
     if(lens.split("/").length > 0 && lens != ""){
         lens = lens.split("/")
@@ -656,6 +656,7 @@ function writePosteE(module, type, prof, content, postID, lens, names, date, com
                 <p ${role == "admin" ? "style='color:rgb(255, 102, 102);'" : ""}>${role == "admin" ? "Administrateur:" : ""} ${prof}</p>
             </div>
             <h3 class="postTitle">${titre}</h3>
+            <p>${date}</p>
         </div>
         <div class="postCore${extended}">
         <div class="postText">
@@ -663,7 +664,7 @@ function writePosteE(module, type, prof, content, postID, lens, names, date, com
         </div>
         ${pjsHTML}
                     </div>
-                    <p style='padding:0;margin:0;margin-left:80%;color:grey;'> ${date}</p>
+                    
                     <div class="postBottomDiv">
                     ${commSec}
                     ${travSec}

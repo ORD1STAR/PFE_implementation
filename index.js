@@ -317,7 +317,8 @@ app.get("/notes/*", (req, res) => {
                         }
                         if(result.length > 0){
 
-                            reqs = "SELECT codeMod, title, max from note group by codeMod,title,max order by edited desc"
+                            reqs = `SELECT codeMod, title, max, noteID from note group by codeMod,title,max order by edited desc`
+                            console.log(`SELECT codeMod, title, max, noteID from note group by codeMod,title,max order by edited desc`);
                             connection.query(reqs, function(err, result2, fields){
                                 if(err){
                                     console.log(err.message);
@@ -325,11 +326,14 @@ app.get("/notes/*", (req, res) => {
                                 if(result2.length > 0){
                                     myData = []
                                     result2.forEach(element => {
-                                        d = {}
-                                        d["codeMod"] = element["codeMod"]
-                                        d["title"] = element["title"]
-                                        d["max"] = element["max"]
-                                        myData.push(d)
+                                        if(element["codeMod"] == mod){
+                                            d = {}
+                                            d["codeMod"] = element["codeMod"]
+                                            d["title"] = element["title"]
+                                            d["max"] = element["max"]
+                                            d["id"] = element["noteID"]
+                                            myData.push(d)
+                                        }
                                     });
                                     res.render("Admin_Notes.ejs", {data: myData, section:result[0]["secID"], module: mod})
                                 }
@@ -1053,15 +1057,15 @@ io.on('connection', (socket) => {
         module = data.module
         title = data.title
         noteMax = data.noteMax
-        console.log(module);
+        methode = data.methode
         req = "SELECT matricule FROM etudiant, module WHERE etudiant.section = module.secID AND module.codeMod = ?"
         connection.query(req, [module], function(err, matricules, fields){
             if(err){
                 console.log(err.message);
             }
             matricules.forEach(matricule => {
-                req = "INSERT INTO note (codeMod, matricule, title, max) VALUES (?,?,?,?)"
-                connection.query(req, [module, matricule.matricule, title, noteMax], function(err, result, fields){
+                req = "INSERT INTO note (codeMod, matricule, title, max, methode) VALUES (?,?,?,?,?)"
+                connection.query(req, [module, matricule.matricule, title, noteMax, methode], function(err, result, fields){
                     if(err){
                         console.log(err.message);
                     }else{
@@ -1071,6 +1075,66 @@ io.on('connection', (socket) => {
             });
         })
 
+    })
+
+    socket.on("updateNotes", (names, maxs, mod) => {
+        names.forEach(name => {
+            req = `UPDATE note SET title = ? WHERE title = ? AND max = ? AND codeMod = ?`
+            console.log(`UPDATE note SET title = ${name[1]} WHERE title = ${name[0]} AND max = ${name[2]} AND codeMod = '${mod}'`);
+            connection.query(req, [name[1], name[0], name[2], mod], function(err, result, fields){
+                if(err){
+                    console.log(err.message);
+                }
+            })
+        })
+        maxs.forEach(max => {
+            req = `UPDATE note SET max = ? WHERE max = ? AND title= ? AND codeMod = ?`
+            connection.query(req, [max[1], max[0], max[2], mod], function(err, result, fields){
+                if(err){
+                    console.log(err.message);
+                }
+            })
+        })
+
+        socket.emit("success", 1)
+
+    })
+
+    socket.on("getMethode", module => {
+        req = "SELECT title, methode FROM note WHERE codeMod = ? group by title"
+        connection.query(req, [module], function(err, result, fields){
+            if(err){
+                console.log(err.message);
+            }
+            if(result.length > 0){
+                socket.emit("getMethode", result[0].methode, result)
+            }
+            
+        })
+    })
+
+    socket.on("addMethode", (methode, module) => {
+        req = "UPDATE note SET methode = ? WHERE codeMod = ?"
+        console.log(`UPDATE note SET methode = ${methode} WHERE codeMod = ${module}`);
+        connection.query(req, [methode, module], function(err, result, fields){
+            if(err){
+                console.log(err.message);
+            }
+            socket.emit("success", 1)
+        })
+    })
+
+    socket.on("getEtudiants", (module, title)=>{
+        req = "SELECT nom, prenom, photo, etudiant.matricule, note.* FROM user, etudiant, note WHERE user.idUser = etudiant.userID AND etudiant.matricule = note.matricule AND note.codeMod = ? AND title = ?"
+        connection.query(req, [module, title], function(err, result, fields){
+            if(err){
+                console.log(err.message);
+            }
+            if(result.length > 0){
+                socket.emit("getEtudiants", result)
+            }
+            
+        })
     })
 });
 

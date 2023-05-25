@@ -84,7 +84,7 @@
                     <button onclick="switchToAjoutMode()" class="optionBtns normalBtns">Ajouter une note</button>
                     <!-- Btns edit mode -->
                     <button onclick="switchToNormalMode()" class="optionBtns editOnlyBtns">Annuler</button>
-                    <button class="optionBtns editOnlyBtns">Confirmer</button>
+                    <button onclick="editConfirm('<%=module%>')" class="optionBtns editOnlyBtns">Confirmer</button>
                     <!-- Btns ajout mode -->
                     <button onclick="cancelAjout()" class="optionBtns onlyWhenAjout">Annuler</button>
                     <button onclick="addConfirm('<%=module%>')" class="optionBtns onlyWhenAjout">Confirmer l'ajout</button>
@@ -94,12 +94,12 @@
 
             <div id="methodeDeCalcule" class="normalContainer">
                 <h3>Méthode de calcule</h3>
-                <p>Vous n'avez pas définie une méthode de calcule des moyennes</p>
-                <textarea cols="30" rows="3" placeholder="Aa"></textarea>
+                <p id="methodeTxt">Vous n'avez pas définie une méthode de calcule des moyennes</p>
+                <textarea cols="30" rows="3" placeholder="Aa" id="methode"></textarea>
                 <div class="methodeOptionBtnDiv">
                     <button onclick="methodeSwitchToEdit()" class="methodeOptionBtn">Modifier</button>
                     <button onclick="methodeSwitchToNormal()" class="methodeOptionBtn editOnlyBtn">Annuler</button>
-                    <button class="methodeOptionBtn editOnlyBtn">Confirmer</button>
+                    <button onclick="methodeConfirm('<%=module%>')" class="methodeOptionBtn editOnlyBtn">Confirmer</button>
                 </div>
             </div>
             
@@ -107,94 +107,18 @@
 
             <div class="normalContainer affectationSelect sectionIsHidden">
                 <h3>Note de : </h3>
-                <select >
-                    <option value="interrogation">interrogation</option>
-                    <option value="interrogation 2">interrogation 2</option>
-                    <option value="Examen">Examen</option>
-                    <option value="Moyenne">Moyenne</option>
+                <select id="notesS">
                 </select>
-                <button>Saisire</button>
+                <button onclick="getNotesEtudiants('<%=module%>')">Saisire</button>
             </div>
 
-            <div class="normalContainer affectationWrapper sectionIsHidden">
-                <div class="affectationNoteElement">
-                    <div class="profilePicDiv"></div>
-                    <div class="informationEtudiant">
-                        <h3>xxxxxxx yyyyyyy</h3>
-                        <p>2020123456789</p>
-                    </div>
-                    <input type="number" value="15">
-                    <h3>/20</h3>
-                </div>
-                <div class="affectationNoteElement">
-                    <div class="profilePicDiv"></div>
-                    <div class="informationEtudiant">
-                        <h3>xxxxxxxxxxxxxxx yyyyyyyyyyyyy</h3>
-                        <p>2020123456789</p>
-                    </div>
-                    <input type="number" value="15">
-                    <h3>/20</h3>
-                </div>
-                <div class="affectationNoteElement">
-                    <div class="profilePicDiv"></div>
-                    <div class="informationEtudiant">
-                        <h3>xxxxxxxxxxxxxxx yyyyyyy</h3>
-                        <p>2020123456789</p>
-                    </div>
-                    <input type="number" value="15">
-                    <h3>/20</h3>
-                </div>
-                <div class="affectationNoteElement">
-                    <div class="profilePicDiv"></div>
-                    <div class="informationEtudiant">
-                        <h3>xxxxxxxxxxxxxxx yyyyyyy</h3>
-                        <p>2020123456789</p>
-                    </div>
-                    <input type="number" value="15">
-                    <h3>/20</h3>
-                </div>
-                <div class="affectationNoteElement">
-                    <div class="profilePicDiv"></div>
-                    <div class="informationEtudiant">
-                        <h3>xxxxxxxxxxxxxxx yyyyyyy</h3>
-                        <p>2020123456789</p>
-                    </div>
-                    <input type="number" value="15">
-                    <h3>/20</h3>
-                </div>
-                <div class="affectationNoteElement">
-                    <div class="profilePicDiv"></div>
-                    <div class="informationEtudiant">
-                        <h3>xxxxxxxxxxxxxxx yyyyyyy</h3>
-                        <p>2020123456789</p>
-                    </div>
-                    <input type="number" value="15">
-                    <h3>/20</h3>
-                </div>
-                <div class="affectationNoteElement">
-                    <div class="profilePicDiv"></div>
-                    <div class="informationEtudiant">
-                        <h3>xxxxxxxxxxxxxxx yyyyyyy</h3>
-                        <p>2020123456789</p>
-                    </div>
-                    <input type="number" value="15">
-                    <h3>/20</h3>
-                </div>
-                <div class="affectationNoteElement">
-                    <div class="profilePicDiv"></div>
-                    <div class="informationEtudiant">
-                        <h3>xxxxxxxxxxxxxxx yyyyyyy</h3>
-                        <p>2020123456789</p>
-                    </div>
-                    <input type="number" value="15">
-                    <h3>/20</h3>
-                </div>
-                <button>Enregister</button>
+            <div class="normalContainer affectationWrapper sectionIsHidden" id="lsEtudiants">
+                
 
             </div>
         </div>
     </div>
-    <%md = "[";data.forEach(element => {md+="["; md += '`' + element.codeMod + "`,`" + element.title + "`," + element.max; md +="],"}); md+= "[]]"%>
+    <%md = "[";data.forEach(element => {md+="["; md += '`' + element.codeMod + "`,`" + element.title + "`,`" + element.max + "`,`" + element.id + "`"; md +="],"}); md+= "[]]"%>
     <script src="/js/main.js" defer></script>
     <script src="/js/noteCreationPage.js" defer></script>
 
@@ -237,7 +161,6 @@
             selected_module = document.querySelectorAll('.selected_module')[0].innerHTML;
             
         })
-        
         data = JSON.parse("<%=md%>".replaceAll("`", '"'))
         data.pop()
         general = false
@@ -249,32 +172,41 @@
                 <div class="noteSlotElement">
                     <div class="noteSlotElementElement">
                         <h3>Nom</h3>
-                        <p>${note[1]}</p>
-                        <input type="text" value="${note[1]}" style="color:var(--textColorBlack);">
+                        <p class='notesName ${note[3]}'>${note[1]}</p>
+                        <input class='editedName' type="text" value="${note[1]}" style="color:var(--textColorBlack);">
                     </div>
                     <div class="noteSlotElementElement">
                         <h3>Note maximale</h3>
-                        <p>${note[2]}</p>
-                        <input type="number" value="${note[2]}" style="color:var(--textColorBlack);">
+                        <p class='notesMax'>${note[2]}</p>
+                        <input class='editedMax' type="number" value="${note[2]}" style="color:var(--textColorBlack);">
                     </div>
                 </div>
                 `
             }
         })
-        if(general){
-            document.getElementById("adminNotesContainer").innerHTML += `
-            <div  class="noteSlotElement general">
-                <div class="noteSlotElementElement">
-                    <h3></h3>
-                    <p>Moyenne General</p>
-                </div>
-                <div class="noteSlotElementElement">
-                    <h3></h3>
-                    <p>/ 20</p>
-                </div>
+        document.getElementById("adminNotesContainer").innerHTML += `
+        <div  class="noteSlotElement general">
+            <div class="noteSlotElementElement">
+                <h3></h3>
+                <p>Moyenne General</p>
             </div>
-            `
-        }
+            <div class="noteSlotElementElement">
+                <h3></h3>
+                <p>/ 20</p>
+            </div>
+        </div>
+        `
+        socket.emit("getMethode", '<%=module%>')
+        socket.on("getMethode", (methode, notes) => {
+            if(methode != ""){
+                document.getElementById("methode").value = methode
+                document.getElementById("methodeTxt").innerHTML = methode
+                notes.forEach(note => {
+                    n = note.title
+                    document.getElementById("notesS").innerHTML += `<option value="${n}">${n}</option>`
+                })
+            }
+        })
         
         
         
