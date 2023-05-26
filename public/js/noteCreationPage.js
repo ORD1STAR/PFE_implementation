@@ -85,6 +85,20 @@ function addConfirm(mod){
         socket.emit("addNote", {module:mod, title: title, noteMax: noteMax, methode});
         socket.on("success", (s) => {
             if(s == 1){
+                document.getElementById("adminNotesContainer").innerHTML += `
+                <div class="noteSlotElement">
+                    <div class="noteSlotElementElement">
+                        <h3>Nom</h3>
+                        <p class='notesName'>${title}</p>
+                        <input class='editedName' type="text" value="${title}" style="color:var(--textColorBlack);">
+                    </div>
+                    <div class="noteSlotElementElement">
+                        <h3>Note maximale</h3>
+                        <p class='notesMax'>${noteMax}</p>
+                        <input class='editedMax' type="number" value="${noteMax}" style="color:var(--textColorBlack);">
+                    </div>
+                </div>
+                `
                 cancelAjout()
             }
         })
@@ -169,11 +183,39 @@ function methodeConfirm(mod){
 function getNotesEtudiants(mod){
     selected = document.getElementById("notesS").value
     socket.emit("getEtudiants", mod, selected)
-    socket.on("getEtudiants", (etudiants) => {
-        html = ""
-        etudiants.forEach(e => {
+    socket.on("getEtudiants", setStudents)
+}
+function setStudents(etudiants){
+    html = ""
+    etudiants.forEach(e => {
+        html += `
+        <div class="affectationNoteElement">
+          <div class="profilePicDiv"></div>
+          <div class="informationEtudiant">
+              <h3>${e.nom} ${e.prenom}</h3>
+              <p>${e.matricule}</p>
+          </div>
+          <input type="number" value="${e.moyenne}">
+          <h3>/${e.max}</h3>
+        </div>
+        `
+    })
+    html += `<button onclick='saveNotes("${etudiants[0].methode}")'>Enregister</button>`
+    socket.off("getEtudiants", setStudents)
+    document.getElementById("lsEtudiants").innerHTML = html
+}
 
-        })
+function saveNotes(methode){
+    notes = document.querySelectorAll(".affectationNoteElement")
+    notesToSave = []
+    notes.forEach(note => {
+        notesToSave.push([module, note.querySelector("p").innerHTML, note.querySelector("input").value, document.getElementById("notesS").value, methode])
+    })
+    socket.emit("editNotes", notesToSave)
+    socket.on("success", (s) => {
+        if(s == 1){
+            document.getElementById("lsEtudiants").innerHTML = ""
+        }
     })
 }
 

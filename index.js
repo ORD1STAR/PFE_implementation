@@ -318,7 +318,6 @@ app.get("/notes/*", (req, res) => {
                         if(result.length > 0){
 
                             reqs = `SELECT codeMod, title, max, noteID from note group by codeMod,title,max order by edited desc`
-                            console.log(`SELECT codeMod, title, max, noteID from note group by codeMod,title,max order by edited desc`);
                             connection.query(reqs, function(err, result2, fields){
                                 if(err){
                                     console.log(err.message);
@@ -1136,6 +1135,27 @@ io.on('connection', (socket) => {
             
         })
     })
+
+    socket.on("editNotes", (data)=>{
+
+        data.forEach(element => {
+            module = element[0]
+            matricule = element[1]
+            note = element[2]
+            title = element[3]
+            methode = element[4]
+
+            req = "UPDATE note SET moyenne = ? WHERE codeMod = ? AND matricule = ? AND title = ? AND methode = ?"
+            connection.query(req, [note, module, matricule, title, methode], function(err, result, fields){
+                if(err){
+                    console.log(err.message);
+                }
+                socket.emit("success", 1)
+            }
+            )}
+        )}
+    )
+
 });
 
 

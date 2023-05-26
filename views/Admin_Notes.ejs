@@ -125,6 +125,7 @@
     <script src="/socket.io/socket.io.js"></script>
     <script>
         //connection to the socket
+        module = "<%=module%>"
         socket = io()
         socket.on('connect', () => {
             socket.emit("connected", [document.cookie]) //get  the cookies with the connection socket
@@ -172,7 +173,7 @@
                 <div class="noteSlotElement">
                     <div class="noteSlotElementElement">
                         <h3>Nom</h3>
-                        <p class='notesName ${note[3]}'>${note[1]}</p>
+                        <p class='notesName'>${note[1]}</p>
                         <input class='editedName' type="text" value="${note[1]}" style="color:var(--textColorBlack);">
                     </div>
                     <div class="noteSlotElementElement">
@@ -184,18 +185,6 @@
                 `
             }
         })
-        document.getElementById("adminNotesContainer").innerHTML += `
-        <div  class="noteSlotElement general">
-            <div class="noteSlotElementElement">
-                <h3></h3>
-                <p>Moyenne General</p>
-            </div>
-            <div class="noteSlotElementElement">
-                <h3></h3>
-                <p>/ 20</p>
-            </div>
-        </div>
-        `
         socket.emit("getMethode", '<%=module%>')
         socket.on("getMethode", (methode, notes) => {
             if(methode != ""){
@@ -205,6 +194,7 @@
                     n = note.title
                     document.getElementById("notesS").innerHTML += `<option value="${n}">${n}</option>`
                 })
+                document.getElementById("notesS").innerHTML += '<option value="GENERALE">Moyenne General</option>'
             }
         })
         
