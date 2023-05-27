@@ -53,16 +53,6 @@
                         <h3>Messagerie</h3>
                         <p>Contacter vos professeurs du module</p>
                     </a>
-                    <a href="/notes">
-                        <h3>Notes</h3>
-                        <p>Consulter vos notes d'évaluation</p>
-                    </a>
-                </div>
-                <div id="filtreDiv" class="filterDiv">
-                    <h3>Filtrer :</h3>
-                    <button>Cours</button>
-                    <button class="filterSelected">TD</button>
-                    <button class="filterSelected">TP</button>
                 </div>
             </div>
             
@@ -83,18 +73,7 @@
 
         <h3>Travaux actuels</h3>
         <div class="travaux">
-            <div class="travauxElement">
-                <h3>Dev Web</h3>
-                <p>Tp3: les variables session</p>
-            </div>
-            <div class="travauxElement">
-                <h3>Dev Web</h3>
-                <p>Tp3: les variables session</p>
-            </div>
-            <div class="travauxElement">
-                <h3>Dev Web</h3>
-                <p>Tp3: les variables session</p>
-            </div>
+            
         </div>
 
         <div class="categorieDiv">
@@ -144,7 +123,6 @@
             prenom = data[0]["prenom"]    //get the first part of the login (the prenom)
             nom = data[0]["nom"]            //get the second part of the login (the nom)
             pdp = data[0]["photo"]
-            console.log(pdp);
             if(pdp.byteLength != 0){                    //if the user has a profile picture
                 pdpB = new Blob([pdp])
                 myURL = URL.createObjectURL(pdpB)
@@ -238,10 +216,6 @@
                     <a href="/msg">
                         <h3>Messagerie</h3>
                         <p>Contacter vos professeurs du module</p>
-                    </a>
-                    <a href="/notes">
-                        <h3>Notes</h3>
-                        <p>Consulter vos notes d'évaluation</p>
                     </a>
                 </div>
             </div>

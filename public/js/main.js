@@ -33,6 +33,8 @@ function addOrUpdateCookie(name, value) {
   
 
 var postsVar
+limit = 10
+onMod = ""
 filtresVar = [true, true, true]
 
 // Profile SubMenu Handler
@@ -382,7 +384,7 @@ function download(id, name) {
         link.click()
     })
 }
-function writePoste(module, type, prof, content, postID, lens, names, date, comm, trav, role) {
+function writePoste(module, type, prof, content, postID, lens, names, date, comm, trav, deadline, role, n) {
     filtres = Array.from(document.querySelectorAll(".filterSelected"));
     let [titre, contenu] = content.split("##").filter(Boolean)
     for(var i = 0; i < filtres.length; i++) {
@@ -393,7 +395,7 @@ function writePoste(module, type, prof, content, postID, lens, names, date, comm
         pjsHTML = ""
         extended = ""
         commSec = comm == 1 ? `<button onclick="showCommentSection(${postID}, '${titre}')" class='commentSectionBtn'>Commenter</button>` : ""
-        travSec = trav == 1 ? "<button class='submitTravailBtn'>Remettre le travail demandé</button>" : ""
+        travSec = trav == 1 ? `<button class='travSectionBtn ${deadline} ${n}'>deadline:</button>` : ""
         if(lens.split("/").length > 0 && lens != ""){
             lens = lens.split("/")
             names = names.split("/")
@@ -430,7 +432,7 @@ function writePoste(module, type, prof, content, postID, lens, names, date, comm
         dateA[1] = dateA[1].split(":")
         date = dateA[0] + " " + dateA[1][0] + ":" + dateA[1][1]
         postsDiv.innerHTML += `
-        <div class="postElement">
+        <div class="postElement" id="post${n}">
         
             <div class="postTop">
                 <div class="moduleTitleDiv">
@@ -557,6 +559,7 @@ function writePoste(module, type, prof, content, postID, lens, names, date, comm
                 rightOptionPosts.classList.add('visibleCategorieDiv')
             }
         }
+
     })
 
 }
@@ -587,13 +590,23 @@ function setPosts(posts){
         </div>
     </div>
     `
+    np = 0
     for(var post of posts){
+        np += 1
         nom = post.n + " " +post.pn
-        writePoste(post["nom"], post["type"],  nom, post["contenu"], post["postID"], post["PJ_lens"], post["PJ_names"], post["date"], post["comm"], post["traveauRendre"], post["role"])
+        writePoste(post["nom"], post["type"],  nom, post["contenu"], post["postID"], post["PJ_lens"], post["PJ_names"], post["date"], post["comm"], post["traveauRendre"], post["deadline"], post["role"], np)
     }
+    updateTimes()
+    setTravaux()
 }
 function getPosts(module){
     token = ""
+    if(onMod==module){
+        limit += 5
+    }else{
+        limit = 10
+    }
+    onMod = module
     cookies = document.cookie.split('; ')
     cookies.forEach(function(c){
         if(c.startsWith('token=')){
@@ -601,19 +614,36 @@ function getPosts(module){
         }
     })
     
-    socket.emit("getPosts", [module, token])
+    socket.emit("getPosts", [module, token, limit])
     socket.on("getPosts", (data) => {
         postsVar = data
         setPosts(data)
     })
+    window.addEventListener('scroll', function() {
+        // Calculate the scroll position
+        const scrollPosition = window.scrollY;
+        
+        // Calculate the total height of the page
+        const pageHeight = document.documentElement.scrollHeight - window.innerHeight;
+        
+        // Check if the user has scrolled to the bottom of the page
+        if (scrollPosition === pageHeight) {
+          console.log('gg'); // Display the message in the console
+        }
+      });
+      
+      
 }
 
-function writePosteE(module, type, prof, content, postID, lens, names, date, comm, trav, role) {
+function writePosteE(module, type, prof, content, postID, lens, names, date, comm, trav, deadline, role) {
+      
+    
     let [titre, contenu] = content.split("##").filter(Boolean)
     pjsHTML = ""
     extended = ""
     commSec = comm == 1 ? `<button onclick="showCommentSection(${postID}, '${titre}')" class='commentSectionBtn'>Commenter</button>` : ""
-    travSec = trav == 1 ? "<button class='travSectionBtn'>Remettre le travail demandé</button>" : ""
+    travSec = trav == 1 ? `<button class='travSectionBtn ${deadline}'>Deadline:</button>` : ""
+    
     if(lens.split("/").length > 0 && lens != ""){
         lens = lens.split("/")
         names = names.split("/")
@@ -686,6 +716,8 @@ function writePosteE(module, type, prof, content, postID, lens, names, date, com
         </div>
     </div>
     `
+    
+    // Mettez à jour le compte à rebours toutes les secondes
     pjB = document.querySelectorAll(".pieceJointeElement");
     pjB.forEach(pja => {
         pja.addEventListener('click', (e) => {
@@ -728,6 +760,7 @@ function writePosteE(module, type, prof, content, postID, lens, names, date, com
                     rightOptionPosts.classList.add('visibleCategorieDiv')
                 }
             }
+
         })
 
 }
@@ -750,12 +783,6 @@ function setPostsE(posts){
                 <h3>Notes</h3>
                 <p>Consulter vos notes d'évaluation</p>
             </a>
-        </div>
-        <div id="filtreDiv" class="filterDiv">
-            <h3>Filtrer :</h3>
-            <button>Cours</button>
-            <button class="filterSelected">TD</button>
-            <button class="filterSelected">TP</button>
         </div>
     </div>
 
@@ -793,8 +820,9 @@ function setPostsE(posts){
     
     for(var post of posts){
         nom = post.n + " " +post.pn
-        writePosteE(post["nom"], post["type"], nom, post["contenu"], post["postID"], post["PJ_lens"], post["PJ_names"], post["date"], post["comm"], post["traveauRendre"], post["role"])
+        writePosteE(post["nom"], post["type"], nom, post["contenu"], post["postID"], post["PJ_lens"], post["PJ_names"], post["date"], post["comm"], post["traveauRendre"], post["deadline"], post["role"])
     }
+    updateTimes()
 }
 function getPostsE(filtre){
     secID = document.querySelectorAll('.selected_module')[0].id.split(" ")[0].replace("mod", "")
@@ -817,5 +845,46 @@ function getPostsA(filtre){
     socket.on("getPostsA", (data) => {
         
         setPostsE(data)
+    })
+}
+
+function updateTimes(){
+    document.querySelectorAll(".travSectionBtn").forEach((btn) => {
+        const now = new Date().getTime(); // Obtenez le temps actuel en millisecondes
+        const then = new Date(btn.classList[1]).getTime() ; // Obtenez le temps de fin en millisecondes
+        const timeRemaining = then-now; // Calculer le temps restant en millisecondes
+        if(timeRemaining > 0){
+            const days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
+            btn.innerHTML = `deadline: ${days} jours, ${hours<10 ? "0" + hours : hours}:${minutes<10 ? "0" + minutes : minutes}:${seconds<10 ? "0" + seconds : seconds}  restantes`
+        }else{
+            const date = (new Date(then).getDay() < 10 ? "0" + new Date(then).getDay() : new Date(then).getDay()) + "/" + (new Date(then).getMonth() < 10 ? "0" + new Date(then).getMonth() : new Date(then).getMonth()) + "/" + new Date(then).getFullYear()
+            const heure =  (new Date(then).getHours()<10? "0"+new Date(then).getHours() : new Date(then).getHours()) + ":" + (new Date(then).getMinutes()<10? "0"+new Date(then).getMinutes() : new Date(then).getMinutes())
+            btn.innerHTML = `deadline: expirée le ${date} a ${heure}`
+        }
+    })
+    setTimeout(() => {
+        updateTimes()
+    }, 1000);
+}
+function setTravaux(){
+    travaux = document.querySelectorAll(".travaux")[0]
+    travaux.innerHTML = ""
+    document.querySelectorAll(".travSectionBtn").forEach((btn) => {
+        document.querySelectorAll(`.post${btn.classList[2]}`)[0]
+        module = postsVar[btn.classList[2]-1].nom
+        title = postsVar[btn.classList[2]-1].contenu.split("##")[1]
+        
+        travaux.innerHTML += `
+        <div class="travauxElement" onclick="#post${btn.classList[2]}">
+            <a style="text-decoration:none;" href="#post${btn.classList[2]}">
+            <h3>${module}</h3>
+            <p>${title}</p>
+            </a>
+        </div>
+        `
+        
     })
 }

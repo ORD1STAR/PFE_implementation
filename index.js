@@ -44,7 +44,17 @@ io = require('socket.io')(http, {maxHttpBufferSize:1*1024*1024*10});
 
 app.get('/', (req, res) => {
     if(req.cookies["token"]){
-        res.redirect("/home");
+        reqs = "SELECT * FROM user WHERE token= ?"
+        connection.query(reqs, [req.cookies["token"]], function(err, result, fields){
+            if(err){
+                console.log(err.message);
+            }
+            if(result.length>0){
+                res.redirect("/home");
+            }else{
+                res.redirect("/login");
+            }
+        })
     }else{
         res.redirect("/login");
     }
@@ -130,7 +140,17 @@ app.get('/home', (req, res) => {
             }
         })
     }else if(req.cookies["token"] != undefined){
-        res.sendFile(path.join(__dirname, 'public/html/main.html'));
+        reqs = "SELECT * FROM user WHERE token= ?"
+        connection.query(reqs, [req.cookies["token"]], function(err, result, fields){
+            if(err){
+                console.log(err.message);
+            }
+            if(result.length>0){
+                res.sendFile(path.join(__dirname, 'public/html/main.html'));
+            }else{
+                res.redirect("/login");
+            }
+        })
     }else{
         res.redirect("/login");
     }
@@ -138,7 +158,18 @@ app.get('/home', (req, res) => {
 });
 app.get('/files', (req, res) => {
     if(req.cookies["token"] != undefined){
-        res.sendFile(path.join(__dirname, 'public/html/Fichiers.html'));
+        reqs = "SELECT * FROM user WHERE token= ?"
+        connection.query(reqs, [req.cookies["token"]], function(err, result, fields){
+            if(err){
+                console.log(err.message);
+            }
+            if(result.length>0){
+                res.sendFile(path.join(__dirname, 'public/html/Fichiers.html'));
+            }else{
+                res.redirect("/login");
+            }
+        })
+        
     }else{
         res.redirect("/login");
     }
@@ -147,7 +178,18 @@ app.get('/files', (req, res) => {
 app.get('/msg', (req, res) => {
     
     if(req.cookies["token"] != undefined){
-        res.sendFile(path.join(__dirname, 'public/html/msgSection.html'));
+        reqs = "SELECT * FROM user WHERE token= ?"
+        connection.query(reqs, [req.cookies["token"]], function(err, result, fields){
+            if(err){
+                console.log(err.message);
+            }
+            if(result.length>0){
+                res.sendFile(path.join(__dirname, 'public/html/msgSection.html'));
+            }else{
+                res.redirect("/login");
+            }
+        })
+        
     }else{
         res.redirect("/login");
     }
@@ -155,14 +197,36 @@ app.get('/msg', (req, res) => {
 app.get("/notes", (req, res) => {
     
     if(req.cookies["token"] != undefined){
-        res.sendFile(path.join(__dirname, 'public/html/Notes.html'));
+        
+        reqs = "SELECT * FROM user WHERE token= ?"
+        connection.query(reqs, [req.cookies["token"]], function(err, result, fields){
+            if(err){
+                console.log(err.message);
+            }
+            if(result.length>0){
+                res.sendFile(path.join(__dirname, 'public/html/Notes.html'));
+            }else{
+                res.redirect("/login");
+            }
+        })
     }else{
         res.redirect("/login");
     }
 })
 app.get("/edt", (req, res) => {
     if(req.cookies["token"] != undefined){
-        res.sendFile(path.join(__dirname, 'public/html/EDTpage.html'));
+        
+        reqs = "SELECT * FROM user WHERE token= ?"
+        connection.query(reqs, [req.cookies["token"]], function(err, result, fields){
+            if(err){
+                console.log(err.message);
+            }
+            if(result.length>0){
+                res.sendFile(path.join(__dirname, 'public/html/EDTpage.html'));
+            }else{
+                res.redirect("/login");
+            }
+        })
     }else{
         res.redirect("/login");
     }
@@ -170,18 +234,29 @@ app.get("/edt", (req, res) => {
 })
 app.get("/examen*", (reqs, res) => {
     if(reqs.cookies["token"] != undefined){
-        examen = reqs.url.replace("/examen", "")
-        console.log(examen);
-        req = "SELECT * FROM examens WHERE url = ?"
-        connection.query(req, [examen], function(err, result, fields){
+        reqs = "SELECT * FROM user WHERE token= ?"
+        connection.query(reqs, [req.cookies["token"]], function(err, result, fields){
             if(err){
                 console.log(err.message);
             }
-            if(result.length > 0){
-                res.cookie('exam', examen, { maxAge: 1000*60*60*24 });
-                res.sendFile(path.join(__dirname, 'public/html/exams.html'));
+            if(result.length>0){
+
+                examen = reqs.url.replace("/examen", "")
+                console.log(examen);
+                req = "SELECT * FROM examens WHERE url = ?"
+                connection.query(req, [examen], function(err, result, fields){
+                    if(err){
+                        console.log(err.message);
+                    }
+                    if(result.length > 0){
+                        res.cookie('exam', examen, { maxAge: 1000*60*60*24 });
+                        res.sendFile(path.join(__dirname, 'public/html/exams.html'));
+                    }else{
+                        res.redirect("/home");
+                    }
+                })
             }else{
-                res.redirect("/home");
+                res.redirect("/login");
             }
         })
         
@@ -252,7 +327,18 @@ app.get("/password", (req, res) => {
 })
 app.get("/pagePersonelle", (req, res) => {
     if(req.cookies["token"] != undefined){
-        res.sendFile(path.join(__dirname, 'public/html/pagePerso.html'));
+        
+        reqs = "SELECT * FROM user WHERE token= ?"
+        connection.query(reqs, [req.cookies["token"]], function(err, result, fields){
+            if(err){
+                console.log(err.message);
+            }
+            if(result.length>0){
+                res.sendFile(path.join(__dirname, 'public/html/pagePerso.html'));
+            }else{
+                res.redirect("/login");
+            }
+        })
     }else{
         res.redirect("/login");
     }
@@ -260,18 +346,30 @@ app.get("/pagePersonelle", (req, res) => {
 })
 app.get("/Admin_Doleances", (req, res) => {
     if(req.cookies["token"] != undefined){
-        token = req.cookies["token"];
-        reqs = "SELECT role FROM user WHERE token = ?"
-        connection.query(reqs, [token], function(err, result, fields){
+        reqs = "SELECT * FROM user WHERE token= ?"
+        connection.query(reqs, [req.cookies["token"]], function(err, result, fields){
             if(err){
                 console.log(err.message);
             }
-            if(result.length > 0){
-                if(result[0]["role"] == "admin"){
-                    res.sendFile(path.join(__dirname, 'public/html/Admin_Doleances.html'));
-                }else{
-                    res.redirect("/home");
-                }
+            if(result.length>0){
+                
+                
+                token = req.cookies["token"];
+                reqs = "SELECT role FROM user WHERE token = ?"
+                connection.query(reqs, [token], function(err, result, fields){
+                    if(err){
+                        console.log(err.message);
+                    }
+                    if(result.length > 0){
+                        if(result[0]["role"] == "admin"){
+                            res.sendFile(path.join(__dirname, 'public/html/Admin_Doleances.html'));
+                        }else{
+                            res.redirect("/home");
+                        }
+                    }
+                })
+            }else{
+                res.redirect("/login");
             }
         })
     }else{
@@ -281,69 +379,94 @@ app.get("/Admin_Doleances", (req, res) => {
 app.get("/listeEtudiants", (req, res) => {
     
     if(req.cookies["token"] != undefined){
-        token = req.cookies["token"];
-        reqs = "SELECT role FROM user WHERE token = ?"
-        connection.query(reqs, [token], function(err, result, fields){
+        reqs = "SELECT * FROM user WHERE token= ?"
+        connection.query(reqs, [req.cookies["token"]], function(err, result, fields){
             if(err){
                 console.log(err.message);
             }
-            if(result.length > 0){
-                if(result[0]["role"] == "admin"){
-                    res.sendFile(path.join(__dirname, 'public/html/listeEtudiants.html'));
-                }else{
-                    res.redirect("/home");
-                }
+            if(result.length>0){
+                token = req.cookies["token"];
+                reqs = "SELECT role FROM user WHERE token = ?"
+                connection.query(reqs, [token], function(err, result, fields){
+                    if(err){
+                        console.log(err.message);
+                    }
+                    if(result.length > 0){
+                        if(result[0]["role"] == "admin"){
+                            res.sendFile(path.join(__dirname, 'public/html/listeEtudiants.html'));
+                        }else{
+                            res.redirect("/home");
+                        }
+                    }
+                })
+            }else{
+                res.redirect("/login");
             }
         })
+        
     }else{
         res.redirect("/login");
     }
 })
 app.get("/notes/*", (req, res) => {
     if(req.cookies["token"] != undefined){
-        token = req.cookies["token"];
-        reqs = "SELECT role FROM user WHERE token = ?"
-        connection.query(reqs, [token], function(err, result, fields){
+
+        reqs = "SELECT * FROM user WHERE token= ?"
+        connection.query(reqs, [req.cookies["token"]], function(err, result, fields){
             if(err){
                 console.log(err.message);
             }
-            if(result.length > 0){
-                if(result[0]["role"] == "enseignant"){
-                    mod = req.url.replace("/notes/", "")
-                    reqs = "SELECT * FROM module WHERE codeMod = ?"
-                    connection.query(reqs, [mod], function(err, result, fields){
-                        if(err){
-                            console.log(err.message);
-                        }
-                        if(result.length > 0){
-
-                            reqs = `SELECT codeMod, title, max, noteID from note group by codeMod,title,max order by edited desc`
-                            connection.query(reqs, function(err, result2, fields){
+            if(result.length>0){
+                
+                
+                token = req.cookies["token"];
+                reqs = "SELECT role FROM user WHERE token = ?"
+                connection.query(reqs, [token], function(err, result, fields){
+                    if(err){
+                        console.log(err.message);
+                    }
+                    if(result.length > 0){
+                        if(result[0]["role"] == "enseignant"){
+                            mod = req.url.replace("/notes/", "")
+                            reqs = "SELECT * FROM module WHERE codeMod = ?"
+                            connection.query(reqs, [mod], function(err, result, fields){
                                 if(err){
                                     console.log(err.message);
                                 }
-                                if(result2.length > 0){
-                                    myData = []
-                                    result2.forEach(element => {
-                                        if(element["codeMod"] == mod){
-                                            d = {}
-                                            d["codeMod"] = element["codeMod"]
-                                            d["title"] = element["title"]
-                                            d["max"] = element["max"]
-                                            d["id"] = element["noteID"]
-                                            myData.push(d)
+                                if(result.length > 0){
+        
+                                    reqs = `SELECT codeMod, title, max, noteID from note group by codeMod,title,max order by edited desc`
+                                    connection.query(reqs, function(err, result2, fields){
+                                        if(err){
+                                            console.log(err.message);
                                         }
-                                    });
-                                    res.render("Admin_Notes.ejs", {data: myData, section:result[0]["secID"], module: mod})
-                                }
+                                        if(result2.length > 0){
+                                            myData = []
+                                            result2.forEach(element => {
+                                                if(element["codeMod"] == mod){
+                                                    d = {}
+                                                    d["codeMod"] = element["codeMod"]
+                                                    d["title"] = element["title"]
+                                                    d["max"] = element["max"]
+                                                    d["id"] = element["noteID"]
+                                                    myData.push(d)
+                                                }
+                                            });
+                                            res.render("Admin_Notes.ejs", {data: myData, section:result[0]["secID"], module: mod})
+                                        }
+                                    })
+                                }else {res.redirect("/home");}
                             })
-                        }else {res.redirect("/home");}
-                    })
-                }else{
-                    res.redirect("/home");
-                }
+                        }else{
+                            res.redirect("/home");
+                        }
+                    }
+                })
+            }else{
+                res.redirect("/login");
             }
         })
+
     }else{
         res.redirect("/login");
     }
@@ -371,9 +494,9 @@ app.get("/disconnect", (req, res) => {
 //})
 
 
-
+timeouts = {}
 io.on('connection', (socket) => {
-
+    
     socket.on('connected', (cookie) => {
         var token
         cookies = cookie[0].split('; ')
@@ -398,6 +521,9 @@ io.on('connection', (socket) => {
                             console.log("+ student connected> " + result1[0]["login"]);
                             socket.join(result1[0]["login"])
                             socket.join(String(result1[0]["idSec"]))
+                            if([...socket.rooms][1] in timeouts){
+                                clearTimeout(timeouts[[...socket.rooms][1]])
+                            }
                             connection.query("SELECT nom, codeMod FROM module WHERE secID=?", [result1[0]["idSec"]], function(err, result2, fields){
                                 if(err){
                                     console.log(err.message);
@@ -423,6 +549,9 @@ io.on('connection', (socket) => {
                         if(result1.length > 0){
                             console.log("+ teacher connected> " + result1[0]["login"]);
                             socket.join(result1[0]["login"])
+                            if([...socket.rooms][1] in timeouts){
+                                clearTimeout(timeouts[[...socket.rooms][1]])
+                            }
                             connection.query("SELECT idSec, module.nom, niveau, specialite, codeMod, type FROM module, section, typeModule WHERE typeModule.module = module.codeMod AND enseignantID = ? AND module.secID = section.idSec group by codeMod", [result1[0]["idUser"]], function(err, result2, fields){
                                 
                                 if(err){
@@ -452,6 +581,9 @@ io.on('connection', (socket) => {
                         if(result1.length > 0){
                             console.log("+ admin connected> " + result1[0]["login"]);
                             socket.join(result1[0]["login"])
+                            if([...socket.rooms][1] in timeouts){
+                                clearTimeout(timeouts[[...socket.rooms][1]])
+                            }
                             connection.query("SELECT idSec, module.nom, niveau, specialite, codeMod, type FROM module, section, typeModule WHERE typeModule.module = module.codeMod AND module.secID = section.idSec group by codeMod", [], function(err, result2, fields){
                                 
                                 if(err){
@@ -473,16 +605,15 @@ io.on('connection', (socket) => {
                     })
                 }
             }
-
         })
-    
-    }); // TODO: je dois travailler sur EDT + travaux actuels
+        
+    }); 
 
     socket.on("getPosts", (data) => {
         args = []
         if(data[0] == "General"){
             req = `
-            SELECT prf.login, prf.nom as n, prf.prenom as pn, prf.role, postes.contenu, postes.postID, postes.PJ_lens, postes.PJ_names, module.nom, type, postes.date, postes.comm, postes.traveauRendre
+            SELECT prf.login, prf.nom as n, prf.prenom as pn, prf.role, postes.contenu, postes.postID, postes.PJ_lens, postes.PJ_names, module.nom, type, postes.date, postes.comm, postes.traveauRendre, postes.deadline
             FROM user etu, user prf, postes, module, etudiant
             WHERE
             etu.token = "${data[1]}" AND
@@ -493,10 +624,11 @@ io.on('connection', (socket) => {
 
             group by postID 
             order by postes.date DESC
+            LIMIT ${data[2]}
             `
         }else{
             req = `
-            SELECT prf.login, prf.nom as n, prf.prenom as pn, prf.role, postes.contenu, postes.postID, postes.PJ_lens, postes.PJ_names, module.nom, type, postes.date, postes.comm, postes.traveauRendre
+            SELECT prf.login, prf.nom as n, prf.prenom as pn, prf.role, postes.contenu, postes.postID, postes.PJ_lens, postes.PJ_names, module.nom, type, postes.date, postes.comm, postes.traveauRendre, postes.deadline
             FROM user etu, user prf, postes, module, etudiant
             WHERE
             etu.token = "${data[1]}" AND
@@ -508,6 +640,7 @@ io.on('connection', (socket) => {
 
             group by postID 
             order by postes.date DESC
+            LIMIT ${data[2]}
             `
             args = [data[0]]
         }
@@ -526,7 +659,7 @@ io.on('connection', (socket) => {
         module = data[1]
         secID = data[2]
         // TODO: use UNION to get post content, end login, the module name
-        req = `SELECT prf.login, prf.nom as n, prf.prenom as pn, prf.role, module.nom, contenu, type, postID, PJ_lens, PJ_names, date, comm, traveauRendre 
+        req = `SELECT prf.login, prf.nom as n, prf.prenom as pn, prf.role, module.nom, contenu, type, postID, PJ_lens, PJ_names, date, comm, traveauRendre, deadline
         FROM user prf, module, postes
         WHERE
         
@@ -1156,6 +1289,20 @@ io.on('connection', (socket) => {
         )}
     )
 
+
+    socket.on("disconnecting", () => {
+        login = [...socket.rooms][1]
+        timeouts[[...socket.rooms][1]] = setTimeout(() => {
+            req = "UPDATE user SET token = '' WHERE login = ?"
+            //sockets rooms: 2nd value = login
+            connection.query(req, [login], function(err, result, fields){
+                if(err){
+                    console.log(err.message);
+                }
+            })
+        }, 1000*30);
+    })
+    
 });
 
 

@@ -424,10 +424,12 @@ input::placeholder,
     margin: 0 0 20px 0;
     font-size: 1.3em;
     cursor: pointer;
+    display: none;
 }
 
-
-
+#dols{
+    display: none;
+}
 
 
 
