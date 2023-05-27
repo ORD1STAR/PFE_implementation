@@ -408,6 +408,32 @@ app.get("/listeEtudiants", (req, res) => {
         res.redirect("/login");
     }
 })
+app.get("/SectionDashBoard", (req, res) => {
+    if(req.cookies["token"] != undefined){
+        res.sendFile(path.join(__dirname, 'public/html/Admin_Dashboard.html'));
+    }else{
+        res.redirect("/login");
+    }
+
+    // if(req.cookies["token"] != undefined){
+    //     token = req.cookies["token"];
+    //     reqs = "SELECT role FROM user WHERE token = ?"
+    //     connection.query(reqs, [token], function(err, result, fields){
+    //         if(err){
+    //             console.log(err.message);
+    //         }
+    //         if(result.length > 0){
+    //             if(result[0]["role"] == "admin"){
+    //                 res.sendFile(path.join(__dirname, 'public/html/Admin_Dashboard.html'));
+    //             }else{
+    //                 res.redirect("/home");
+    //             }
+    //         }
+    //     })
+    // }else{
+    //     res.redirect("/login");
+    // }
+})
 app.get("/notes/*", (req, res) => {
     if(req.cookies["token"] != undefined){
 

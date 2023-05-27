@@ -55,7 +55,7 @@ body {
     --textColorBlack : var(--accent_Dark);
     --textColorWhite : var(--textColorPureWhite);
 
-
+    --imgFilterBlack : 0.3;
     
     
     --common_border_radius : 10px;
@@ -128,7 +128,20 @@ input::-webkit-inner-spin-button {
 .leftMenu .moduleMenu {
     width: 90%;
     max-height: 450px;
+    overflow: auto;
 }
+
+.leftMenu .moduleMenu::-webkit-scrollbar {
+    width: 5px;
+  }
+  
+.leftMenu .moduleMenu::-webkit-scrollbar-track {
+    background: var(--accent_Lighter_01);
+  }
+  
+.leftMenu .moduleMenu::-webkit-scrollbar-thumb {
+    background: var(--accent_Neutral);
+  }
 
 .leftMenu .moduleMenu .moduleElement {
     padding: 10px;
@@ -692,6 +705,7 @@ input::-webkit-inner-spin-button {
     justify-content: space-between;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
     height: var(--TopBarSize);
+    cursor: pointer;
 }
 
 .profileDiv > * {
@@ -707,7 +721,7 @@ input::-webkit-inner-spin-button {
     margin: 5px;
     /* filter: invert(50%); */
     box-sizing: border-box;
-    border: 2px solid var(--accent_Light);
+    /* border: 2px solid var(--accent_Light); */
     aspect-ratio: 1 / 1;
 }
 
@@ -735,10 +749,10 @@ input::-webkit-inner-spin-button {
     font-size: 10px;
 }
 
-.profileDiv .profileTextDiv button:hover {
+/* .profileDiv .profileTextDiv button:hover {
     background-color: var(--background_Dark);
     color: white;
-}
+} */
 
 /*   Profile subMenu   */
 .profileSubMenu {

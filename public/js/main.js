@@ -241,23 +241,27 @@ function updateTheme(themeIndex){
         cssRoot.style.setProperty("--important", 'var(--accent_Lighter)');
         cssRoot.style.setProperty("--important_Low", 'var(--accent_Lighter_05)');
         
+        cssRoot.style.setProperty("--imgFilterBlack", '1');
+        
     } else if (themeIndex == 1) {
         cssRoot.style.setProperty('--background_Light', 'rgb(241, 241, 241)');
         cssRoot.style.setProperty('--LeftMenuBackground', '#434656');
         cssRoot.style.setProperty('--Top', 'var(--LeftMenuBackground)');
-
+        
         cssRoot.style.setProperty("--textColorPureWhite", 'white');
         cssRoot.style.setProperty("--textColorPureBlack", 'black');
         cssRoot.style.setProperty("--textColorBlack", '#2f3854');
         cssRoot.style.setProperty("--textColorWhite", 'white');
         cssRoot.style.setProperty("--textColorMidWhite", 'rgba(255, 255 ,255 ,0.5)');
         cssRoot.style.setProperty("--textColorMidBlack", 'rgba(0, 0 ,0 ,0.5)');
-
+        
         cssRoot.style.setProperty("--NeutralBackground", 'var(--accent_Lighter_015)');
         cssRoot.style.setProperty("--neutralBackground_ontTOP", 'var(--accent_Light_01)');
-
+        
         cssRoot.style.setProperty("--important", 'var(--accent_Light)');
         cssRoot.style.setProperty("--important_Low", 'var(--accent_Light_05)');
+
+        cssRoot.style.setProperty("--imgFilterBlack", '0.3');
     }
 }
 

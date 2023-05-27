@@ -627,6 +627,346 @@ select.focus {
 
 
 
+/*      Section DashBoard       */
+
+.mainWrapper.DashBoardWrapper {
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 10px;
+    width: 900px;
+    flex-wrap: wrap;
+    /* max-width: calc(100% - 20px); */
+    overflow: none;
+}
+
+.normalSection {
+    background-color: var(--NeutralBackground);
+    border-radius: var(--common_border_radius);
+}
+
+.LeftDashBoard {
+    /* width: 500px; */
+    flex-grow: 1;
+    /* max-width: calc(100% - 20px); */
+}
+
+.RightDashBoard {
+    flex-grow: 1;
+    /* width: 400px; */
+    /* height: 100%; */
+}
+
+.DashboardSummaryTop {
+    width: 100%;
+    height: 80px;
+    display: flex;
+    align-items: center;
+}
+
+.DashboardSummaryTop h3 {
+    margin: 0px 0px 0px 20px;
+    font-size: 28px;
+    font-weight: bold;
+    color: var(--textColorBlack);
+    transform: scale(1.5) translateX(22px);
+}
+
+.dashboardSummary {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.dashboardSummary .summarySection {
+    flex-grow: 1;
+}
+
+.summarySection .summaryElement {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    margin: 10px 0px;
+}
+
+.summarySection .summaryElement p {
+    margin: 0px;
+    color: var(--textColorBlack);
+    max-width: 180px;
+}
+
+.summarySection .summaryElement p:nth-child(1) {
+    width: 120px;
+    color: var(--textColorMidBlack);
+}
+
+.summarySection:nth-child(1) .summaryElement p:nth-child(1) {
+    margin: 0px 0px 0px 20px;
+}
+
+
+
+
+
+.subSummarySection {
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.subSummarySection h3 {
+    color: var(--textColorBlack);
+    font-size: 16px;
+    margin: 0px auto 0px 10px;
+}
+
+.subSummarySection button {
+    justify-self: flex-end;
+    /* background-color: var(--important); */
+    background-color: transparent;
+    border: none;
+    border-radius: var(--common_border_radius);
+    margin: 5px 10px;
+    cursor: pointer;
+    transition: background-color 0.1s ease-in-out;
+    /* border: 1px solid var(--textColorMidBlack); */
+    /* border: 1px solid transparent; */
+}
+
+.subSummarySection button:hover {
+    background-color: var(--important);
+    /* border: 1px solid transparent; */
+}
+.subSummarySection button:hover img {
+    filter: invert(1);
+}
+
+
+.subSummarySection img {
+    width: 30px;
+    height: 30px;
+    filter: invert(var(--imgFilterBlack));
+    transform: translateY(2px);
+}
+
+
+
+
+
+
+.RightDashBoard {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.RightDashBoard h3 {
+    width: calc(100% - 20px);
+    margin: 15px 0px;
+    color: var(--textColorBlack);
+}
+
+.DashboardModuleElement {
+    width: calc(100% - 20px);
+    margin-bottom: 15px;
+    overflow: hidden;
+    max-height: fit-content;
+    transform: scaleY(1);
+    transform-origin: top;
+    transition: all 0.2s ease-in-out;
+    border: 1px solid var(--accent_Light_01);
+    position: relative;
+}
+
+.DashboardModuleElement h3 {
+    margin: 15px;
+}
+
+.DashboardModuleElement p {
+    margin: 15px;
+}
+
+.DashboardModuleElement .deleteModuleBtn {
+    position: absolute;
+    margin: 10px;
+    top: 0px;
+    right: 0px;
+    width: 35px;
+    height: 35px;
+}
+
+.DashboardModuleElement input {
+    margin: 10px;
+    padding: 10px;
+    background-color: var(--accent_Lighter_05);
+    color: var(--textColorBlack);
+    border: none;
+    border-radius: var(--common_border_radius);
+    width: calc(100% - 40px);
+}
+
+@keyframes flashingError {
+    0%   {background-color: var(--accent_Lighter_05);}
+    25%  {background-color: var(--important);}
+    50%  {background-color: var(--accent_Lighter_05);}
+    100% {background-color: var(--important);}
+}
+
+.moduleSubElement {
+    margin: 5px 10px;
+    display: flex;
+    align-items: center;
+}
+
+.moduleSubElement .libelle {
+    margin: 0px 0px 0px 10px;
+    background-color: var(--important);
+    border-radius: var(--common_border_radius);
+    color: white;
+    width: 45px;
+    text-align: center;
+    padding: 5px;
+}
+
+.moduleSubElement p:nth-child(2) {
+    color: var(--textColorBlack);
+    margin: 15px;
+}
+
+.RightDashBoard button {
+    width: calc(100% - 20px);
+    /* padding: 5px 0px; */
+    height: 35px;
+    border: none;
+    color: white;
+    font-size: 18px;
+    margin: 10px;
+    cursor: pointer;
+    background-color: var(--important);
+    border-radius: var(--common_border_radius);
+    transition: background-color 0.1s ease-in-out;
+}
+
+#ajouterModuleBtn {
+    justify-self: flex-start;
+}
+
+.RightDashBoard button:hover {
+    background-color: var(--accent_Lighter_05);
+}
+
+.moduleSubElement select {
+    margin: 10px;
+    flex-grow: 1;
+    width: 100%;
+}
+
+.moduleSubElement.ajoutElement {
+    gap: 10px;
+}
+
+.moduleSubElement.ajoutElement button:nth-child(1) {
+    background-color: transparent;
+    border: 1px solid var(--important);
+    color: var(--textColorBlack);
+}
+
+
+
+.modificationBtns {
+    justify-content: flex-end;
+}
+
+.modificationBtns button {
+    background-color: var(--important);
+    color: white;
+    border: none;
+    border-radius: var(--common_border_radius);
+    padding: 8px 12px;
+    border: 1px solid transparent;
+}
+
+.modificationBtns button:nth-child(1) {
+    background-color: transparent;
+    border: 1px solid var(--important);
+    color: var(--textColorBlack);
+}
+
+.modificationBtns button:hover {
+    background-color: var(--accent_Lighter);
+}
+
+.zeroHeight {
+    transform: scaleY(0);
+    /* max-height: 0px; */
+    /* transition: all 0.2s ease-in-out; */
+}
+
+
+
+
+
+.editModeOnly {
+    display: none !important;
+}
+
+.notInEditMode {
+    display: block;
+}
+    
+.DashboardEditMode .editModeOnly {
+    display: block !important;
+}
+
+.DashboardEditMode .notInEditMode {
+    display: none;
+}
+
+
+
+.inCreationModeOnly {
+    display: none;
+}
+
+.notInCreation {
+    display: block;
+}
+
+.CreationMode .inCreationModeOnly {
+    display: block;
+}
+
+.CreationMode .notInCreation {
+    display: none !important;
+    background-color: red;
+}
+
+
+
+.summaryDiv input,
+.summaryDiv select {
+    background-color: var(--accent_Lighter_05);
+    border: none;
+    border-radius: var(--common_border_radius);
+    padding: 5px 10px;
+    width: calc(100% - 40px);
+    margin: 0px 10px 0px 0px;
+}
+
+.DashboardSummaryTop input {
+    margin: 10px;
+    padding: 10px;
+    font-size: 24px;
+}
+
+
+
+
+
+
+
+
 
 
 @media only screen and (max-width: 650px) {
@@ -677,8 +1017,6 @@ select.focus {
         min-height: 35px;
     }
 
-    .affectationNoteElement .informationEtudiant {
-    }
     .affectationNoteElement .informationEtudiant h3 {
         font-size: 14px;
         max-width: 140px;
@@ -687,6 +1025,19 @@ select.focus {
         font-size: 12px;
     }
     
+
+
+    .mainWrapper.DashBoardWrapper {
+        max-width: calc(100% - 20px);
+    }
+
+    .summarySection:nth-child(2) .summaryElement p:nth-child(1) {
+        margin: 0px 0px 0px 20px;
+    }
+
+    .LeftDashBoard {
+        width: calc(100%-20px);
+    }
 
 }
 
