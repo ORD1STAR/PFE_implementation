@@ -146,33 +146,25 @@ app.get('/home', (req, res) => {
                 console.log(err.message);
             }
             if(result.length>0){
-                reqs = "SELECT * FROM user WHERE token= ?"
-                connection.query(reqs, [req.cookies["token"]], function(err, result, fields){
+                
+                        
+                        
+                token = req.cookies["token"];
+                reqs = "SELECT role FROM user WHERE token = ?"
+                connection.query(reqs, [token], function(err, result, fields){
+                    console.log(result);
                     if(err){
                         console.log(err.message);
                     }
-                    if(result.length>0){
-                        
-                        
-                        token = req.cookies["token"];
-                        reqs = "SELECT role FROM user WHERE token = ?"
-                        connection.query(reqs, [token], function(err, result, fields){
-                            if(err){
-                                console.log(err.message);
-                            }
-                            if(result.length > 0){
-                                if(result[0]["role"] == "admin"){
-                                    res.sendFile(path.join(__dirname, 'public/html/Admin_Dashboard.html'));
-                                }else{
-                                    res.redirect("/home");
-                                }
-                            }
-                        })
-                    }else{
-                        res.redirect("/login");
+                    if(result.length > 0){
+                        if(result[0]["role"] == "admin"){
+                            res.sendFile(path.join(__dirname, 'public/html/Admin_Dashboard.html'));
+                        }else{
+                            res.sendFile(path.join(__dirname, 'public/html/main.html'));
+                        }
                     }
                 })
-
+        
             }else{
                 res.redirect("/login");
             }
@@ -540,7 +532,7 @@ io.on('connection', (socket) => {
                 const role = result[0]["role"]
                 //etudiant
                 if(role == "etudiant"){
-                    connection.query("SELECT login, nom, prenom, photo, niveau, specialite, idSec, matricule, email, phone FROM user, etudiant, section WHERE user.idUser=etudiant.userID AND etudiant.section=section.idSec AND user.token = ?", [token], function(err, result1, fields){
+                    connection.query("SELECT login, user.nom, prenom, photo, niveau, specialite, idSec, matricule, email, phone FROM user, etudiant, section WHERE user.idUser=etudiant.userID AND etudiant.section=section.idSec AND user.token = ?", [token], function(err, result1, fields){
                         if(err){
                             console.log(err.message);
                         }
