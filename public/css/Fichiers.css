@@ -9,7 +9,7 @@
 .file{
     width: calc(100%/3 - 30px);
     margin: 15px;
-    background-color: rgba(0, 0, 0, 0.15);
+    background-color: var(--NeutralBackground);
     display: flex;
     flex-direction: column;
     text-align: center;
