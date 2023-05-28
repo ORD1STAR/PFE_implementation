@@ -8,7 +8,15 @@ body {
     display: flex;
     height: 100%;
 }
-
+input{
+    color: var(--textColorBlack) !important;
+}
+.icone{
+    filter: invert(var(--imgFilterBlack));
+    background-color: var(--NeutralBackground);
+    border: 1px solid var(--accent_Neutral_05);
+    border-radius: 50%;
+}
 :root {
     /* --background_Dark : rgb(87, 87, 87);
     --background_Neutral : rgb(143, 143, 143);

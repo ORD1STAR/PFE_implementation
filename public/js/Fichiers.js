@@ -22,10 +22,10 @@ function writeFiles(names, lens, postID) {
             size = parseInt(lens[i]) <= 1024 ? parseInt(lens[i]) : (parseFloat(lens[i])/1024).toFixed(2)
             size = `${size} ${parseInt(lens[i]) < 1024 ? "octets" : (parseInt(lens[i]) < 1024*1024 ? "Ko" : "Mo")}`
             nameE = names[i].length > 10 ? names[i].slice(0, 10) + "..." : names[i]
-            link = names[i].endsWith(".pdf") ? "https://fr.seaicons.com/wp-content/uploads/2015/11/pdf-icon.png" : (names[i].endsWith(".docx") ? "https://fr.seaicons.com/wp-content/uploads/2022/05/Word-icon.png" : "https://fr.seaicons.com/wp-content/uploads/2023/04/ModernXP-30-Filetype-Text-icon.png")
+            link = names[i].endsWith(".pdf") ? "/icons/PDF.png" : (names[i].endsWith(".docx") ? "/icons/Word.png" : (names[i].endsWith(".png") || names[i].endsWith(".jpg")  ? "/icons/photo.png" :"/icons/File.png.png"))
             document.getElementById("filesSectionMain").innerHTML += `
             <div class="file" onclick="download('${postID}', '${names[i]}')">
-                <img src="${link}" alt="">
+                <img class="icone" src="${link}" alt="">
                 <p class="title">${nameE}</p>
                 <p class="taille">${size}</p>
                 <p class="tag">Cours</p>

@@ -407,7 +407,7 @@ function writePoste(module, type, prof, content, postID, lens, names, date, comm
         pjsHTML = ""
         extended = ""
         commSec = comm == 1 ? `<button onclick="showCommentSection(${postID}, '${titre}')" class='commentSectionBtn'>Commenter</button>` : ""
-        travSec = trav == 1 ? `<button class='travSectionBtn ${deadline} ${n}'>deadline:</button>` : ""
+        travSec = trav == 1 ? `<button class='travSectionBtn ${deadline} ${n}'>Date limite:</button>` : ""
         if(lens.split("/").length > 0 && lens != ""){
             lens = lens.split("/")
             names = names.split("/")
@@ -424,10 +424,10 @@ function writePoste(module, type, prof, content, postID, lens, names, date, comm
                 size = `${size} ${parseInt(lens[i]) < 1024 ? "octets" : (parseInt(lens[i]) < 1024*1024 ? "Ko" : "Mo")}`
                 pj_extension = names[i].split(".")[1]
                 pj_name = names[i].length > 10 ? names[i].slice(0, 10) + `...${pj_extension}` : names[i]
-                link = names[i].endsWith(".pdf") ? "https://fr.seaicons.com/wp-content/uploads/2015/11/pdf-icon.png" : (names[i].endsWith(".docx") ? "https://fr.seaicons.com/wp-content/uploads/2022/05/Word-icon.png" : "https://fr.seaicons.com/wp-content/uploads/2023/04/ModernXP-30-Filetype-Text-icon.png")
+                link = names[i].endsWith(".pdf") ? "/icons/PDF.png" : (names[i].endsWith(".docx") ? "/icons/Word.png" : (names[i].endsWith(".png") || names[i].endsWith(".jpg")  ? "/icons/photo.png" :"/icons/File.png.png"))
                 pjsHTML += `
                     <a href="" class="pieceJointeElement" id="${postID}|${names[i]}">
-                    <img class="PJimg" src="${link}">
+                    <img class="PJimg icone" src="${link}">
                         <div class="PJtext">
                             <p>${pj_name}</p>
                             <p>${size}</p>
@@ -454,7 +454,6 @@ function writePoste(module, type, prof, content, postID, lens, names, date, comm
                 </div>
                 <h3 class="postTitle">${titre}</h3>
                 <p class="postDate"> ${date}</p>
-                <div><button class="deleteModuleBtn editModeOnly" onclick="deleteModule(event)">X</button></div>
             </div>
             <div class="postCore${extended}">
             <div class="postText">
@@ -659,7 +658,7 @@ function writePosteE(module, type, prof, content, postID, lens, names, date, com
     pjsHTML = ""
     extended = ""
     commSec = comm == 1 ? `<button onclick="showCommentSection(${postID}, '${titre}')" class='commentSectionBtn'>Commenter</button>` : ""
-    travSec = trav == 1 ? `<button class='travSectionBtn ${deadline}'>Deadline:</button>` : ""
+    travSec = trav == 1 ? `<button class='travSectionBtn ${deadline}'>Date limite:</button>` : ""
     
     if(lens.split("/").length > 0 && lens != ""){
         lens = lens.split("/")
@@ -708,6 +707,7 @@ function writePosteE(module, type, prof, content, postID, lens, names, date, com
             </div>
             <h3 class="postTitle">${titre}</h3>
             <p class="postDate">${date}</p>
+            <div><button class="deleteModuleBtn editModeOnly" onclick="deleteModule(event)">X</button></div>
         </div>
         <div class="postCore${extended}">
         <div class="postText">
@@ -901,11 +901,11 @@ function updateTimes(){
             const hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
-            btn.innerHTML = `deadline: ${days} jours, ${hours<10 ? "0" + hours : hours}:${minutes<10 ? "0" + minutes : minutes}:${seconds<10 ? "0" + seconds : seconds}  restantes`
+            btn.innerHTML = `Date limite: ${days} jours, ${hours<10 ? "0" + hours : hours}:${minutes<10 ? "0" + minutes : minutes}:${seconds<10 ? "0" + seconds : seconds}  restantes`
         }else{
             const date = (new Date(then).getDay() < 10 ? "0" + new Date(then).getDay() : new Date(then).getDay()) + "/" + (new Date(then).getMonth() < 10 ? "0" + new Date(then).getMonth() : new Date(then).getMonth()) + "/" + new Date(then).getFullYear()
             const heure =  (new Date(then).getHours()<10? "0"+new Date(then).getHours() : new Date(then).getHours()) + ":" + (new Date(then).getMinutes()<10? "0"+new Date(then).getMinutes() : new Date(then).getMinutes())
-            btn.innerHTML = `deadline: expirée le ${date} a ${heure}`
+            btn.innerHTML = `Date limite: expirée le ${date} a ${heure}`
         }
     })
     setTimeout(() => {
