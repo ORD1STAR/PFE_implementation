@@ -146,11 +146,38 @@ app.get('/home', (req, res) => {
                 console.log(err.message);
             }
             if(result.length>0){
-                res.sendFile(path.join(__dirname, 'public/html/main.html'));
+                reqs = "SELECT * FROM user WHERE token= ?"
+                connection.query(reqs, [req.cookies["token"]], function(err, result, fields){
+                    if(err){
+                        console.log(err.message);
+                    }
+                    if(result.length>0){
+                        
+                        
+                        token = req.cookies["token"];
+                        reqs = "SELECT role FROM user WHERE token = ?"
+                        connection.query(reqs, [token], function(err, result, fields){
+                            if(err){
+                                console.log(err.message);
+                            }
+                            if(result.length > 0){
+                                if(result[0]["role"] == "admin"){
+                                    res.sendFile(path.join(__dirname, 'public/html/Admin_Dashboard.html'));
+                                }else{
+                                    res.redirect("/home");
+                                }
+                            }
+                        })
+                    }else{
+                        res.redirect("/login");
+                    }
+                })
+
             }else{
                 res.redirect("/login");
             }
         })
+        
     }else{
         res.redirect("/login");
     }
@@ -408,32 +435,6 @@ app.get("/listeEtudiants", (req, res) => {
         res.redirect("/login");
     }
 })
-app.get("/SectionDashBoard", (req, res) => {
-    if(req.cookies["token"] != undefined){
-        res.sendFile(path.join(__dirname, 'public/html/Admin_Dashboard.html'));
-    }else{
-        res.redirect("/login");
-    }
-
-    // if(req.cookies["token"] != undefined){
-    //     token = req.cookies["token"];
-    //     reqs = "SELECT role FROM user WHERE token = ?"
-    //     connection.query(reqs, [token], function(err, result, fields){
-    //         if(err){
-    //             console.log(err.message);
-    //         }
-    //         if(result.length > 0){
-    //             if(result[0]["role"] == "admin"){
-    //                 res.sendFile(path.join(__dirname, 'public/html/Admin_Dashboard.html'));
-    //             }else{
-    //                 res.redirect("/home");
-    //             }
-    //         }
-    //     })
-    // }else{
-    //     res.redirect("/login");
-    // }
-})
 app.get("/notes/*", (req, res) => {
     if(req.cookies["token"] != undefined){
 
@@ -549,7 +550,9 @@ io.on('connection', (socket) => {
                             socket.join(String(result1[0]["idSec"]))
                             if([...socket.rooms][1] in timeouts){
                                 clearTimeout(timeouts[[...socket.rooms][1]])
+                                timeouts[[...socket.rooms][1]] = ""
                             }
+                            console.log(timeouts);
                             connection.query("SELECT nom, codeMod FROM module WHERE secID=?", [result1[0]["idSec"]], function(err, result2, fields){
                                 if(err){
                                     console.log(err.message);
@@ -695,7 +698,8 @@ io.on('connection', (socket) => {
         module.secID = ? AND
         module.nom = ?
         
-        order by postes.date DESC`
+        order by postes.date DESC
+        LIMIT ${data[3]}`
         connection.query(req, [profToken, secID, module], function(err, result, fields){
             if(err){
                 console.log(err.message);
@@ -1315,6 +1319,63 @@ io.on('connection', (socket) => {
         )}
     )
 
+    socket.on("getAdminSections", () => {
+        connection.query("SELECT * FROM section ORDER BY niveau, specialite", function(err, result1, fields){
+            
+            if(err){
+                console.log(err.message);
+            }
+            if(result1.length > 0){
+                socket.emit('getAdminSections', result1);
+            }
+            
+        })
+
+    })
+
+    socket.on("getSectionData", (sectionID) => {
+        connection.query("SELECT * FROM section WHERE idSec = ?", [sectionID], function(err, result1, fields){
+            
+            if(err){
+                console.log(err.message);
+            }
+            if(result1.length > 0){
+                //get all modules of the section
+                connection.query("SELECT * FROM module, typeModule WHERE secID = ? AND module = codeMod order by nom, type", [sectionID], function(err, result3, fields){
+                    if(err){
+                        console.log(err.message);
+                    }
+                    connection.query("SELECT codeMod, nom FROM module WHERE secID = ? group by nom", [sectionID], function(err, result2, fields){
+                        if(err){
+                            console.log(err.message);
+                        }
+                        connection.query("SELECT COUNT(*) AS nbEtudiants FROM etudiant WHERE section = ?", [sectionID], function(err, result4, fields){
+                            if(err){
+                                console.log(err.message);
+                            }
+                            connection.query("SELECT COUNT(*) AS nbProf FROM module, typeModule WHERE module.secID = ? AND codeMod = module group by enseignantID", [sectionID], function(err, result5, fields){
+                                if(err){
+                                    console.log(err.message);
+                                }
+                                connection.query("SELECT * FROM user WHERE role = 'enseignant'", [], function(err, result6, fields){
+                                    if(err){
+                                        console.log(err.message);
+                                    }
+                                    socket.emit('getSectionData', [result1[0], result2, result3, result4[0], result5[0], result6]);
+                                })
+                                
+                            });
+                            
+                        })
+
+                    })
+                    
+                })
+            }
+            
+        })
+
+    })
 
     socket.on("disconnecting", () => {
         login = [...socket.rooms][1]
@@ -1327,6 +1388,7 @@ io.on('connection', (socket) => {
                 }
             })
         }, 1000*30);
+        console.log(timeouts);
     })
     
 });

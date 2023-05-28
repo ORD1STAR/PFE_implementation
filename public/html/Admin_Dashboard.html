@@ -12,7 +12,7 @@
 <body>
     <div id="leftMenu" class="leftMenu">
         <div class="titleDiv" onclick="location.href = '/home'">
-            <h1 id="Section">GTR L3</h1>
+            <h1 id="Section"></h1>
         </div>
         <div class="moduleElement moduleGeneral selected_module" onclick="switchToCreation()">
             <p>Creation</p>
@@ -20,30 +20,6 @@
         <h3>Sections :</h3>
 
         <div class="moduleMenu" id="moduleMenu">
-            <div class="moduleElement" onclick="switchToDashboard()">
-                <p>GTR L3</p>
-                <div class="notifDiv"></div>
-            </div>
-            <div class="moduleElement" onclick="location.href = '/edt'">
-                <p>GTR L3</p>
-                <div class="notifDiv"></div>
-            </div>
-            <div class="moduleElement" onclick="location.href = '/edt'">
-                <p>GTR L3</p>
-                <div class="notifDiv"></div>
-            </div>
-            <div class="moduleElement" onclick="location.href = '/edt'">
-                <p>GTR L3</p>
-                <div class="notifDiv"></div>
-            </div>
-            <div class="moduleElement" onclick="location.href = '/edt'">
-                <p>GTR L3</p>
-                <div class="notifDiv"></div>
-            </div>
-            <div class="moduleElement" onclick="location.href = '/edt'">
-                <p>GTR L3</p>
-                <div class="notifDiv"></div>
-            </div>
 
         </div>
 
@@ -64,14 +40,14 @@
         <div class="TopWrapper">
             <div class="Top">
                 <button class="hamburgerMenu" onclick="toogleMenu()"><img id="imgBtnToogleMenu" src="/icons/icon_hamburger.png" alt=""></button>
-                <h1>Tableau de bord GTR L3</h1>
+                <h1 id="mainTitle">Tableau de bord GTR L3</h1>
             </div>
     
             <div class="profileDiv">
                 <img class="profilePicDiv" id="pdp" src="/icons/default_user.png">
                 <div class="profileTextDiv">
-                    <p id="nom">Hannoun</p>
-                    <p id="prenom">Amar Amine</p>
+                    <p id="nom"></p>
+                    <p id="prenom"></p>
                     <button id="profileSubMenuBtn">Mon compte</button>
                 </div>
             </div>
@@ -84,24 +60,24 @@
 
                 <div class="normalSection summaryDiv">
                     <div class="DashboardSummaryTop">
-                        <h3 class="notInCreation">GTR L3</h3>
+                        <h3 class="notInCreation" id="name">GTR L3</h3>
                         <input type="text" class="inCreationModeOnly">
                     </div>
                     <div class="dashboardSummary">
                         <div class="summarySection">
                             <div class="summaryElement">
                                 <p>Spécialité :</p>
-                                <p class="notInCreation">GTR</p>
+                                <p class="notInCreation" id="specialite">GTR</p>
                                 <input class="inCreationModeOnly" type="text">
                             </div>
                             <div class="summaryElement">
                                 <p>Filliére :</p>
-                                <p class="notInCreation">informatique</p>
+                                <p class="notInCreation" id="filliere">informatique</p>
                                 <input class="inCreationModeOnly" type="text">
                             </div>
                             <div class="summaryElement">
                                 <p>Annee :</p>
-                                <p class="notInCreation">3 eme</p>
+                                <p class="notInCreation" id="niveau">3 eme</p>
                                 <select class="inCreationModeOnly">
                                     <option value="1">1 ere</option>
                                     <option value="2">2 eme</option>
@@ -112,18 +88,18 @@
                             </div>
                             <div class="summaryElement">
                                 <p>Palier :</p>
-                                <p class="notInCreation">Lience</p>
+                                <p class="notInCreation" id="palier">Licence</p>
                                 <input class="inCreationModeOnly" type="text">
                             </div>
                         </div>
                         <div class="summarySection notInCreation">
                             <div class="summaryElement">
                                 <p>Nombre d'étudiants :</p>
-                                <p>50</p>
+                                <p id="nbEtudiants">50</p>
                             </div>
                             <div class="summaryElement notInCreation">
                                 <p>Nombre d'enseignants :</p>
-                                <p>5</p>
+                                <p id="nbProfs">5</p>
                             </div>
                         </div>
                     </div>
@@ -132,7 +108,7 @@
                 <div class="normalSection subSummarySection">
                     <h3>Liste des étudiants</h3>
                     <button><img src="/icons/link.png" alt="Telecharger"></button>
-                    <button><img src="/icons/Download.png" alt="Telecharger"></button>
+                    <button onclick="dlEtudiants()"><img src="/icons/Download.png" alt="Telecharger"></button>
                     <button class="editModeOnly"><img src="/icons/Upload.png" alt="Envoyer"></button>
                 </div>
                 <div class="normalSection subSummarySection">
@@ -158,9 +134,127 @@
 
 
         </div>
-    
+    </div>
     <script src="/js/main.js" defer></script>
     <script src="/js/Dashboard.js" defer></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        socket = io()
+        var myURL = "/icons/default_user.png"
+        socket.on('connect', () => {
+            socket.emit("connected", [document.cookie]) //get  the cookies with the connection socket
+        })
+
+        socket.on('connectedAdm', (data) => { //get the data from the server with the acknoledgement
+            login = data[0]["login"]            //get the login from the data
+            prenom = data[0]["prenom"]    //get the first part of the login (the prenom)
+            nom = data[0]["nom"]            //get the second part of the login (the nom)
+            pdp = data[0]["photo"]
+            email = data[0]["email"]
+            phone = data[0]["phone"]
+            if(pdp.byteLength != 0){                    //if the user has a profile picture
+                pdpB = new Blob([pdp])
+                myURL = URL.createObjectURL(pdpB)
+                document.getElementById("pdp").src = myURL
+            }
+            
+            sec = "Sections" //get the section (LX spé)
+            
+            document.getElementById("nom").innerHTML = nom          //replace the nom with the right one
+            document.getElementById("prenom").innerHTML = prenom    //replace the prenom with the right one
+            document.getElementById("Section").innerHTML = "Section"      //replace the section with the right one
+            
+        })
+        socket.emit("getAdminSections")
+        socket.on("getAdminSections", (data) => {
+            sections = data           //get the modules from the data
+            modDiv = document.getElementById("moduleMenu")  //get the module menu div
+            modDiv.innerHTML = ""
+            for(var section of sections){ //for each module in the modules array add a button to the module menu
+                modDiv.innerHTML += `
+                <div class="moduleElement" onclick="switchToDashboard()" id="${section["idSec"]}">
+                    <p>L${section["niveau"]} ${section["specialite"]} ${section['indice']}</p>
+                </div>
+                `
+            }
+            const modulesBtns = document.querySelectorAll('.moduleElement');
+            modulesBtns.forEach(moduleBtn => {
+                moduleBtn.addEventListener('click', () => {
+                    modulesBtns.forEach(moduleBtn => {moduleBtn.classList.remove("selected_module")})
+                    moduleBtn.classList.add("selected_module")
+                    //remove the div from the childs with class "notifDiv"
+                    moduleBtn.childNodes.forEach(child => {
+                        if(child.classList != undefined){
+                            if(child.classList.contains("notifDiv")){
+                                moduleBtn.removeChild(child)
+                            }
+                        }
+                    })
+                    // change the main part menu title
+                    document.getElementById("mainTitle").innerHTML = `Tableau de bord ${moduleBtn.children[0].innerHTML}`
+                    
+
+                    socket.emit("getSectionData", document.querySelectorAll('.selected_module')[0].id);
+                    socket.on("getSectionData", setData)
+
+                    function setData(data) {
+                        sectionData = data[0]
+                        modules = data[1]
+                        lvl = (sectionData.niveau <= 3 ? "L" : "M") + sectionData.niveau
+                        document.getElementById("name").innerHTML = `${lvl} ${sectionData.specialite}, ${sectionData.indice}`;
+                        document.getElementById("specialite").innerHTML = sectionData.specialite;
+                        document.getElementById("niveau").innerHTML = sectionData.niveau;
+                        document.getElementById("nbEtudiants").innerHTML = data[3] == null ? 0 : data[3].nbEtudiants;
+                        document.getElementById("nbProfs").innerHTML = data[4] == null ? 0 : data[4].nbProf;
+
+                        if(modules.length > 0){
+                            htmlToAdd = ""
+                            htmlToAdd = '<h3>Modules</h3>'
+                            modules.forEach(mod => {
+                                htmlToAdd += `
+                                <div class="normalSection DashboardModuleElement">
+                                    <h3>${mod.nom}</h3>`
+                                data[2].forEach(modData => {
+                                    if(modData.codeMod == mod.codeMod) {
+                                        htmlToAdd += `
+                                        <div class="normalSection moduleSubElement">
+                                            <p class="libelle">${modData.type}</p>
+                                            <select class="editModeOnly">
+                                                <option value="">pas d'enseignant</option>
+                                        `
+                                        np = ""
+                                        data[5].forEach(ens => {
+                                            htmlToAdd += `<option value="${ens.login}">${ens.nom} ${ens.prenom}</option>`
+                                            if(ens.idUser == modData.enseignantID){
+                                                np = `${ens.nom} ${ens.prenom}`
+                                            }
+                                        })
+                                        htmlToAdd +=`    </select>
+                                            <p class="notInEditMode">${np}</p>
+                                        </div>
+                                        `
+                                    }
+                                })
+                                htmlToAdd += `
+                                <div><button class="deleteModuleBtn editModeOnly" onclick="deleteModule(event)">X</button></div></div>`
+                            })
+                            htmlToAdd += `
+                            
+                            <button class="editModeOnly" id="ajouterModuleBtn" style="display: none;">Ajouter un module</button>
+
+                            `
+                            document.getElementById("DashboardModuleDiv").innerHTML = htmlToAdd
+                        }
+                            
+
+                        socket.off("getSectionData")
+                    }
+                
+                
+                })
+            })
+        })
+    </script>
     
 </body>
 </html>

@@ -167,6 +167,7 @@ function DashboardSwitchToNormal() {
         element.remove();
     })
     ajouterModuleBtn.style.display = 'none';
+    
 }
 
 

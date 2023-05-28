@@ -128,8 +128,8 @@
                 myURL = URL.createObjectURL(pdpB)
                 document.getElementById("pdp").src = myURL
             }
-            
-            sec = "L" + data[0]["niveau"] + " " + data[0]["specialite"] //get the section (LX spé)
+            lvl = (sectionData.niveau <= 3 ? "L" : "M") + sectionData.niveau
+            sec = lvl + " " + data[0]["specialite"] //get the section (LX spé)
             idSec = data[0]["idSec"]
             
             document.getElementById("nom").innerHTML = nom          //replace the nom with the right one
@@ -162,7 +162,6 @@
             })
             selected_module = document.querySelectorAll('.selected_module')[0].innerHTML;
             getPosts("General") //get the posts from the server (all the posts from the section)
-            
             
         })
         

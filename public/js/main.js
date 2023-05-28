@@ -33,9 +33,11 @@ function addOrUpdateCookie(name, value) {
   
 
 var postsVar
-limit = 10
-onMod = ""
+var limit = 10
+var onMod = ""
 filtresVar = [true, true, true]
+var isExtending = false
+
 
 // Profile SubMenu Handler
 
@@ -602,6 +604,7 @@ function setPosts(posts){
     }
     updateTimes()
     setTravaux()
+    
 }
 function getPosts(module){
     token = ""
@@ -611,6 +614,7 @@ function getPosts(module){
         limit = 10
     }
     onMod = module
+
     cookies = document.cookie.split('; ')
     cookies.forEach(function(c){
         if(c.startsWith('token=')){
@@ -623,20 +627,21 @@ function getPosts(module){
         postsVar = data
         setPosts(data)
     })
-    window.addEventListener('scroll', function() {
-        // Calculate the scroll position
+    document.addEventListener('scroll', addAfterScroll);
+    function addAfterScroll(){
         const scrollPosition = window.scrollY;
-        
         // Calculate the total height of the page
         const pageHeight = document.documentElement.scrollHeight - window.innerHeight;
         
         // Check if the user has scrolled to the bottom of the page
-        if (scrollPosition === pageHeight) {
-          console.log('gg'); // Display the message in the console
+        if (scrollPosition >= pageHeight-20 && ! isExtending) {
+            isExtending = true
+            getPosts(document.querySelectorAll('.selected_module')[0].children[0].innerHTML)
+            setTimeout(() => {
+                isExtending = false
+            }, 1000*0.8);
         }
-      });
-      
-      
+    }
 }
 
 function writePosteE(module, type, prof, content, postID, lens, names, date, comm, trav, deadline, role) {
@@ -831,16 +836,38 @@ function setPostsE(posts){
 function getPostsE(filtre){
     secID = document.querySelectorAll('.selected_module')[0].id.split(" ")[0].replace("mod", "")
     token = ""
+    if(onMod==filtre){
+        limit += 5
+    }else{
+        limit = 10
+    }
+    onMod = filtre
     cookies = document.cookie.split('; ')
     cookies.forEach(function(c){
         if(c.startsWith('token=')){
             token = c.split('=')[1]
         }
     })
-    socket.emit("getPostsE", [token, filtre, secID])
+    socket.emit("getPostsE", [token, filtre, secID, limit])
     socket.on("getPostsE", (data) => {
         setPostsE(data)
     })
+    document.addEventListener('scroll', addAfterScroll);
+    function addAfterScroll(){
+        const scrollPosition = window.scrollY;
+        // Calculate the total height of the page
+        const pageHeight = document.documentElement.scrollHeight - window.innerHeight;
+        
+        // Check if the user has scrolled to the bottom of the page
+        if (scrollPosition >= pageHeight-20 && ! isExtending) {
+            isExtending = true
+            console.log(document.querySelectorAll('.selected_module')[0].children[0].innerHTML.split("| ")[1]);
+            getPostsE(document.querySelectorAll('.selected_module')[0].children[0].innerHTML.split("| ")[1])
+            setTimeout(() => {
+                isExtending = false
+            }, 1000*0.8);
+        }
+    }
 }
 
 function getPostsA(filtre){
