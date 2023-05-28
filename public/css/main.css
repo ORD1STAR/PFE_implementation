@@ -1603,6 +1603,17 @@ input::-webkit-inner-spin-button {
 
 
 
+@keyframes blink {
+    50%   {background-color: var(--accent_Lighter_05);}
+    100%  {background-color: var(--NeutralBackground);}
+    /* 50%  {background-color: var(--accent_Lighter_05);}
+    100% {background-color: var(--NeutralBackground);} */
+}
+
+
+
+
+
 
 
 

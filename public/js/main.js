@@ -909,8 +909,8 @@ function setTravaux(){
         title = postsVar[btn.classList[2]-1].contenu.split("##")[1]
         
         travaux.innerHTML += `
-        <div class="travauxElement" onclick="#post${btn.classList[2]}">
-            <a style="text-decoration:none;" href="#post${btn.classList[2]}">
+        <div class="travauxElement" onclick="blink('post${btn.classList[2]}')">
+            <a style="text-decoration:none;">
             <h3>${module}</h3>
             <p>${title}</p>
             </a>
@@ -918,4 +918,19 @@ function setTravaux(){
         `
         
     })
+}
+
+async function blink(id) {
+    postToBlink = document.getElementById(id);
+
+    elementRect = postToBlink.getBoundingClientRect();
+    offset = window.pageYOffset || document.documentElement.scrollTop;
+    elementPosition = elementRect.top + offset - 200;
+
+    window.scrollTo({top: elementPosition, behavior: 'smooth'});
+
+    postToBlink.style.animation = 'blink 0.5s linear';
+    await new Promise(resolve => {setTimeout(resolve, 500)});
+    postToBlink.style.animation = '';
+
 }
