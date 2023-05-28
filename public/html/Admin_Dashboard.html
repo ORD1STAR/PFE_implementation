@@ -218,7 +218,7 @@
                                     if(modData.codeMod == mod.codeMod) {
                                         htmlToAdd += `
                                         <div class="normalSection moduleSubElement">
-                                            <p class="libelle">${modData.type}</p>
+                                            <p class="libelle">${modData.type == "cours" ? "Cours" :modData.type.toUpperCase()}</p>
                                             <select class="editModeOnly">
                                                 <option value="">pas d'enseignant</option>
                                         `

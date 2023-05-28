@@ -377,8 +377,8 @@ socket.on("newPost", (module) => {
         })
         
     }
-    
 })
+
 function download(id, name) {
     socket.emit("download", [id, name])
     socket.on("Upload", (data) => {
@@ -397,6 +397,12 @@ function writePoste(module, type, prof, content, postID, lens, names, date, comm
         filtres[i] = filtres[i].innerHTML.toLowerCase()
     }
     
+    for(mot of content.split("##")[2].split(" ")){
+        if(mot.startsWith("https://") || mot.startsWith("http://") || mot.startsWith("www.")) {
+            contenu = contenu.replace(/\n/g, " \n")
+            contenu = contenu.replace(mot, `<a href="${mot}" target="_blank">${mot}</a>`)
+        }
+    }
     if(filtres.includes(type)){
         pjsHTML = ""
         extended = ""
@@ -418,9 +424,10 @@ function writePoste(module, type, prof, content, postID, lens, names, date, comm
                 size = `${size} ${parseInt(lens[i]) < 1024 ? "octets" : (parseInt(lens[i]) < 1024*1024 ? "Ko" : "Mo")}`
                 pj_extension = names[i].split(".")[1]
                 pj_name = names[i].length > 10 ? names[i].slice(0, 10) + `...${pj_extension}` : names[i]
+                link = names[i].endsWith(".pdf") ? "https://fr.seaicons.com/wp-content/uploads/2015/11/pdf-icon.png" : (names[i].endsWith(".docx") ? "https://fr.seaicons.com/wp-content/uploads/2022/05/Word-icon.png" : "https://fr.seaicons.com/wp-content/uploads/2023/04/ModernXP-30-Filetype-Text-icon.png")
                 pjsHTML += `
                     <a href="" class="pieceJointeElement" id="${postID}|${names[i]}">
-                        <div class="PJimg"> </div>
+                    <img class="PJimg" src="${link}">
                         <div class="PJtext">
                             <p>${pj_name}</p>
                             <p>${size}</p>
@@ -442,14 +449,16 @@ function writePoste(module, type, prof, content, postID, lens, names, date, comm
         
             <div class="postTop">
                 <div class="moduleTitleDiv">
-                    <h3>${module}| ${type}</h3>
+                    <h3>${module}</h3>
                     <p ${role == "admin" ? "style='color:rgb(255, 102, 102);'" : ""}>${role == "admin" ? "Administrateur:" : ""} ${prof}</p>
                 </div>
                 <h3 class="postTitle">${titre}</h3>
+                <p class="postDate"> ${date}</p>
+                <div><button class="deleteModuleBtn editModeOnly" onclick="deleteModule(event)">X</button></div>
             </div>
             <div class="postCore${extended}">
             <div class="postText">
-            <p>${contenu}</p>
+            <p>${contenu.replaceAll("\n","<br>")}</p>
             </div>
             <!--
             <div class="postPieceJointe">
@@ -472,7 +481,6 @@ function writePoste(module, type, prof, content, postID, lens, names, date, comm
             --> 
             ${pjsHTML}
                         </div>
-                        <p id="postDate"> ${date}</p>
                         <div class="postBottomDiv">
                         ${commSec}
                         ${travSec}
@@ -680,7 +688,11 @@ function writePosteE(module, type, prof, content, postID, lens, names, date, com
 
         pjsHTML += `</div>`
     }
-    
+    for(mot of content.split("##")[2].split(" ")){
+        if(mot.startsWith("https://") || mot.startsWith("http://") || mot.startsWith("www.")) {
+            contenu = contenu.replace(mot, `<a href="${mot}" target="_blank">${mot}</a>`)
+        }
+    }
 
     postsDiv = document.getElementById("posts")
     dateA = date.split("T")
@@ -691,15 +703,15 @@ function writePosteE(module, type, prof, content, postID, lens, names, date, com
     
         <div class="postTop">
             <div class="moduleTitleDiv">
-                <h3>${module}| ${type}</h3>
+                <h3>${module}</h3>
                 <p ${role == "admin" ? "style='color:rgb(255, 102, 102);'" : ""}>${role == "admin" ? "Administrateur:" : ""} ${prof}</p>
             </div>
             <h3 class="postTitle">${titre}</h3>
-            <p>${date}</p>
+            <p class="postDate">${date}</p>
         </div>
         <div class="postCore${extended}">
         <div class="postText">
-        <p>${contenu}</p>
+        <p>${contenu.replaceAll("\n","<br>")}</p>
         </div>
         ${pjsHTML}
                     </div>

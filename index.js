@@ -152,7 +152,6 @@ app.get('/home', (req, res) => {
                 token = req.cookies["token"];
                 reqs = "SELECT role FROM user WHERE token = ?"
                 connection.query(reqs, [token], function(err, result, fields){
-                    console.log(result);
                     if(err){
                         console.log(err.message);
                     }
@@ -544,7 +543,6 @@ io.on('connection', (socket) => {
                                 clearTimeout(timeouts[[...socket.rooms][1]])
                                 timeouts[[...socket.rooms][1]] = ""
                             }
-                            console.log(timeouts);
                             connection.query("SELECT nom, codeMod FROM module WHERE secID=?", [result1[0]["idSec"]], function(err, result2, fields){
                                 if(err){
                                     console.log(err.message);

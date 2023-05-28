@@ -46,7 +46,18 @@ const moduleCreationHTML = `
 `
 
 
-
+function dlEtudiants(){
+    socket.emit("dlEtudiants", document.querySelectorAll('.selected_module')[0].id)
+    socket.on("dlEtudiants", (data) => {
+        fileb = new Blob([data[0]], {type: "application/txt"})
+        const fileUrl = URL.createObjectURL(fileb);
+        const link = document.createElement('a');
+        link.href = fileUrl;
+        link.setAttribute('download', "etudiants.csv");
+        link.click()
+    })
+    
+}
 
 
 async function showAjoutSection() {
