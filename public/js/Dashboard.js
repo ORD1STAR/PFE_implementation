@@ -1,49 +1,63 @@
 
+var oldData = []
+var toDelete = []
+var toAdd = []
+
 const modulesDiv = document.getElementById('DashboardModuleDiv');
 
 const ajouterModuleBtn = document.getElementById('ajouterModuleBtn');
 ajouterModuleBtn.addEventListener('click', showAjoutSection);
-
-const moduleCreationHTML = `
-<input type='text' placeholder='nom module'>
-<div class="normalSection moduleSubElement">
-    <p class="libelle">Cour</p>
-    <select>
-        <option value="">pas d'enseignant</option>
-        <option value="">M.Belkhir kader</option>
-        <option value="">M.Belkhir kader</option>
-        <option value="">M.Belkhir kader</option>
-        <option value="">M.Belkhir kader</option>
-        <option value="">M.Belkhir kader</option>
+var moduleCreationHTML = `
+<input type='text' placeholder='nom module'>`
+socket.emit("getLsEnseignants")
+socket.on("getLsEnseignants", (data) => {
+    moduleCreationHTML += `
+        <div class="normalSection moduleSubElement">
+            <p class="libelle">Cours</p>
+            <select>
+            <option value="#">pas d'enseignant</option>`
+                
+    data.forEach(prof => {
+        moduleCreationHTML += `
+                    <option value="${prof.idUser}">${prof.nom} ${prof.prenom}</option>
+                    `
+    })
+    moduleCreationHTML += `
     </select>
-</div>
-<div class="normalSection moduleSubElement">
-    <p class="libelle">TD</p>
-    <select>
-        <option value="">pas d'enseignant</option>
-        <option value="">M.Belkhir kader</option>
-        <option value="">M.Belkhir kader</option>
-        <option value="">M.Belkhir kader</option>
-        <option value="">M.Belkhir kader</option>
-        <option value="">M.Belkhir kader</option>
-    </select>
+    </div>
+    <div class="normalSection moduleSubElement">
+        <p class="libelle">TD</p>
+        <select>
+        <option value="#">pas d'enseignant</option>`
+            
+data.forEach(prof => {
+    moduleCreationHTML += `
+                <option value="${prof.idUser}">${prof.nom} ${prof.prenom}</option>
+                `
+})
+moduleCreationHTML += `
+</select>
 </div>
 <div class="normalSection moduleSubElement">
     <p class="libelle">TP</p>
     <select>
-        <option value="">pas d'enseignant</option>
-        <option value="">M.Belkhir kader</option>
-        <option value="">M.Belkhir kader</option>
-        <option value="">M.Belkhir kader</option>
-        <option value="">M.Belkhir kader</option>
-        <option value="">M.Belkhir kader</option>
+        <option value="#">pas d'enseignant</option>`
+                
+    data.forEach(prof => {
+        moduleCreationHTML += `
+                    <option value="${prof.idUser}">${prof.nom} ${prof.prenom}</option>
+                    `
+    })
+    moduleCreationHTML += `
     </select>
-</div>
-<div class="moduleSubElement ajoutElement">
-    <button onclick='cancelAjoutModule()'>Annuler</button>
-    <button onclick='confirmerAjout()'>Ajouter</button>
-</div>
-`
+    </div>
+    <div class="moduleSubElement ajoutElement">
+        <button onclick='cancelAjoutModule()'>Annuler</button>
+        <button onclick='confirmerAjout()'>Ajouter</button>
+    </div>
+    `
+})
+
 
 
 function dlEtudiants(){
@@ -59,16 +73,32 @@ function dlEtudiants(){
     
 }
 
+function addSection(){
+    secName = document.getElementById('secName').value
+    secSpe = document.getElementById('secSpe').value
+    secFil = document.getElementById('secFil').value
+    secAnn = document.getElementById('secAnn').value
+    etudiants = document.getElementById('LSetudiants').file[0]
+    edt = document.getElementById('EDT').file[0]
+    modules = toAdd
+    toAdd = []
+    socket.emit("addSection", [secName, secSpe, secFil, secAnn, etudiants, edt, modules])
+    socket.on("success", (s, sec)=> {
+        if(d==1){
+            alert("Section ajoutée avec succès")
+            location.reload()
+        }
+    })
+}
 
 async function showAjoutSection() {
     ajouterModuleBtn.style.display = 'none';
-    
     ajoutModuleElement = document.createElement('div');
     ajoutModuleElement.classList.add('normalSection');
     ajoutModuleElement.classList.add('DashboardModuleElement');
     ajoutModuleElement.classList.add('ElementToAdd');
     ajoutModuleElement.innerHTML = moduleCreationHTML;
-    modulesDiv.insertBefore(ajoutModuleElement, ajouterModuleBtn);
+    modulesDiv.insertBefore(ajoutModuleElement, document.getElementById('ajouterModuleBtn'));
     ajoutModuleElement.classList.add('zeroHeight');
     
     await new Promise(r => setTimeout(r, 20));
@@ -89,10 +119,13 @@ async function cancelAjoutModule() {
 
 
 var tempModules = [];
+var newModule = []
 
 async function confirmerAjout() {
     elementToAdd = document.querySelector('.ElementToAdd');
     newModuleTitle = elementToAdd.querySelector('input');
+
+
     if (newModuleTitle.value == "") {
         newModuleTitle.style.animation = '';
         newModuleTitle.style.animation = 'flashingError 0.5s linear';
@@ -100,7 +133,9 @@ async function confirmerAjout() {
         newModuleTitle.style.animation = '';
         return
     }
-    
+    enss = document.querySelector('.ElementToAdd').querySelectorAll("select")
+    toAdd.push([newModuleTitle.value,document.querySelectorAll('.selected_module')[0].id, enss[0].value, enss[1].value, enss[2].value])
+
     // enlever la class .ElementToAdd de l'élement ajouté
     elementToAdd.classList.remove('ElementToAdd');
     
@@ -133,6 +168,7 @@ async function confirmerAjout() {
     
     // add the element in temp array waiting to be confirmed
     tempModules.push(elementToAdd);
+
 }
 
 
@@ -144,12 +180,13 @@ async function confirmerAjout() {
 
 var moduleToDeleteArr = [];
 
-async function deleteModule(event) {
+async function deleteModule(event, codeMod) {
     moduleToDelete = event.target.parentElement.parentElement;
     moduleToDeleteArr.push(moduleToDelete);
     moduleToDelete.classList.add('zeroHeight');
-    await new Promise(r => setTimeout(r, 200));
-    moduleToDelete.remove();
+    
+    toDelete.push(codeMod)
+    
 }
 
 
@@ -165,11 +202,22 @@ const mainWrapper = document.getElementById('mainWrapper');
 
 function DashboardSwitchToEdit() {
     mainWrapper.classList.add('DashboardEditMode');
+    if(oldData.length > 0 && document.querySelectorAll(".ensSelect").length > 0) {
+        oldData.forEach((data, i) => {
+            document.querySelectorAll(".ensSelect")[0+3*i].value = data[1]
+            document.querySelectorAll(".ensSelect")[1+3*i].value = data[2]
+            document.querySelectorAll(".ensSelect")[2+3*i].value = data[3]
+        })
+    }
+
     ajouterModuleBtn.style.display = 'block';
 
 }
 
 function DashboardSwitchToNormal() {
+    toAdd = [];
+    toDelete = [];
+    
     mainWrapper.classList.remove('DashboardEditMode');
     cancelAjoutModule();
     
@@ -177,6 +225,11 @@ function DashboardSwitchToNormal() {
     tempModules.forEach(element => {
         element.remove();
     })
+
+    moduleToDeleteArr.forEach(element => {
+        element.classList.remove('zeroHeight');
+    })
+
     ajouterModuleBtn.style.display = 'none';
     
 }
@@ -185,10 +238,38 @@ function DashboardSwitchToNormal() {
 // edit mode confirm
 
 function confirmEdit() {
-    tempModules = [];        // ajouter tt dans la bdd
-    moduleToDeleteArr = []   // supprimer tt de la bdd
+    tempModule = [];        // ajouter tt dans la bdd
 
-    DashboardSwitchToNormal();
+    if(oldData.length > 0 && document.querySelectorAll(".ensSelect").length > 0){
+        
+        oldData.forEach((data, i) => {
+            cours = document.querySelectorAll(".ensSelect")[0+3*i].value
+            td = document.querySelectorAll(".ensSelect")[1+3*i].value
+            tp = document.querySelectorAll(".ensSelect")[2+3*i].value
+            
+            if(data[1] != cours){
+                tempModule.push([data[0], "cours", cours])
+            }
+            if(data[2] != td){
+                tempModule.push([data[0], "td", td])
+            }
+            if(data[3] != tp){
+                tempModule.push([data[0], "tp", tp])
+            }
+        }) 
+    }
+    
+
+    socket.emit("adminEditModules", [tempModule, toDelete, toAdd])
+    socket.on("success", s => {
+        if(s == 1){
+            moduleToDeleteArr.forEach(element => {
+                element.remove();
+            });
+            DashboardSwitchToNormal();
+            printData(document.querySelectorAll('.selected_module')[0].id)
+        }
+    })
 }
 
 
@@ -215,6 +296,9 @@ function switchToCreation() {
     DashboardSwitchToNormal();
     DashboardSwitchToEdit();
 
+    oldData = []
+
+
     // suprimer les modules qui existent
     document.querySelectorAll('.DashboardModuleElement').forEach(element => {
         element.remove();    
@@ -233,6 +317,172 @@ function switchToDashboard() {
     document.querySelectorAll('.DashboardModuleElement').forEach(element => {
         element.remove();    
     });
+    toDelete = []
+    toAdd = []
+
 
     mainWrapper.classList.remove('CreationMode')
+}
+
+
+function printData(secID){
+    socket.emit("getSectionData", secID);
+    socket.on("getSectionData", setData)
+    function setData(data) {
+        sectionData = data[0]
+        modules = data[1]
+        lvl = (sectionData.niveau <= 3 ? "L" : "M") + sectionData.niveau
+        document.getElementById("name").innerHTML = `${lvl} ${sectionData.specialite}${sectionData.indice != "" ? ", " + sectionData.indice : ""}`;
+        document.getElementById("specialite").innerHTML = sectionData.specialite;
+        document.getElementById("filliere").innerHTML = sectionData.filliere;
+        document.getElementById("niveau").innerHTML = sectionData.niveau <= 3 ? sectionData.niveau : sectionData.niveau-3;
+        document.getElementById("palier").innerHTML = sectionData.niveau <= 3 ? "Licence" : "Master";
+        document.getElementById("nbEtudiants").innerHTML = data[3] == null ? 0 : data[3].nbEtudiants;
+        document.getElementById("nbProfs").innerHTML = data[4] == null ? 0 : data[4].nbProf;
+        if(modules.length > 0){
+            htmlToAdd = ""
+            htmlToAdd = '<h3>Modules</h3>'
+            oldData = []
+            modules.forEach(mod => {
+                htmlToAdd += `
+                <div class="normalSection DashboardModuleElement">
+                    <h3>${mod.nom}</h3>`
+                foundC = false
+                foundD = false
+                foundP = false
+                newData = [mod.codeMod]
+                data[2].forEach(modData => {
+                    if(modData.codeMod == mod.codeMod) {
+                        if(modData.type == "cours"){
+                            foundC = true
+                            htmlToAdd += `
+                            <div class="normalSection moduleSubElement">
+                                <p class="libelle">Cours</p>
+                                <select class="editModeOnly ensSelect">
+                                    <option value="#">pas d'enseignant</option>
+                            `
+                            np = ""
+                            data[5].forEach(ens => {
+                                htmlToAdd += `<option value="${ens.idUser}">${ens.nom} ${ens.prenom}</option>`
+                                if(ens.idUser == modData.enseignantID){
+                                    np = `${ens.nom} ${ens.prenom}`
+                                    newData.push(ens.idUser)
+                                }
+                            })
+                            htmlToAdd +=`    </select>
+                                <p class="notInEditMode">${np}</p>
+                            </div>
+                            `
+                        } 
+                    }
+                })
+                if(!foundC){
+                    htmlToAdd += `
+                    <div class="normalSection moduleSubElement">
+                        <p class="libelle" style="background-color:grey !important;">Cours</p>
+                        <select class="editModeOnly ensSelect">
+                            <option value="#">pas d'enseignant</option>
+                    `
+                    data[5].forEach(ens => {
+                        htmlToAdd += `<option value="${ens.idUser}">${ens.nom} ${ens.prenom}</option>`
+                    })
+                    newData.push("#")
+                    htmlToAdd +=`    </select>
+                        <p class="notInEditMode">pas d'enseignant</p>
+                    </div>
+                    `
+                }
+                data[2].forEach(modData => {
+                    if(modData.codeMod == mod.codeMod) {
+                        if(modData.type == "td"){
+                            foundD = true
+                            htmlToAdd += `
+                            <div class="normalSection moduleSubElement">
+                                <p class="libelle">TD</p>
+                                <select class="editModeOnly ensSelect">
+                                    <option value="#">pas d'enseignant</option>
+                            `
+                            np = ""
+                            data[5].forEach(ens => {
+                                htmlToAdd += `<option value="${ens.idUser}">${ens.nom} ${ens.prenom}</option>`
+                                if(ens.idUser == modData.enseignantID){
+                                    np = `${ens.nom} ${ens.prenom}`
+                                    newData.push(ens.idUser)
+                                }
+                            })
+                            htmlToAdd +=`    </select>
+                                <p class="notInEditMode">${np}</p>
+                            </div>
+                            `
+                        }
+                    }
+                })
+                if(!foundD){
+                    htmlToAdd += `
+                    <div class="normalSection moduleSubElement">
+                        <p class="libelle" style="background-color:grey !important;">TD</p>
+                        <select class="editModeOnly ensSelect">
+                            <option value="#">pas d'enseignant</option>
+                    `
+                    data[5].forEach(ens => {
+                        htmlToAdd += `<option value="${ens.idUser}">${ens.nom} ${ens.prenom}</option>`
+                    })
+                    newData.push("#")
+                    htmlToAdd +=`    </select>
+                        <p class="notInEditMode">pas d'enseignant</p>
+                    </div>
+                    `
+                }
+                data[2].forEach(modData => {
+                    if(modData.codeMod == mod.codeMod) {
+                        if(modData.type == "tp"){
+                            foundP = true
+                            htmlToAdd += `
+                            <div class="normalSection moduleSubElement">
+                                <p class="libelle">TP</p>
+                                <select class="editModeOnly ensSelect">
+                                    <option value="#">pas d'enseignant</option>
+                            `
+                            np = ""
+                            data[5].forEach(ens => {
+                                htmlToAdd += `<option value="${ens.idUser}">${ens.nom} ${ens.prenom}</option>`
+                                if(ens.idUser == modData.enseignantID){
+                                    np = `${ens.nom} ${ens.prenom}`
+                                    newData.push(ens.idUser)
+                                }
+                            })
+                            htmlToAdd +=`    </select>
+                                <p class="notInEditMode">${np}</p>
+                            </div>
+                            `
+                        }
+                    }
+                })
+                if(!foundP){
+                    htmlToAdd += `
+                    <div class="normalSection moduleSubElement">
+                        <p class="libelle" style="background-color:grey !important;">TP</p>
+                        <select class="editModeOnly ensSelect">
+                            <option value="#">pas d'enseignant</option>
+                    `
+                    data[5].forEach(ens => {
+                        htmlToAdd += `<option value="${ens.idUser}">${ens.nom} ${ens.prenom}</option>`
+                    })
+                    newData.push("#")
+                    htmlToAdd +=`    </select>
+                        <p class="notInEditMode">pas d'enseignant</p>
+                    </div>
+                    `
+                }
+                htmlToAdd += `
+                <div><button class="deleteModuleBtn editModeOnly" onclick="deleteModule(event, '${mod.codeMod}')">X</button></div></div>`
+                oldData.push(newData)
+            })
+            htmlToAdd += `<button class="editModeOnly" id="ajouterModuleBtn">Ajouter un module</button>`
+            document.getElementById("DashboardModuleDiv").innerHTML = htmlToAdd
+    
+        }
+        socket.off("getSectionData")
+        document.getElementById('ajouterModuleBtn').addEventListener('click', showAjoutSection);
+    }
 }

@@ -60,36 +60,35 @@
 
                 <div class="normalSection summaryDiv">
                     <div class="DashboardSummaryTop">
-                        <h3 class="notInCreation" id="name">GTR L3</h3>
-                        <input type="text" class="inCreationModeOnly">
+                        <h3 class="notInCreation" id="name"></h3>
+                        <input placeholder="Nom de Section" type="text" class="inCreationModeOnly" id="secName">
                     </div>
                     <div class="dashboardSummary">
                         <div class="summarySection">
                             <div class="summaryElement">
                                 <p>Spécialité :</p>
-                                <p class="notInCreation" id="specialite">GTR</p>
-                                <input class="inCreationModeOnly" type="text">
+                                <p class="notInCreation" id="specialite"></p>
+                                <input class="inCreationModeOnly" type="text" id="secSpe">
                             </div>
                             <div class="summaryElement">
                                 <p>Filliére :</p>
-                                <p class="notInCreation" id="filliere">informatique</p>
-                                <input class="inCreationModeOnly" type="text">
+                                <p class="notInCreation" id="filliere"></p>
+                                <input class="inCreationModeOnly" type="text" id="secFil">
                             </div>
                             <div class="summaryElement">
                                 <p>Annee :</p>
-                                <p class="notInCreation" id="niveau">3 eme</p>
-                                <select class="inCreationModeOnly">
-                                    <option value="1">1 ere</option>
-                                    <option value="2">2 eme</option>
-                                    <option value="3">3 eme</option>
-                                    <option value="4">4 eme</option>
-                                    <option value="5">5 eme</option>
+                                <p class="notInCreation" id="niveau"></p>
+                                <select class="inCreationModeOnly" id="secAnn">
+                                    <option value="1">1 ere Licence</option>
+                                    <option value="2">2 eme Licence</option>
+                                    <option value="3">3 eme Licence</option>
+                                    <option value="4">1 ere Master</option>
+                                    <option value="5">2 eme Master</option>
                                 </select>
                             </div>
                             <div class="summaryElement">
-                                <p>Palier :</p>
-                                <p class="notInCreation" id="palier">Licence</p>
-                                <input class="inCreationModeOnly" type="text">
+                                <p class="notInCreation">Palier :</p>
+                                <p class="notInCreation" id="palier"></p>
                             </div>
                         </div>
                         <div class="summarySection notInCreation">
@@ -107,15 +106,17 @@
 
                 <div class="normalSection subSummarySection">
                     <h3>Liste des étudiants</h3>
-                    <button><img src="/icons/link.png" alt="Telecharger"></button>
-                    <button onclick="dlEtudiants()"><img src="/icons/Download.png" alt="Telecharger"></button>
-                    <button class="editModeOnly"><img src="/icons/Upload.png" alt="Envoyer"></button>
+                    <!--<button><img src="/icons/link.png" alt="Telecharger"></button>-->
+                    <input type="file" name="LSetudiants" id="LSetudiants" style="display:none;">
+                    <button onclick="dlEtudiants()" class="notInCreation"><img src="/icons/Download.png" alt="Telecharger"></button>
+                    <button class="editModeOnly"  id="etudButt"><img src="/icons/Upload.png" alt="Envoyer"></button>
                 </div>
                 <div class="normalSection subSummarySection">
                     <h3>Emploie du temps</h3>
-                    <button><img src="/icons/link.png" alt="Telecharger"></button>
-                    <button><img src="/icons/Download.png" alt="Telecharger"></button>
-                    <button class="editModeOnly"><img src="/icons/Upload.png" alt="Envoyer"></button>
+                     <!--<button><img src="/icons/link.png" alt="Telecharger"></button>-->
+                     <input type="file" name="EDT" id="EDT" style="display:none;">
+                    <button class="notInCreation"><img src="/icons/Download.png" alt="Telecharger"></button>
+                    <button class="editModeOnly" id="edtButt"><img src="/icons/Upload.png" alt="Envoyer"></button>
                 </div>
                 <div class="subSummarySection modificationBtns">
                     <button class="editModeOnly notInCreation" onclick="DashboardSwitchToNormal()">Annuler</button>
@@ -139,6 +140,14 @@
     <script src="/js/Dashboard.js" defer></script>
     <script src="/socket.io/socket.io.js"></script>
     <script>
+
+        document.getElementById("etudButt").addEventListener("click", function(){
+            document.getElementById("LSetudiants").click()
+        })
+        document.getElementById("edtButt").addEventListener("click", function(){
+            document.getElementById("EDT").click()
+        })
+
         socket = io()
         var myURL = "/icons/default_user.png"
         socket.on('connect', () => {
@@ -193,64 +202,8 @@
                     // change the main part menu title
                     document.getElementById("mainTitle").innerHTML = `Tableau de bord ${moduleBtn.children[0].innerHTML}`
                     
-
-                    socket.emit("getSectionData", document.querySelectorAll('.selected_module')[0].id);
-                    socket.on("getSectionData", setData)
-
-                    function setData(data) {
-                        sectionData = data[0]
-                        modules = data[1]
-                        lvl = (sectionData.niveau <= 3 ? "L" : "M") + sectionData.niveau
-                        document.getElementById("name").innerHTML = `${lvl} ${sectionData.specialite}, ${sectionData.indice}`;
-                        document.getElementById("specialite").innerHTML = sectionData.specialite;
-                        document.getElementById("niveau").innerHTML = sectionData.niveau;
-                        document.getElementById("nbEtudiants").innerHTML = data[3] == null ? 0 : data[3].nbEtudiants;
-                        document.getElementById("nbProfs").innerHTML = data[4] == null ? 0 : data[4].nbProf;
-
-                        if(modules.length > 0){
-                            htmlToAdd = ""
-                            htmlToAdd = '<h3>Modules</h3>'
-                            modules.forEach(mod => {
-                                htmlToAdd += `
-                                <div class="normalSection DashboardModuleElement">
-                                    <h3>${mod.nom}</h3>`
-                                data[2].forEach(modData => {
-                                    if(modData.codeMod == mod.codeMod) {
-                                        htmlToAdd += `
-                                        <div class="normalSection moduleSubElement">
-                                            <p class="libelle">${modData.type == "cours" ? "Cours" :modData.type.toUpperCase()}</p>
-                                            <select class="editModeOnly">
-                                                <option value="">pas d'enseignant</option>
-                                        `
-                                        np = ""
-                                        data[5].forEach(ens => {
-                                            htmlToAdd += `<option value="${ens.login}">${ens.nom} ${ens.prenom}</option>`
-                                            if(ens.idUser == modData.enseignantID){
-                                                np = `${ens.nom} ${ens.prenom}`
-                                            }
-                                        })
-                                        htmlToAdd +=`    </select>
-                                            <p class="notInEditMode">${np}</p>
-                                        </div>
-                                        `
-                                    }
-                                })
-                                htmlToAdd += `
-                                <div><button class="deleteModuleBtn editModeOnly" onclick="deleteModule(event)">X</button></div></div>`
-                            })
-                            htmlToAdd += `
-                            
-                            <button class="editModeOnly" id="ajouterModuleBtn" style="display: none;">Ajouter un module</button>
-
-                            `
-                            document.getElementById("DashboardModuleDiv").innerHTML = htmlToAdd
-                        }
-                            
-
-                        socket.off("getSectionData")
-                    }
-                
-                
+                    printData(document.querySelectorAll('.selected_module')[0].id)
+                    
                 })
             })
         })

@@ -531,7 +531,7 @@ io.on('connection', (socket) => {
                 const role = result[0]["role"]
                 //etudiant
                 if(role == "etudiant"){
-                    connection.query("SELECT login, user.nom, prenom, photo, niveau, specialite, idSec, matricule, email, phone FROM user, etudiant, section WHERE user.idUser=etudiant.userID AND etudiant.section=section.idSec AND user.token = ?", [token], function(err, result1, fields){
+                    connection.query("SELECT login, user.nom, prenom, photo, niveau, specialite, idSec, indice, matricule, email, phone FROM user, etudiant, section WHERE user.idUser=etudiant.userID AND etudiant.section=section.idSec AND user.token = ?", [token], function(err, result1, fields){
                         if(err){
                             console.log(err.message);
                         }
@@ -547,14 +547,13 @@ io.on('connection', (socket) => {
                                 if(err){
                                     console.log(err.message);
                                 }
-                                if(result2.length > 0){
-                                    connection.query("SELECT codeMod, type, login, user.nom as n, user.prenom as pn FROM module, typeModule, user WHERE secID=? AND typeModule.module = module.codeMod AND typeModule.enseignantID = user.idUser", [result1[0]["idSec"]], function(err, result3, fields){
-                                        if(err){
-                                            console.log(err.message);
-                                        }
-                                        socket.emit('connectedEtu', [result1[0], result2, result3]);
-                                    })
-                                }
+                                connection.query("SELECT codeMod, type, login, user.nom as n, user.prenom as pn FROM module, typeModule, user WHERE secID=? AND typeModule.module = module.codeMod AND typeModule.enseignantID = user.idUser", [result1[0]["idSec"]], function(err, result3, fields){
+                                    if(err){
+                                        console.log(err.message);
+                                    }
+                                    socket.emit('connectedEtu', [result1[0], result2, result3]);
+                                })
+                                
                             })
                         }
                     })
@@ -576,16 +575,12 @@ io.on('connection', (socket) => {
                                 if(err){
                                     console.log(err.message);
                                 }
-                                if(result2.length > 0){
-                                    if(result2.length > 0){
-                                        connection.query("SELECT codeMod, type, login FROM module, typeModule, user WHERE secID=? AND typeModule.module = module.codeMod AND typeModule.enseignantID = user.idUser", [result1[0]["idSec"]], function(err, result3, fields){
-                                            if(err){
-                                                console.log(err.message);
-                                            }
-                                            socket.emit('connectedEns', [result1[0], result2, result3]);
-                                        })
+                                connection.query("SELECT codeMod, type, login FROM module, typeModule, user WHERE secID=? AND typeModule.module = module.codeMod AND typeModule.enseignantID = user.idUser", [result1[0]["idSec"]], function(err, result3, fields){
+                                    if(err){
+                                        console.log(err.message);
                                     }
-                                }
+                                    socket.emit('connectedEns', [result1[0], result2, result3]);
+                                })
                                 
                             })
                         }
@@ -1347,7 +1342,7 @@ io.on('connection', (socket) => {
                                 if(err){
                                     console.log(err.message);
                                 }
-                                connection.query("SELECT * FROM user WHERE role = 'enseignant'", [], function(err, result6, fields){
+                                connection.query("SELECT * FROM user WHERE role = 'enseignant' order by nom", [], function(err, result6, fields){
                                     if(err){
                                         console.log(err.message);
                                     }
@@ -1367,19 +1362,125 @@ io.on('connection', (socket) => {
 
     })
 
-    socket.on("disconnecting", () => {
-        login = [...socket.rooms][1]
-        timeouts[[...socket.rooms][1]] = setTimeout(() => {
-            req = "UPDATE user SET token = '' WHERE login = ?"
-            //sockets rooms: 2nd value = login
-            connection.query(req, [login], function(err, result, fields){
+    socket.on("getLsEnseignants", () => {
+        req = "SELECT * FROM user WHERE role = 'enseignant' ORDER BY nom"
+        connection.query(req, [], function(err, result, fields){
+            if(err){
+                console.log(err.message);
+            }
+            if(result.length > 0){
+                socket.emit("getLsEnseignants", result)
+            }
+        })
+    })
+
+    socket.on("adminEditModules", data =>{
+        
+        types = ["cours", "td", "tp"]
+        toEdit = data[0]
+        toDel = data[1]
+        toAdd = data[2]
+
+        toEdit.forEach(element => {
+            if(element[2] == "#"){
+                connection.query("DELETE FROM typeModule WHERE module = ? AND type = ?", [element[0], element[1]], function(err, result, fields){
+                    if(err){
+                        console.log(err.message);
+                    }
+                })
+            }else{
+                connection.query("SELECT * FROM typeModule WHERE module = ? AND type = ?", [element[0], element[1]], function(err, result, fields){
+                    if(err){
+                        console.log(err.message);
+                    }
+                    if(result.length > 0){
+                        req = "UPDATE typeModule SET enseignantID = ? WHERE module = ? AND type = ?"
+                    }else{
+                        req = "INSERT INTO typeModule (enseignantID, module, type) VALUES (?, ?, ?)"
+                    }
+                    connection.query(req, [element[2], element[0], element[1]], function(err, result, fields){
+                        if(err){
+                            console.log(err.message);
+                        }
+                    })
+                })
+            }
+        })
+        toDel.forEach(element => {
+            req = "DELETE FROM typeModule WHERE module = ?"
+            connection.query(req, [element], function(err, result, fields){
                 if(err){
                     console.log(err.message);
                 }
+
+                req = "DELETE FROM note WHERE codeMod = ?"
+                connection.query(req, [element], function(err, result, fields){
+                    if(err){
+                        console.log(err.message);
+                    }
+                    req = "DELETE FROM postes WHERE codeModule = ?"
+                    connection.query(req, [element], function(err, result, fields){
+                        if(err){
+                            console.log(err.message);
+                        }
+
+                        req = "DELETE FROM module WHERE codeMod = ?"
+                        connection.query(req, [element], function(err, result, fields){
+                            if(err){
+                                console.log(err.message);
+                            }
+        
+                        })
+
+                    })
+                    
+                })
+                
+
             })
-        }, 1000*30);
-        console.log(timeouts);
-    })
+        })
+        toAdd.forEach(element => {
+            
+            req = "INSERT INTO module (codeMod, nom, secID) VALUES (?, ?, ?)"
+            connection.query(req, [element[0]+element[1], element[0], element[1]], function(err, result, fields){
+                if(err){
+                    console.log(err.message);
+                }
+
+                for(var i = 2; i<5 ; i++){
+                    if(element[i] != "#"){
+                        req = "INSERT INTO typeModule (enseignantID, module, type) VALUES (?, ?, ?)"
+                        connection.query(req, [element[i], element[0]+element[1], types[i-2]], function(err, result, fields){
+                            if(err){
+                                console.log(err.message);
+                            }
+                        })
+                    }
+                }
+
+            })
+
+        })
+        setTimeout(() => {
+            socket.emit("success", 1)
+            
+        }, 1000);
+    }) //[tempModules, toDelete])
+
+
+    //socket.on("disconnecting", () => {
+    //    login = [...socket.rooms][1]
+    //    timeouts[[...socket.rooms][1]] = setTimeout(() => {
+    //        req = "UPDATE user SET token = '' WHERE login = ?"
+    //        //sockets rooms: 2nd value = login
+    //        connection.query(req, [login], function(err, result, fields){
+    //            if(err){
+    //                console.log(err.message);
+    //            }
+    //        })
+    //    }, 1000*30);
+    //    console.log(timeouts);
+    //})
     
 });
 

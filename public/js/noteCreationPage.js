@@ -186,11 +186,19 @@ function getNotesEtudiants(mod){
     socket.on("getEtudiants", setStudents)
 }
 function setStudents(etudiants){
+    console.log(etudiants);
     html = ""
     etudiants.forEach(e => {
+        link = ""
+        pdp = e["photo"]
+            if(pdp.byteLength != 0){                    //if the user has a profile picture
+                pdpB = new Blob([pdp])
+                myURL = URL.createObjectURL(pdpB)
+                link = myURL
+            }
         html += `
         <div class="affectationNoteElement">
-          <div class="profilePicDiv"></div>
+          <img class="profilePicDiv"  src="${link}" style="width:40px;height:40px;">
           <div class="informationEtudiant">
               <h3>${e.nom} ${e.prenom}</h3>
               <p>${e.matricule}</p>

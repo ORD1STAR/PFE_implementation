@@ -128,7 +128,7 @@
                 myURL = URL.createObjectURL(pdpB)
                 document.getElementById("pdp").src = myURL
             }
-            lvl = (data[0].niveau <= 3 ? "L" : "M") + data[0].niveau
+            lvl = (data[0].niveau <= 3 ? "L" : "M") + data[0].niveau + (data[0].indice != "" ? ", " + data[0].indice : "")
             sec = lvl + " " + data[0]["specialite"] //get the section (LX spé)
             idSec = data[0]["idSec"]
             
