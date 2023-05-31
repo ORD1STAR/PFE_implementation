@@ -186,7 +186,12 @@ async function deleteModule(event, codeMod) {
     moduleToDeleteArr.push(moduleToDelete);
     moduleToDelete.classList.add('zeroHeight');
     
-    toDelete.push(codeMod)
+    toDelete.push(codeMod);
+    moduleToDeleteArr.push(moduleToDelete);
+
+    await new Promise(r => setTimeout(r, 550));
+    moduleToDelete.remove();
+    
     
 }
 

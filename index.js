@@ -428,7 +428,7 @@ app.get("/listeEtudiants", (req, res) => {
 })
 app.get("/notes/*", (req, res) => {
     if(req.cookies["token"] != undefined){
-
+        
         reqs = "SELECT * FROM user WHERE token= ?"
         connection.query(reqs, [req.cookies["token"]], function(err, result, fields){
             if(err){
@@ -452,7 +452,7 @@ app.get("/notes/*", (req, res) => {
                                     console.log(err.message);
                                 }
                                 if(result.length > 0){
-        
+                                    
                                     reqs = `SELECT codeMod, title, max, noteID from note group by codeMod,title,max order by edited desc`
                                     connection.query(reqs, function(err, result2, fields){
                                         if(err){
@@ -493,6 +493,9 @@ app.get("/disconnect", (req, res) => {
     res.clearCookie("token");
     res.clearCookie("id");
     res.redirect("/");
+})
+app.get("/Creation_enseignant", (req, res) => {
+    res.sendFile(path.join(__dirname, 'public/html/Admin_compteProf.html'));
 })
 
 //const fileBuffer1 = fs.readFileSync('test.txt');

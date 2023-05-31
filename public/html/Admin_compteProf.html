@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PFE | Mes notes</title>
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/Perso.css">
+    <link rel="stylesheet" href="/css/Admin.css">
+</head>
+<body>
+    <div id="leftMenu" class="leftMenu">
+        <div class="titleDiv" onclick="location.href = '/home'">
+            <h1 id="Section"></h1>
+        </div>
+
+        <h3>Menu :</h3>
+
+        <div class="moduleMenu" id="moduleMenu">
+            <div class="moduleElement" onclick="location.href = '/edt'">
+                <p>Emploi du temps</p>
+            </div>
+            <div class="moduleElement" onclick="location.href = '/msg'">
+                <p>Messagerie</p>
+            </div>
+            <div class="moduleElement" onclick="location.href = '/files'">
+                <p>Documents</p>
+            </div>
+            <div class="moduleElement selected_module" onclick="location.href = '/notes'">
+                <p>Notes</p>
+            </div>
+            <div class="moduleElement">
+                <p>Informations Personnels</p>
+            </div>
+            <div class="moduleElement"  onclick="downloadFile('USTHB_Plan.pdf')">
+                <p>USTHB map</p>
+            </div>
+        </div>
+
+        <div class="leftMenuInfoDiv">
+            <div class="parametresDiv" id="parametresDiv">
+                <img src="/icons/Icon_gear.png" alt="">
+                <h3>Parametres</h3>
+            </div>
+            <p>Version 0.2</p>
+        </div>
+
+    </div>
+
+    <div id="popUpBackground"></div>
+
+
+    <div class="mainPart">
+        <div class="TopWrapper">
+            <div class="Top">
+                <button class="hamburgerMenu" onclick="toogleMenu()"><img id="imgBtnToogleMenu" src="/icons/icon_hamburger.png" alt=""></button>
+                <h1>Mes notes</h1>
+            </div>
+    
+            <div class="profileDiv">
+                <img class="profilePicDiv" id="pdp" src="/icons/default_user.png">
+                <div class="profileTextDiv">
+                    <p id="nom"></p>
+                    <p id="prenom"></p>
+                    <button id="profileSubMenuBtn">Mon compte</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="mainWrapper" id="mainWrapper">
+            
+            <div class="mainWrapper" id="mainWrapper">
+                <div class="selectSectionWrapper">
+                    <h3>Spécialité : </h3>
+                    <select>
+                        <option value="ACAD">ACAD</option>
+                        <option value="ISIL">ISIL</option>
+                        <option value="GTR">GTR</option>
+                    </select>
+                    <button>Afficher</button>
+                </div>
+    
+                <div class="listeContainer">
+                    <div class="etudiantElement AdminView">
+                        <div class="profilePicDiv"></div>
+                        <div class="etudiantInformations">
+                            <div class="etudiantInformaionElement">
+                                <p>xxxxxxxxxxxxxx</p>
+                                <p>yyyyyyy</p>
+                            </div>
+                            <div class="etudiantInformaionElement">
+                                <h4>Matricule : </h4>
+                                <p>2020123456789</p>
+                            </div>
+                            <div class="etudiantInformaionElement">
+                                <h4>Email : </h4>
+                                <p>etudiant@gmail.com</p>
+                            </div>
+                        </div>
+    
+                        <div class="EtudiantOption">
+                            <button>Retirer</button>
+                            <button>Deplacer</button>
+                        </div>
+                    </div>
+                    <div class="etudiantElement AdminView">
+                        <div class="profilePicDiv"></div>
+                        <div class="etudiantInformations">
+                            <div class="etudiantInformaionElement">
+                                <p>xxxxxxxxxxxxxx</p>
+                                <p>yyyyyyy</p>
+                            </div>
+                            <div class="etudiantInformaionElement">
+                                <h4>Matricule : </h4>
+                                <p>2020123456789</p>
+                            </div>
+                            <div class="etudiantInformaionElement">
+                                <h4>Email : </h4>
+                                <p>etudiant@gmail.com</p>
+                            </div>
+                        </div>
+    
+                        <div class="EtudiantOption">
+                            <button>Retirer</button>
+                            <button>Deplacer</button>
+                        </div>
+                    </div>
+                </div>
+        </div>
+        
+    </div>
+
+</body>
+</html>
