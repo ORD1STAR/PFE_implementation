@@ -75,16 +75,17 @@ function dlEtudiants(){
 
 function addSection(){
     secName = document.getElementById('secName').value
+    secInd = document.getElementById('secInd').value
     secSpe = document.getElementById('secSpe').value
     secFil = document.getElementById('secFil').value
     secAnn = document.getElementById('secAnn').value
-    etudiants = document.getElementById('LSetudiants').file[0]
-    edt = document.getElementById('EDT').file[0]
+    etudiants = document.getElementById('LSetudiants').files[0]
+    edt = document.getElementById('EDT').files[0]
     modules = toAdd
     toAdd = []
-    socket.emit("addSection", [secName, secSpe, secFil, secAnn, etudiants, edt, modules])
+    socket.emit("addSection", [secName, secInd, secSpe, secFil, secAnn, etudiants, edt, modules])
     socket.on("success", (s, sec)=> {
-        if(d==1){
+        if(s==1){
             alert("Section ajoutée avec succès")
             location.reload()
         }
@@ -323,7 +324,10 @@ function switchToDashboard() {
 
     mainWrapper.classList.remove('CreationMode')
 }
-
+// upload on edit
+// download
+// liste etudiants
+// on create module mettre 0 a tout le monde dans GENERALE du module
 
 function printData(secID){
     socket.emit("getSectionData", secID);
@@ -331,7 +335,7 @@ function printData(secID){
     function setData(data) {
         sectionData = data[0]
         modules = data[1]
-        lvl = (sectionData.niveau <= 3 ? "L" : "M") + sectionData.niveau
+        lvl = (sectionData.niveau <= 3 ? "L" : "M") + (sectionData.niveau <= 3 ? sectionData.niveau : sectionData.niveau-3)
         document.getElementById("name").innerHTML = `${lvl} ${sectionData.specialite}${sectionData.indice != "" ? ", " + sectionData.indice : ""}`;
         document.getElementById("specialite").innerHTML = sectionData.specialite;
         document.getElementById("filliere").innerHTML = sectionData.filliere;
@@ -373,7 +377,7 @@ function printData(secID){
                                 <p class="notInEditMode">${np}</p>
                             </div>
                             `
-                        } 
+                        }
                     }
                 })
                 if(!foundC){

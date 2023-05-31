@@ -66,6 +66,10 @@
                     <div class="dashboardSummary">
                         <div class="summarySection">
                             <div class="summaryElement">
+                                <p class="inCreationModeOnly">Indice :</p>
+                                <input class="inCreationModeOnly" type="text" id="secInd">
+                            </div>
+                            <div class="summaryElement">
                                 <p>Spécialité :</p>
                                 <p class="notInCreation" id="specialite"></p>
                                 <input class="inCreationModeOnly" type="text" id="secSpe">
@@ -114,7 +118,7 @@
                 <div class="normalSection subSummarySection">
                     <h3>Emploie du temps</h3>
                      <!--<button><img src="/icons/link.png" alt="Telecharger"></button>-->
-                     <input type="file" name="EDT" id="EDT" style="display:none;">
+                    <input type="file" name="EDT" id="EDT" style="display:none;">
                     <button class="notInCreation"><img src="/icons/Download.png" alt="Telecharger"></button>
                     <button class="editModeOnly" id="edtButt"><img src="/icons/Upload.png" alt="Envoyer"></button>
                 </div>
@@ -122,7 +126,7 @@
                     <button class="editModeOnly notInCreation" onclick="DashboardSwitchToNormal()">Annuler</button>
                     <button class="editModeOnly notInCreation" onclick="confirmEdit()">Confimer</button>
                     <button class="notInEditMode notInCreation" onclick="DashboardSwitchToEdit()">Modifier</button>
-                    <button class="inCreationModeOnly">Creer la section</button>
+                    <button class="inCreationModeOnly" onclick="addSection()">Creer la section</button>
                 </div>
             </div>
 
@@ -180,9 +184,10 @@
             modDiv = document.getElementById("moduleMenu")  //get the module menu div
             modDiv.innerHTML = ""
             for(var section of sections){ //for each module in the modules array add a button to the module menu
+                annee = (section["niveau"] <= 3 ? "L" : "M") + "" + (section["niveau"] <= 3 ? section["niveau"] : section["niveau"] -3)
                 modDiv.innerHTML += `
                 <div class="moduleElement" onclick="switchToDashboard()" id="${section["idSec"]}">
-                    <p>L${section["niveau"]} ${section["specialite"]} ${section['indice']}</p>
+                    <p>${annee} ${section["specialite"]} ${section['indice']}</p>
                 </div>
                 `
             }

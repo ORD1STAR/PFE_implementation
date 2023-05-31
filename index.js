@@ -1338,7 +1338,7 @@ io.on('connection', (socket) => {
                             if(err){
                                 console.log(err.message);
                             }
-                            connection.query("SELECT COUNT(*) AS nbProf FROM module, typeModule WHERE module.secID = ? AND codeMod = module group by enseignantID", [sectionID], function(err, result5, fields){
+                            connection.query("SELECT COUNT(*) as nbProf FROM (SELECT * FROM module, typeModule WHERE module.secID = ? AND codeMod = module group by enseignantID) AS sous_calc", [sectionID], function(err, result5, fields){
                                 if(err){
                                     console.log(err.message);
                                 }
@@ -1467,7 +1467,53 @@ io.on('connection', (socket) => {
         }, 1000);
     }) //[tempModules, toDelete])
 
+    socket.on("addSection", data => { //[secName, secInd, secSpe, secFil, secAnn, etudiants, edt, modules]
+        
+        req = "INSERT INTO section (niveau, specialite, filliere, nom, indice) VALUES (?, ?, ?, ?, ?)"
 
+        nom = data[0]
+        indice = data[1]
+        specialite = data[2]
+        filiere = data[3]
+        annee = data[4]
+        etudiants = data[5]
+        edt = data[6]
+        modules = data[7]
+
+        connection.query(req, [annee, specialite, filiere, nom, indice], function(err, result, fields){
+            if(err){
+                console.log(err.message);
+            }
+            idSec = result.insertId
+            if(etudiants != undefined && etudiants.size > 0){
+                editListeEtudiants(readStudentList(etudiants), idSec)
+            }
+            if(edt != undefined && edt.size > 0){
+                editEDT(edt, idSec)
+            }
+            types = ["cours", "td", "tp"]
+            req = "INSERT INTO module (codeMod, nom, secID) VALUES (?, ?, ?)"
+            modules.forEach(element => {
+                connection.query(req, [element[0]+idSec, element[0], idSec], function(err, result, fields){
+                    if(err){
+                        console.log(err.message);
+                    }
+                    for(var i = 2; i<5 ; i++){
+                        if(element[i] != "#"){
+                            req = "INSERT INTO typeModule (enseignantID, module, type) VALUES (?, ?, ?)"
+                            connection.query(req, [element[i], element[0]+idSec, types[i-2]], function(err, result, fields){
+                                if(err){
+                                    console.log(err.message);
+                                }
+                            })
+                        }
+                    }
+                })
+            });
+
+        })
+        socket.emit("success", 1, 1)
+    })
     //socket.on("disconnecting", () => {
     //    login = [...socket.rooms][1]
     //    timeouts[[...socket.rooms][1]] = setTimeout(() => {
@@ -1491,7 +1537,6 @@ http.listen(3000, () => {
 );
 
 
-//config start end
 function readEDT(file){
     const xlsx = require('xlsx');
     const fs = require('fs');
@@ -1515,6 +1560,38 @@ function readEDT(file){
         EDT.push(ligne)
     }
     return EDT
+}
+
+function readStudentList(file) {
+    const xlsx = require('xlsx');
+    const fs = require('fs');
+    const start = "A2";
+    const end = "C9999"; // Assurez-vous d'ajuster le numéro de ligne maximum selon vos besoins
+    var studentList = [];
+
+    const workbook = xlsx.read(file, { type: 'buffer' });
+
+    const sheetName = workbook.SheetNames[0];
+    const sheet = workbook.Sheets[sheetName];
+
+    const range = xlsx.utils.decode_range(start + ":" + end);
+    for (let row = range.s.r; row <= range.e.r; row++) {
+        var student = {};
+        for (let col = range.s.c; col <= range.e.c; col++) {
+            const cellAddress = xlsx.utils.encode_cell({ r: row, c: col });
+            const cellValue = sheet[cellAddress] ? sheet[cellAddress].v : "";
+            if (col === 0) {
+                student.matricule = cellValue;
+            } else if (col === 1) {
+                student.userID = cellValue;
+            } else if (col === 2) {
+                student.groupe = cellValue;
+            }
+        }
+        if(student.matricule == "" && student.userID == "" && student.groupe == "") break;
+        studentList.push(student);
+    }
+    return studentList;
 }
 
 function envoyerMail(to, titre, content){
@@ -1553,3 +1630,52 @@ function generateCode(){
     return token
 }
 
+
+function editListeEtudiants(liste, section){
+    liste.forEach(etudiant => { // {matricule, userID, groupe}
+        connection.query("SELECT * FROM user WHERE idUser = ?", [etudiant.userID], function(err, result1, fields){
+            if(err){
+                console.log(err.message);
+            }
+            if(result1.length > 0){ // etudiant existe dans les users
+                connection.query("SELECT * FROM etudiant WHERE userID = ?", [etudiant.userID], function(err, result2, fields){
+                    if(err){
+                        console.log(err.message);
+                    }
+                    if(result2.length > 0){ // etudiant existe dans les etudiants
+                        connection.query("DELETE FROM note WHERE matricule = ?", [result2[0].matricule], function(err, result3, fields){
+                            if(err){ // del des notes
+                                console.log(err.message);
+                            }
+                            connection.query("UPDATE etudiant SET matricule = ?, section = ?, groupe = ? WHERE userID = ?", [etudiant.matricule, idSec, etudiant.groupe, etudiant.userID], function(err, result4, fields){
+                                
+                                if(err){ // update etudiant
+                                    console.log(err.message);
+                                }
+                                
+                            })
+                        })
+
+
+                    }else{
+                        req3 = "INSERT INTO etudiant (matricule, section, groupe, userID) VALUES (?, ?, ?, ?)"
+                        connection.query(req3, [etudiant.matricule, section, etudiant.groupe, etudiant.userID, ], function(err, result, fields){
+                            if(err){
+                                console.log(err.message);
+                            }
+                        })
+                    }
+                })
+            }
+
+        })
+    })
+}
+function editEDT(file, section){
+    req = "INSERT INTO emploiDuTemps (section, edtFile) VALUES (?, ?)"
+    connection.query(req, [section, file], function(err, result, fields){
+        if(err){
+            console.log(err.message);
+        }
+    })
+}
