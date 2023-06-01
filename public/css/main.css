@@ -17,6 +17,11 @@ input{
     border: 1px solid var(--accent_Neutral_05);
     border-radius: 50%;
 }
+
+img {
+    object-fit: cover;
+}
+
 :root {
     /* --background_Dark : rgb(87, 87, 87);
     --background_Neutral : rgb(143, 143, 143);
@@ -66,6 +71,7 @@ input{
 
     --imgFilterBlack : 0.3;
     
+    --red : #A0565F;
     
     --common_border_radius : 10px;
 
@@ -1477,7 +1483,8 @@ a{
     margin-right: auto; */
     height: fit-content;
     width: 450px;
-    max-width: 95%;
+    /* max-width: 95%; */
+    max-width: calc(100% - 20px) !important;
     z-index: 10;
     border-radius: var(--common_border_radius);
     overflow: hidden;
@@ -1490,11 +1497,68 @@ a{
     box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.2);
 }
 
+.loadingPopup {
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    inset: 0;
+    transform: translate(50%, 50%);
+    z-index: 55;
+}
+
+.loadingPopup p {
+    color: var(--textColorWhite);
+    transform: translateX(6%);
+}
+
+.loadingpopUpVisible {
+    transform: scale(1.5);
+    opacity: 1;
+    z-index: 55;
+}
 
 .popUpVisible {
     transform: translateY(0px);
+    /* transform: scale(1.5); */
     opacity: 1;
     z-index: 55;
+}
+
+.smallMsgPopUp h3 {
+    margin: 10px;
+}
+
+.confirmDialog {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.confirmDialog button {
+    background-color: transparent;
+    border: none;
+    border-radius: var(--common_border_radius);
+    color: var(--important);
+    border: 1px solid var(--important);
+    padding: 10px 15px;
+    margin: 10px 0px;
+    cursor: pointer;
+}
+
+.confirmDialog button:hover {
+    background-color: var(--accent_Lighter_05);
+}
+
+.confirmDialog button:nth-child(2) {
+    background-color: transparent;
+    border: 1px solid var(--red);
+    color: var(--red);
+}
+
+.confirmDialog button:nth-child(2):hover {
+    background-color: var(--red);
+    color: white;
 }
 
 .popUpTop {
@@ -1644,7 +1708,31 @@ a{
 
 
 
-
+.lds-dual-ring {
+    display: inline-block;
+    width: 80px;
+    height: 80px;
+  }
+  .lds-dual-ring:after {
+    content: " ";
+    display: block;
+    width: 64px;
+    height: 64px;
+    margin: 8px;
+    border-radius: 50%;
+    border: 6px solid #fff;
+    border-color: #fff transparent #fff transparent;
+    animation: lds-dual-ring 1.2s linear infinite;
+  }
+  @keyframes lds-dual-ring {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+  
 
 
 

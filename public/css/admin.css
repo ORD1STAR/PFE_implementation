@@ -662,6 +662,27 @@ select.focus {
     height: 80px;
     display: flex;
     align-items: center;
+    position: relative;
+}
+
+.DashboardSummaryTop button {
+    position: absolute;
+    background-color: transparent;
+    border: none;
+    border-radius: var(--common_border_radius);
+    padding: 5px 10px;
+    border: 1px solid var(--important);
+    color: var(--important);
+    right: 0px;
+    top: 0px;
+    margin: 10px;
+    cursor: pointer;
+}
+
+.DashboardSummaryTop button:hover {
+    background-color: var(--red);
+    color: white;
+    border: 1px solid var(--red);
 }
 
 .DashboardSummaryTop h3 {
@@ -967,6 +988,78 @@ select.focus {
 
 
 
+/*      Creation de compte      */
+
+.mainWrapper.creationCompteWrapper {
+    margin: 0px;
+    padding: 0px;
+    max-width: 100%;
+}
+
+.ajoutCompteProfSection {
+    width: 700px;
+    max-width: 100%;
+    /* max-width: calc(100% - 20px); */
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 30px;
+    margin: 0px;
+}
+
+.ajoutCompteProfSection .ajoutCompteInfoElement {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    margin: 2px 20px;
+}
+
+.ajoutCompteProfSection h3 {
+    margin: 20px 30px 10px 20px;
+    align-self: flex-start;
+    color: var(--textColorBlack);
+}
+
+.ajoutCompteInfoElement p {
+    width: 160px;
+    margin: 10px 10px;
+    color: var(--textColorBlack);
+}
+
+.ajoutCompteInfoElement input {
+    background-color: var(--accent_Lighter_015);
+    border: none;
+    border-radius: var(--common_border_radius);
+    padding: 5px;
+    color: var(--textColorBlack);
+    flex-grow: 1;
+}
+
+.ajoutCompteProfSection button {
+    background-color: var(--important);
+    color: white;
+    border: none;
+    border-radius: var(--common_border_radius);
+    margin: 20px 10px;
+    padding: 10px;
+}
+
+.ajoutCompteProfSection button:hover {
+    background-color: var(--accent_Lighter);
+}
+
+
+.interSectionsTitle {
+    width: 700px;
+    max-width: calc(100% - 20px);
+    margin: 10px 0px 0px 10px;
+    color: var(--textColorBlack);
+}
+
+
+
+
+
+
 
 
 @media only screen and (max-width: 650px) {
@@ -979,13 +1072,14 @@ select.focus {
 
     .etudiantInformaionElement {
         display: flex;
-        margin: 5px;
-        height: 15px;
+        flex-wrap: wrap;
+        margin: 5px 10px;
+        /* height: 15px; */
     }
 
-    .etudiantInformaionElement:nth-child(3) {
+    /* .etudiantInformaionElement:nth-child(3) {
         margin: 1px 0px 10px 5px;
-    }
+    } */
 
     .etudiantInformaionElement h4 {
         margin: 0px;
@@ -997,6 +1091,8 @@ select.focus {
         font-weight: bold;
         font-size: 18px;
         margin: 10px 0px 10px 5px;
+        flex-grow: 1;
+        max-width: 150px;
     }
 
   
@@ -1009,6 +1105,10 @@ select.focus {
         width: 105px;
     }
 
+    .AdminView .EtudiantOption {
+        display: flex;
+        width: 100%;
+    }
 
 
 
@@ -1037,6 +1137,17 @@ select.focus {
 
     .LeftDashBoard {
         width: calc(100%-20px);
+    }
+
+
+
+    .ajoutCompteInfoElement p {
+        width: 100%;
+        margin: 10px 0px 3px 10px;
+    }
+
+    .ajoutCompteInfoElement input {
+        padding: 10px 5px;
     }
 
 }

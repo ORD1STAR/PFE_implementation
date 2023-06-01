@@ -54,7 +54,7 @@ form input[type="submit"] {
     transition: all 0.1s ease-in-out;
     /* background-color: rgba(0, 0, 0, 0.05); */
     background-color: var(--important);
-    color: white;
+    color: white !important;
 }
 
 form input[type="submit"]:hover {
@@ -93,4 +93,8 @@ td{
 td p{
     margin:0px;
     color:red; 
+}
+
+h2 {
+    color: var(--textColorBlack);
 }

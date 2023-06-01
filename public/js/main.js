@@ -944,5 +944,24 @@ async function blink(id) {
     postToBlink.style.animation = 'blink 0.5s linear';
     await new Promise(resolve => {setTimeout(resolve, 500)});
     postToBlink.style.animation = '';
+    
+}
 
+
+
+
+
+function showLoadingAnimation() {
+    toggleBackground(false)
+    loadingPopup = document.createElement('div');
+    // loadingPopup.classList.add('popUp');
+    loadingPopup.classList.add('loadingPopup');
+    loadingPopup.innerHTML = '<div class="lds-dual-ring"></div><p>Chargement</p>'
+    document.body.appendChild(loadingPopup);
+    loadingPopup.classList.add('popUpVisible');
+}
+
+function removeLoadingAnimation() {
+    document.querySelector('.loadingPopup').remove()
+    toggleBackground(true)
 }
