@@ -790,27 +790,7 @@ function setPostsE(posts){
     codeMod = document.querySelectorAll('.selected_module')[0].id.split(" ")[1]
     postsDiv = document.getElementById("posts")
     postsDiv.innerHTML = `
-    <div class="optionPost">
-        <!-- <h2>Scan</h2> -->
-        <div class="categorieDiv">
-            <a href="/files">
-                <h3>Drive</h3>
-                <p>Consulter les cours et documents</p>
-            </a>
-            <a href="/msg">
-                <h3>Messagerie</h3>
-                <p>Contacter vos professeurs du module</p>
-            </a>
-            <a href="/notes/${codeMod}">
-                <h3>Notes</h3>
-                <p>Consulter vos notes d'évaluation</p>
-            </a>
-        </div>
-    </div>
-
-
-
-
+    
     <div id="profSide" class="postElement postElement_profSide">
         <input id="fileInput" type="file" style="display:none;" onchange="refrechFiles()" multiple/>
         <div class="postTop">
