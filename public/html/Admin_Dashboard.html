@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PFE | Mes notes</title>
+    <title>PFE | Administration</title>
     <link rel="stylesheet" href="/css/main.css">
     <link rel="stylesheet" href="/css/Perso.css">
     <link rel="stylesheet" href="/css/admin.css">
@@ -28,7 +28,6 @@
                 <img src="/icons/Icon_gear.png" alt="">
                 <h3>Parametres</h3>
             </div>
-            <p>Version 0.2</p>
         </div>
 
     </div>
@@ -40,7 +39,7 @@
         <div class="TopWrapper">
             <div class="Top">
                 <button class="hamburgerMenu" onclick="toogleMenu()"><img id="imgBtnToogleMenu" src="/icons/icon_hamburger.png" alt=""></button>
-                <h1 id="mainTitle">Tableau de bord GTR L3</h1>
+                <h1 id="mainTitle">Tableau de bord Creation</h1>
             </div>
     
             <div class="profileDiv">
@@ -64,7 +63,7 @@
                         <input placeholder="Nom de Section" type="text" class="inCreationModeOnly" id="secName">
                         <button class="editModeOnly notInCreation" onclick="DashboardSwitchToNormal()">X</button>
                     </div>
-                    <div class="dashboardSummary">
+                    <div class="dashboardSummary" id="dashboardSummary" style="display: none">
                         <div class="summarySection">
                             <div class="summaryElement">
                                 <p class="inCreationModeOnly">Indice :</p>
@@ -111,14 +110,14 @@
 
                 <div class="normalSection subSummarySection">
                     <h3>Liste des étudiants</h3>
-                    <button onclick="openListeSite()"><img src="/icons/link.png" alt="Telecharger"></button>
+                    <button onclick="openListeSite()" class="notInCreation"><img src="/icons/link.png" alt="Telecharger"></button>
                     <input type="file" name="LSetudiants" id="LSetudiants" style="display:none;">
                     <button onclick="dlEtudiants()" class="notInCreation"><img src="/icons/Download.png" alt="Telecharger"></button>
                     <button class="editModeOnly"  id="etudButt"><img src="/icons/Upload.png" alt="Envoyer"></button>
                 </div>
-                <div class="normalSection subSummarySection">
+                <div onclick="openEDTSite()" class="normalSection subSummarySection">
                     <h3>Emploie du temps</h3>
-                     <!--<button><img src="/icons/link.png" alt="Telecharger"></button>-->
+                     <button class="notInCreation"><img src="/icons/link.png" alt="Telecharger"></button>
                     <input type="file" name="EDT" id="EDT" style="display:none;">
                     <button onclick="dlEDT()" class="notInCreation"><img src="/icons/Download.png" alt="Telecharger"></button>
                     <button class="editModeOnly" id="edtButt"><img src="/icons/Upload.png" alt="Envoyer"></button>
@@ -145,7 +144,6 @@
     <script src="/js/Dashboard.js" defer></script>
     <script src="/socket.io/socket.io.js"></script>
     <script>
-
         document.getElementById("etudButt").addEventListener("click", function(){
             document.getElementById("LSetudiants").click()
         })
@@ -154,12 +152,14 @@
         })
 
         socket = io()
+        var role
         var myURL = "/icons/default_user.png"
         socket.on('connect', () => {
             socket.emit("connected", [document.cookie]) //get  the cookies with the connection socket
         })
 
         socket.on('connectedAdm', (data) => { //get the data from the server with the acknoledgement
+            role = "admin"
             login = data[0]["login"]            //get the login from the data
             prenom = data[0]["prenom"]    //get the first part of the login (the prenom)
             nom = data[0]["nom"]            //get the second part of the login (the nom)
@@ -177,7 +177,8 @@
             document.getElementById("nom").innerHTML = nom          //replace the nom with the right one
             document.getElementById("prenom").innerHTML = prenom    //replace the prenom with the right one
             document.getElementById("Section").innerHTML = "Section"      //replace the section with the right one
-            
+            switchToCreation()
+            document.getElementById("dashboardSummary").style.display = "flex"
         })
         socket.emit("getAdminSections")
         socket.on("getAdminSections", (data) => {

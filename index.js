@@ -1034,6 +1034,21 @@ io.on('connection', (socket) => {
         })
     })
 
+    socket.on("getEDTADM", (sec) => {
+        req = `SELECT edtFile FROM emploiDuTemps WHERE section = ?`
+        connection.query(req, [sec], function(err, result, fields){
+            if(err){
+                console.log(err.message);
+            }
+            if(result.length == 0){
+                socket.emit("getEDTADM", "empty")
+            }else{
+                socket.emit("getEDTADM", readEDT(result[0]["edtFile"]))
+            }
+
+        })
+    })
+
     socket.on("getExam", (data)=>{
         token = data[0]
         exam = data[1]
@@ -1561,6 +1576,24 @@ io.on('connection', (socket) => {
         })
     })
 
+    socket.on("getListeEtudiants", () => {
+        req = "SELECT user.*, etudiant.*, section.nom as sectionNom FROM user, etudiant, section WHERE user.idUser = etudiant.userID AND etudiant.section = section.idSec"
+        connection.query(req, [], function(err, result1, fields){
+            if(err){
+                console.log(err.message);
+            }
+            socket.emit("getListeEtudiants", result1)
+        })
+    })
+
+    socket.on("removeStudent", (matricule) => {
+        req = "UPDATE etudiant SET section = 0 WHERE matricule = ?"
+        connection.query(req, [matricule], function(err, result, fields){
+            if(err){
+                console.log(err.message);
+            }
+        })
+    })
     //socket.on("disconnecting", () => {
     //    login = [...socket.rooms][1]
     //    timeouts[[...socket.rooms][1]] = setTimeout(() => {
@@ -1758,7 +1791,7 @@ function editListeEtudiants(liste, section){
 
 function editEDT(file, section){
 
-    req = "SELECT * FROM  emploiDuTemps WHERE section = ?"
+    req = "SELECT * FROM emploiDuTemps WHERE section = ?"
     connection.query(req, [section], function(err, result, fields){
         if(err){
             console.log(err.message);

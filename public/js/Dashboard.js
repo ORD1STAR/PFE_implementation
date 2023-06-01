@@ -364,7 +364,7 @@ function switchToDashboard() {
     mainWrapper.classList.remove('CreationMode')
 }
 
-// liste etudiants
+
 
 function printData(secID){
     socket.emit("getSectionData", secID);
@@ -531,4 +531,7 @@ function printData(secID){
 function openListeSite(){
     // open a new tab with the liste site
     window.open(`/listeEtudiants?section=${document.querySelectorAll('.selected_module')[0].id}`, "_blank");
+}
+function openEDTSite(){
+    window.open(`/edt?id=${document.querySelectorAll('.selected_module')[0].id}`, "_blank");
 }

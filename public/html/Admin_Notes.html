@@ -18,23 +18,13 @@
         <h3>Menu :</h3>
 
         <div class="moduleMenu" id="moduleMenu">
-            <div class="moduleElement" onclick="location.href = '/edt'">
-                <p>Emploi du temps</p>
-                <div class="notifDiv"></div>
-            </div>
             <div class="moduleElement" onclick="location.href = '/msg'">
                 <p>Messagerie</p>
-                <div class="notifDiv"></div>
             </div>
             <div class="moduleElement" onclick="location.href = '/files'">
                 <p>Documents</p>
-                <div class="notifDiv"></div>
             </div>
-            <div class="moduleElement selected_module" onclick="location.href = '/notes'">
-                <p>Notes</p>
-                <div class="notifDiv"></div>
-            </div>
-            <div class="moduleElement">
+            <div class="moduleElement" onclick="location.href = '/pagePersonelle'">
                 <p>Informations Personnels</p>
             </div>
             <div class="moduleElement">
@@ -249,14 +239,12 @@
     <script>
         //connection to the socket
         socket = io()
+        var role
         socket.on('connect', () => {
             socket.emit("connected", [document.cookie]) //get  the cookies with the connection socket
         })
-
-
-        m = "<%= s %>"
-        alert(m)
         socket.on('connectedEns', (data) => { //get the data from the server with the acknoledgement
+            role = "ens"
             login = data[0]["login"]            //get the login from the data
             prenom = data[0]["prenom"]        //get the first part of the login (the prenom)
             nom = data[0]["nom"]              //get the second part of the login (the nom)
