@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PFE | Mes notes</title>
+    <title>PFE | Etudiants</title>
     <link rel="stylesheet" href="/css/main.css">
     <link rel="stylesheet" href="/css/Perso.css">
     <link rel="stylesheet" href="/css/admin.css">
@@ -17,28 +17,23 @@
 
         <h3>Menu :</h3>
 
-        <div class="moduleMenu" id="moduleMenu">
-            <div class="moduleElement" onclick="location.href = '/edt'">
+        <div class="moduleMenu" id="moduleMenu" style="display: none">
+            <div class="moduleElement admin" onclick="location.href = '/listeEtudiants'" style="display: none">
+                <p>Liste des étudiants</p>
+            </div>
+            <div class="moduleElement notAdmin" onclick="location.href = '/edt'">
                 <p>Emploi du temps</p>
-                <div class="notifDiv"></div>
             </div>
-            <div class="moduleElement" onclick="location.href = '/msg'">
+            <div class="moduleElement notAdmin" onclick="location.href = '/msg'">
                 <p>Messagerie</p>
-                <div class="notifDiv"></div>
             </div>
-            <div class="moduleElement" onclick="location.href = '/files'">
+            <div class="moduleElement notAdmin" onclick="location.href = '/files'">
                 <p>Documents</p>
-                <div class="notifDiv"></div>
             </div>
-            <div class="moduleElement selected_module" onclick="location.href = '/notes'">
+            <div class="moduleElement selected_module notAdmin" onclick="location.href = '/notes'">
                 <p>Notes</p>
-                <div class="notifDiv"></div>
             </div>
-            <div class="moduleElement">
-                <p>Calendier</p>
-                <div class="notifDiv"></div>
-            </div>
-            <div class="moduleElement">
+            <div class="moduleElement" onclick="location.href = '/pagePersonelle'">
                 <p>Informations Personnels</p>
             </div>
             <div class="moduleElement">
@@ -51,7 +46,6 @@
                 <img src="/icons/Icon_gear.png" alt="">
                 <h3>Parametres</h3>
             </div>
-            <p>Version 0.2</p>
         </div>
 
     </div>
@@ -67,7 +61,7 @@
             </div>
     
             <div class="profileDiv">
-                <img class="profilePicDiv" src="/icons/default_user.png">
+                <img class="profilePicDiv" src="/icons/default_user.png" id="pdp">
                 <div class="profileTextDiv">
                     <p id="nom">Hannoun</p>
                     <p id="prenom">Amar Amine</p>
@@ -79,241 +73,76 @@
         <div class="mainWrapper" id="mainWrapper">
             <div class="selectSectionWrapper">
                 <h3>Spécialité : </h3>
-                <select>
-                    <option value="ACAD">ACAD</option>
-                    <option value="ISIL">ISIL</option>
-                    <option value="GTR">GTR</option>
+                <select id="secSelect">
+                    <option value="0">Sans section</option>
                 </select>
-                <button>Afficher</button>
+                <button onclick="setStudents()">Afficher</button>
             </div>
 
-            <div class="listeContainer">
-                <div class="etudiantElement AdminView">
-                    <div class="profilePicDiv"></div>
-                    <div class="etudiantInformations">
-                        <div class="etudiantInformaionElement">
-                            <p>xxxxxxxxxxxxxx</p>
-                            <p>yyyyyyy</p>
-                        </div>
-                        <div class="etudiantInformaionElement">
-                            <h4>Matricule : </h4>
-                            <p>2020123456789</p>
-                        </div>
-                        <div class="etudiantInformaionElement">
-                            <h4>Email : </h4>
-                            <p>etudiant@gmail.com</p>
-                        </div>
-                    </div>
-
-                    <div class="EtudiantOption">
-                        <button>Retirer</button>
-                        <button>Deplacer</button>
-                    </div>
-                </div>
-                <div class="etudiantElement AdminView">
-                    <div class="profilePicDiv"></div>
-                    <div class="etudiantInformations">
-                        <div class="etudiantInformaionElement">
-                            <p>xxxxxxxxxxxxxx</p>
-                            <p>yyyyyyy</p>
-                        </div>
-                        <div class="etudiantInformaionElement">
-                            <h4>Matricule : </h4>
-                            <p>2020123456789</p>
-                        </div>
-                        <div class="etudiantInformaionElement">
-                            <h4>Email : </h4>
-                            <p>etudiant@gmail.com</p>
-                        </div>
-                    </div>
-
-                    <div class="EtudiantOption">
-                        <button>Retirer</button>
-                        <button>Deplacer</button>
-                    </div>
-                </div>
-                <div class="etudiantElement AdminView">
-                    <div class="profilePicDiv"></div>
-                    <div class="etudiantInformations">
-                        <div class="etudiantInformaionElement">
-                            <p>xxxxxxxxxxxxxx</p>
-                            <p>yyyyyyy</p>
-                        </div>
-                        <div class="etudiantInformaionElement">
-                            <h4>Matricule : </h4>
-                            <p>2020123456789</p>
-                        </div>
-                        <div class="etudiantInformaionElement">
-                            <h4>Email : </h4>
-                            <p>etudiant@gmail.com</p>
-                        </div>
-                    </div>
-
-                    <div class="EtudiantOption">
-                        <button>Retirer</button>
-                        <button>Deplacer</button>
-                    </div>
-                </div>
-                <div class="etudiantElement AdminView">
-                    <div class="profilePicDiv"></div>
-                    <div class="etudiantInformations">
-                        <div class="etudiantInformaionElement">
-                            <p>xxxxxxxxxxxxxx</p>
-                            <p>yyyyyyy</p>
-                        </div>
-                        <div class="etudiantInformaionElement">
-                            <h4>Matricule : </h4>
-                            <p>2020123456789</p>
-                        </div>
-                        <div class="etudiantInformaionElement">
-                            <h4>Email : </h4>
-                            <p>etudiant@gmail.com</p>
-                        </div>
-                    </div>
-
-                    <div class="EtudiantOption">
-                        <button>Retirer</button>
-                        <button>Deplacer</button>
-                    </div>
-                </div>
-                <div class="etudiantElement AdminView">
-                    <div class="profilePicDiv"></div>
-                    <div class="etudiantInformations">
-                        <div class="etudiantInformaionElement">
-                            <p>xxxxxxxxxxxxxx</p>
-                            <p>yyyyyyy</p>
-                        </div>
-                        <div class="etudiantInformaionElement">
-                            <h4>Matricule : </h4>
-                            <p>2020123456789</p>
-                        </div>
-                        <div class="etudiantInformaionElement">
-                            <h4>Email : </h4>
-                            <p>etudiant@gmail.com</p>
-                        </div>
-                    </div>
-
-                    <div class="EtudiantOption">
-                        <button>Retirer</button>
-                        <button>Deplacer</button>
-                    </div>
-                </div>
-                <div class="etudiantElement AdminView">
-                    <div class="profilePicDiv"></div>
-                    <div class="etudiantInformations">
-                        <div class="etudiantInformaionElement">
-                            <p>xxxxxxxxxxxxxx</p>
-                            <p>yyyyyyy</p>
-                        </div>
-                        <div class="etudiantInformaionElement">
-                            <h4>Matricule : </h4>
-                            <p>2020123456789</p>
-                        </div>
-                        <div class="etudiantInformaionElement">
-                            <h4>Email : </h4>
-                            <p>etudiant@gmail.com</p>
-                        </div>
-                    </div>
-
-                    <div class="EtudiantOption">
-                        <button>Retirer</button>
-                        <button>Deplacer</button>
-                    </div>
-                </div>
-                <div class="etudiantElement AdminView">
-                    <div class="profilePicDiv"></div>
-                    <div class="etudiantInformations">
-                        <div class="etudiantInformaionElement">
-                            <p>xxxxxxxxxxxxxx</p>
-                            <p>yyyyyyy</p>
-                        </div>
-                        <div class="etudiantInformaionElement">
-                            <h4>Matricule : </h4>
-                            <p>2020123456789</p>
-                        </div>
-                        <div class="etudiantInformaionElement">
-                            <h4>Email : </h4>
-                            <p>etudiant@gmail.com</p>
-                        </div>
-                    </div>
-
-                    <div class="EtudiantOption">
-                        <button>Retirer</button>
-                        <button>Deplacer</button>
-                    </div>
-                </div>
-                <div class="etudiantElement AdminView">
-                    <div class="profilePicDiv"></div>
-                    <div class="etudiantInformations">
-                        <div class="etudiantInformaionElement">
-                            <p>xxxxxxxxxxxxxx</p>
-                            <p>yyyyyyy</p>
-                        </div>
-                        <div class="etudiantInformaionElement">
-                            <h4>Matricule : </h4>
-                            <p>2020123456789</p>
-                        </div>
-                        <div class="etudiantInformaionElement">
-                            <h4>Email : </h4>
-                            <p>etudiant@gmail.com</p>
-                        </div>
-                    </div>
-
-                    <div class="EtudiantOption">
-                        <button>Retirer</button>
-                        <button>Deplacer</button>
-                    </div>
-                </div>
-                <div class="etudiantElement AdminView">
-                    <div class="profilePicDiv"></div>
-                    <div class="etudiantInformations">
-                        <div class="etudiantInformaionElement">
-                            <p>xxxxxxxxxxxxxx</p>
-                            <p>yyyyyyy</p>
-                        </div>
-                        <div class="etudiantInformaionElement">
-                            <h4>Matricule : </h4>
-                            <p>2020123456789</p>
-                        </div>
-                        <div class="etudiantInformaionElement">
-                            <h4>Email : </h4>
-                            <p>etudiant@gmail.com</p>
-                        </div>
-                    </div>
-
-                    <div class="EtudiantOption">
-                        <button>Retirer</button>
-                        <button>Deplacer</button>
-                    </div>
-                </div>
-                <div class="etudiantElement AdminView">
-                    <div class="profilePicDiv"></div>
-                    <div class="etudiantInformations">
-                        <div class="etudiantInformaionElement">
-                            <p>xxxxxxxxxxxxxx</p>
-                            <p>yyyyyyy</p>
-                        </div>
-                        <div class="etudiantInformaionElement">
-                            <h4>Matricule : </h4>
-                            <p>2020123456789</p>
-                        </div>
-                        <div class="etudiantInformaionElement">
-                            <h4>Email : </h4>
-                            <p>etudiant@gmail.com</p>
-                        </div>
-                    </div>
-
-                    <div class="EtudiantOption">
-                        <button>Retirer</button>
-                        <button>Deplacer</button>
-                    </div>
-                </div>
+            <div class="listeContainer" id="listeContainer">
+                
             </div>
 
         </div>
     </div>
 
     <script src="/js/main.js" defer></script>
+    <script src="/js/ListeEtudiants.js" defer></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        var etudiants;
+        var role;
+        socket = io()
+        var myURL = "/icons/default_user.png"
+        socket.on('connect', () => {
+            socket.emit("connected", [document.cookie]) //get  the cookies with the connection socket
+        })
 
+        socket.on('connectedAdm', (data) => { //get the data from the server with the acknoledgement
+            role = "admin"
+            login = data[0]["login"]            //get the login from the data
+            prenom = data[0]["prenom"]    //get the first part of the login (the prenom)
+            nom = data[0]["nom"]            //get the second part of the login (the nom)
+            pdp = data[0]["photo"]
+            email = data[0]["email"]
+            phone = data[0]["phone"]
+            if(pdp.byteLength != 0){                    //if the user has a profile picture
+                pdpB = new Blob([pdp])
+                myURL = URL.createObjectURL(pdpB)
+                document.getElementById("pdp").src = myURL
+            }
+            
+            sec = "Sections" //get the section (LX spé)
+            
+            document.getElementById("nom").innerHTML = nom          //replace the nom with the right one
+            document.getElementById("prenom").innerHTML = prenom    //replace the prenom with the right one
+            document.getElementById("Section").innerHTML = "Section"      //replace the section with the right one
+            
+            socket.emit("getAdminSections")
+            socket.on("getAdminSections", sections => {
+                document.getElementById("secSelect").innerHTML = ""
+                sections.forEach(section =>{
+                    document.getElementById("secSelect").innerHTML += `<option value="${section["idSec"]}">${section["nom"]}</option>`
+                })
+            })
+            document.querySelectorAll(".notAdmin").forEach(element => {
+                element.style.display = "none"
+            });
+            document.querySelectorAll(".admin").forEach(element => {
+                element.style.display = "block"
+            });
+            document.getElementById("moduleMenu").style.display = "block"
+
+            listCont = document.getElementById("listeContainer");
+            socket.emit("getListeEtudiants")
+            socket.on("getListeEtudiants", (etd) => {etudiants = etd})
+            setTimeout(() => {
+                setStudents()
+            }, 1000);
+            
+            
+        })
+        
+    </script>
 </body>
 </html>

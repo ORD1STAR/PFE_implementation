@@ -82,10 +82,12 @@
     
     <script>
         socket = io()
+        var role
         socket.on('connect', () => {
             socket.emit("connected", [document.cookie]) //get  the cookies with the connection socket
         })
         socket.on('connectedEtu', (data) => { //get the data from the server with the acknoledgement
+            role = "etu"
             login = data[0]["login"]            //get the login from the data
             //socket.join(login)
             prenom = data[0]["prenom"]       //get the first part of the login (the prenom)
@@ -202,6 +204,7 @@
         })
 
         socket.on('connectedEns', (data) => { //get the data from the server with the acknoledgement
+            role = "ens"
             methode = ""
             login = data[0]["login"]            //get the login from the data
             //socket.join(login)

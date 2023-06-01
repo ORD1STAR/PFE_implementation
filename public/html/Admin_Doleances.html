@@ -90,7 +90,7 @@
     <script src="/socket.io/socket.io.js"></script>
     <script>
         socket = io();
-
+        var role
         var myURL = "/icons/default_user.png"
         socket.on('connect', () => {
             socket.emit("connected", [document.cookie]) //get  the cookies with the connection socket
@@ -98,6 +98,7 @@
 
 
         socket.on('connectedAdm', (data) => { //get the data from the server with the acknoledgement
+            role = "admin"
             login = data[0]["login"]            //get the login from the data
             prenom = data[0]["prenom"]    //get the first part of the login (the prenom)
             nom = data[0]["nom"]            //get the second part of the login (the nom)

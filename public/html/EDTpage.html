@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PFE | Emploie du temps</title>
+    <title>PFE | Emploi du temps</title>
     <link rel="stylesheet" href="/css/main.css">
     <link rel="stylesheet" href="/css/Perso.css">
 </head>
@@ -17,16 +17,19 @@
 
         <h3>Menu :</h3>
         <div class="moduleMenu" id="moduleMenu">
-            <div class="moduleElement selected_module" onclick="location.href = '/edt'">
+            <div class="moduleElement admin" onclick="location.href = '/listeEtudiants'" style="display: none">
+                <p>Liste des étudiants</p>
+            </div>
+            <div class="moduleElement notAdmin selected_module" onclick="location.href = '/edt'">
                 <p>Emploi du temps</p>
             </div>
-            <div class="moduleElement" onclick="location.href = '/msg'">
+            <div class="moduleElement notAdmin" onclick="location.href = '/msg'">
                 <p>Messagerie</p>
             </div>
-            <div class="moduleElement" onclick="location.href = '/files'">
+            <div class="moduleElement notAdmin" onclick="location.href = '/files'">
                 <p>Documents</p>
             </div>
-            <div class="moduleElement" onclick="location.href = '/notes'">
+            <div class="moduleElement notAdmin" onclick="location.href = '/notes'">
                 <p>Notes</p>
             </div>
             <div class="moduleElement">
@@ -84,6 +87,7 @@
     <script>
         //connection to the socket
         socket = io()
+        var role
         socket.on('connect', () => {
             socket.emit("connected", [document.cookie]) //get  the cookies with the connection socket
         })
@@ -91,6 +95,7 @@
 
         
         socket.on('connectedEtu', (data) => { //get the data from the server with the acknoledgement
+            role = "etu"
             login = data[0]["login"]            //get the login from the data
             prenom = data[0]["prenom"]        //get the first part of the login (the prenom)
             nom = data[0]["nom"]              //get the second part of the login (the nom)
@@ -124,6 +129,49 @@
             selected_module = document.querySelectorAll('.selected_module')[0].innerHTML;
             
             
+            getEDTetu()
+        })
+        socket.on('connectedAdm', (data) => { //get the data from the server with the acknoledgement
+            role = "admin"
+            login = data[0]["login"]            //get the login from the data
+            prenom = data[0]["prenom"]        //get the first part of the login (the prenom)
+            nom = data[0]["nom"]              //get the second part of the login (the nom)
+            pdp = data[0]["photo"]
+            if(pdp.byteLength != 0){                    //if the user has a profile picture
+                pdpB = new Blob([pdp])
+                url = URL.createObjectURL(pdpB)
+
+                document.getElementById("pdp").src = url
+            }
+            sec = "Sections" //get the section (LX spé)
+            
+            document.getElementById("nom").innerHTML = nom          //replace the nom with the right one
+            document.getElementById("prenom").innerHTML = prenom    //replace the prenom with the right one
+            document.getElementById("Section").innerHTML = sec      //replace the section with the right one
+            
+            
+            //add the event listener to the module buttons to change the selected module
+            const modulesBtns = document.querySelectorAll('.moduleElement');
+            modulesBtns.forEach(moduleBtn => {
+                if(modulesBtns.innerHTML != "USTHB map"){
+                    moduleBtn.addEventListener('click', () => {
+                        modulesBtns.forEach(moduleBtn => {moduleBtn.classList.remove("selected_module")})
+                        moduleBtn.classList.add("selected_module")
+                        // change the main part menu title
+                        document.getElementById("mainTitle").innerHTML = `Actualité ${moduleBtn.children[0].innerHTML}`
+                    })
+                }
+            })
+            document.querySelectorAll(".notAdmin").forEach(element => {
+                element.style.display = "none"
+            });
+            document.querySelectorAll(".admin").forEach(element => {
+                element.style.display = "block"
+            });
+            document.getElementById("moduleMenu").style.display = "block"
+            selected_module = document.querySelectorAll('.selected_module')[0].innerHTML;
+            
+            getEDTadm()
             
         })
     </script>

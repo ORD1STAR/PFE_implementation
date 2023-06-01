@@ -71,7 +71,7 @@
             </div>
         </div>
 
-        <h3>Travaux actuels</h3>
+        <h3 class="notEns">Travaux actuels</h3>
         <div class="travaux">
             
         </div>
@@ -111,6 +111,7 @@
     <script>
         //connection to the socket
         socket = io()
+        var role
         var myURL = "/icons/default_user.png"
         socket.on('connect', () => {
             socket.emit("connected", [document.cookie]) //get  the cookies with the connection socket
@@ -119,6 +120,7 @@
 
         
         socket.on('connectedEtu', (data) => { //get the data from the server with the acknoledgement
+            role = "etu"
             login = data[0]["login"]            //get the login from the data
             prenom = data[0]["prenom"]    //get the first part of the login (the prenom)
             nom = data[0]["nom"]            //get the second part of the login (the nom)
@@ -166,6 +168,7 @@
         })
         
         socket.on('connectedEns', (data) => { //get the data from the server with the acknoledgement
+            role = "ens"
             window.ensID = data[0]["idUser"]
             login = data[0]["login"]            //get the login from the data
             prenom = data[0]["prenom"]        //get the first part of the login (the prenom)
@@ -219,71 +222,12 @@
                 </div>
             </div>
             `
-
+            document.querySelectorAll(".notEns").forEach(element => {
+                element.style.display = "none"
+            });
 
         })
             
-        socket.on('connectedAdm', (data) => { //get the data from the server with the acknoledgement
-            window.ensID = data[0]["idUser"]
-            login = data[0]["login"]            //get the login from the data
-            prenom = data[0]["prenom"]        //get the first part of the login (the prenom)
-            nom = data[0]["nom"]             //get the second part of the login (the nom)
-            pdp = data[0]["photo"]
-            if(pdp.byteLength != 0){                    //if the user has a profile picture
-                pdpB = new Blob([pdp])
-                myURL = URL.createObjectURL(pdpB)
-
-                document.getElementById("pdp").src = myURL
-            }
-            document.getElementById("moduleGeneral").style.display = "none"
-            document.getElementById("nom").innerHTML = nom          //replace the nom with the right one
-            document.getElementById("prenom").innerHTML = prenom    //replace the prenom with the right one
-            document.getElementById("Section").innerHTML = "Section"      //replace the section with the right one
-            document.getElementById("posts").innerHTML = ""
-            modules = data[1]           //get the modules from the data
-            modDiv = document.getElementById("moduleMenu")  //get the module menu div
-            for(var module of modules){ //for each module in the modules array add a button to the module menu
-                modDiv.innerHTML += `<div class="moduleElement" id="mod${module["idSec"]} ${module["codeMod"]} ${module["type"]}"><p>L${module["niveau"]} ${module["specialite"]}| ${module['nom']}</p></div>`
-            }
-            //add the event listener to the module buttons to change the selected module
-            const modulesBtns = document.querySelectorAll('.moduleElement');
-            modulesBtns.forEach(moduleBtn => {
-                moduleBtn.addEventListener('click', () => {
-                    modulesBtns.forEach(moduleBtn => {moduleBtn.classList.remove("selected_module")})
-                    moduleBtn.classList.add("selected_module")
-                    // change the main part menu title
-                    document.getElementById("mainTitle").innerHTML = `Actualité ${moduleBtn.children[0].innerHTML}`
-                    mod = moduleBtn.children[0].innerHTML.split("| ")[1]
-                    comvB = false
-                    pjvB = false
-                    travB = false
-                    getPostsA(mod)
-                })
-            })
-            selected_module = document.querySelectorAll('.selected_module')[0].innerHTML;
-            postsDiv = document.getElementById("posts")
-            postsDiv.innerHTML = `
-            <div class="optionPost">
-                <!-- <h2>Scan</h2> -->
-                <div class="categorieDiv">
-                    <a href="/files">
-                        <h3>Drive</h3>
-                        <p>Consulter les cours et documents</p>
-                    </a>
-                    <a href="/msg">
-                        <h3>Messagerie</h3>
-                        <p>Contacter vos professeurs du module</p>
-                    </a>
-                    <a href="/notes">
-                        <h3>Notes</h3>
-                        <p>Consulter vos notes d'évaluation</p>
-                    </a>
-                </div>
-            </div>
-            `
-
-
-        })
         
             // Drive, messagerie, Notes btns changing place when scroll
         optionPosts = document.querySelector('.categorieDiv');

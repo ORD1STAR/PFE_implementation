@@ -44,15 +44,16 @@ var isExtending = false
 profileDiv = document.querySelector(".profileDiv")
 profileSubMenuBtn = document.querySelector(".profilePicDiv")
 
-profileSubMenuBtn.addEventListener("click", showProfileSubMenu)
+profileDiv.addEventListener("click", showProfileSubMenu)
 
 async function showProfileSubMenu() {
     profileSubMenuDiv = document.createElement('div');
     profileSubMenuDiv.innerHTML = `
                 <a href="/pagePersonelle"><p>Espace Personnel</p></a>
-                <a href="/msg"><p>Messagerie</p></a>
-                <a href="/edt"><p>Emploie du temps</p></a>
-                <a href="/notes"><p>Délibération</p></a>
+                ${role == "admin" ? `<a href="/listeEtudiants"><p>Liste des étudiants</p></a>` : ""}
+                ${role != "admin" ? `<a href="/msg"><p>Messagerie</p></a>` : ""}
+                ${role != "admin" ? `<a href="/edt"><p>Emploie du temps</p></a>` : ""}
+                ${role != "admin" ? (role != "ens" ? `<a href="/notes"><p>Délibération</p></a>` : "") : ""}
                 <div class="delimiteur"></div>
                 <a href="#" onclick="showParametres()"><p>Parametres</p></a>
                 <a href="/disconnect"><p>se déconnecter</p></a>`;

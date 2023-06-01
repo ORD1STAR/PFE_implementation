@@ -3,6 +3,7 @@ var oldData = []
 var toDelete = []
 var toAdd = []
 
+canAdd = true
 const modulesDiv = document.getElementById('DashboardModuleDiv');
 
 const ajouterModuleBtn = document.getElementById('ajouterModuleBtn');
@@ -61,16 +62,34 @@ moduleCreationHTML += `
 
 
 function dlEtudiants(){
-    socket.emit("dlEtudiants", document.querySelectorAll('.selected_module')[0].id)
+    sec = document.querySelectorAll('.selected_module')[0].id
+    socket.emit("dlEtudiants", sec)
     socket.on("dlEtudiants", (data) => {
-        fileb = new Blob([data[0]], {type: "application/txt"})
+        fileb = new Blob([data], {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"})
         const fileUrl = URL.createObjectURL(fileb);
         const link = document.createElement('a');
         link.href = fileUrl;
-        link.setAttribute('download', "etudiants.csv");
+        link.setAttribute('download', `etudiantsSection${sec}.xlsx`);
         link.click()
     })
     
+}
+
+function dlEDT() {
+    sec = document.querySelectorAll('.selected_module')[0].id;
+    socket.emit("dlEDT", sec);
+    socket.on("dlEDT", (data) => {
+        if (data != undefined) {
+            fileb = new Blob([data.edtFile], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
+            const fileUrl = URL.createObjectURL(fileb);
+            const link = document.createElement('a');
+            link.href = fileUrl;
+            link.setAttribute('download', `emploiDuTempsSection${sec}.xlsx`);
+            link.click();
+        } else {
+            alert("Pas d'emploi du temps pour cette section");
+        }
+    });
 }
 
 function addSection(){
@@ -93,23 +112,27 @@ function addSection(){
 }
 
 async function showAjoutSection() {
-    ajouterModuleBtn.style.display = 'none';
-    ajoutModuleElement = document.createElement('div');
-    ajoutModuleElement.classList.add('normalSection');
-    ajoutModuleElement.classList.add('DashboardModuleElement');
-    ajoutModuleElement.classList.add('ElementToAdd');
-    ajoutModuleElement.innerHTML = moduleCreationHTML;
-    modulesDiv.insertBefore(ajoutModuleElement, document.getElementById('ajouterModuleBtn'));
-    ajoutModuleElement.classList.add('zeroHeight');
-    
-    await new Promise(r => setTimeout(r, 20));
-    ajoutModuleElement.classList.remove('zeroHeight');
+    if(canAdd){
+        ajouterModuleBtn.style.display = 'none !important'; // marche pas
+        ajoutModuleElement = document.createElement('div');
+        ajoutModuleElement.classList.add('normalSection');
+        ajoutModuleElement.classList.add('DashboardModuleElement');
+        ajoutModuleElement.classList.add('ElementToAdd');
+        ajoutModuleElement.innerHTML = moduleCreationHTML;
+        modulesDiv.insertBefore(ajoutModuleElement, document.getElementById('ajouterModuleBtn'));
+        ajoutModuleElement.classList.add('zeroHeight');
+        
+        await new Promise(r => setTimeout(r, 20));
+        ajoutModuleElement.classList.remove('zeroHeight');
+        canAdd = false
+    }
 }
 
 
 
 async function cancelAjoutModule() {
     try {
+        canAdd = true
         ajouterModuleBtn.style.display = 'block'
         elementToAdd = document.querySelector('.ElementToAdd');
         elementToAdd.classList.add('zeroHeight');
@@ -136,7 +159,7 @@ async function confirmerAjout() {
     }
     enss = document.querySelector('.ElementToAdd').querySelectorAll("select")
     toAdd.push([newModuleTitle.value,document.querySelectorAll('.selected_module')[0].id, enss[0].value, enss[1].value, enss[2].value])
-
+    canAdd = true
     // enlever la class .ElementToAdd de l'élement ajouté
     elementToAdd.classList.remove('ElementToAdd');
     
@@ -187,10 +210,9 @@ async function deleteModule(event, codeMod) {
     moduleToDelete.classList.add('zeroHeight');
     
     toDelete.push(codeMod);
-    moduleToDeleteArr.push(moduleToDelete);
 
     await new Promise(r => setTimeout(r, 550));
-    moduleToDelete.remove();
+    moduleToDelete.style.display = 'none';
     
     
 }
@@ -233,7 +255,12 @@ function DashboardSwitchToNormal() {
     })
 
     moduleToDeleteArr.forEach(element => {
-        element.classList.remove('zeroHeight');
+        element.style.display = 'block';
+        setTimeout(() => {
+            element.classList.remove('zeroHeight');
+            
+        }, 20);
+        //document.getElementById('DashboardModuleDiv').insertBefore(element, document.getElementById("ajouterModuleBtn"));
     })
 
     ajouterModuleBtn.style.display = 'none';
@@ -262,10 +289,17 @@ function confirmEdit() {
             if(data[3] != tp){
                 tempModule.push([data[0], "tp", tp])
             }
-        }) 
+        })
     }
     
-
+    etudiants = document.getElementById('LSetudiants').files[0]
+    edt = document.getElementById('EDT').files[0]
+    if(etudiants != undefined){
+        socket.emit("adminEditStudents", etudiants, document.querySelectorAll('.selected_module')[0].id)
+    }
+    if(edt != undefined){
+        socket.emit("adminEditEDT", edt, document.querySelectorAll('.selected_module')[0].id)
+    }
     socket.emit("adminEditModules", [tempModule, toDelete, toAdd])
     socket.on("success", s => {
         if(s == 1){
@@ -329,10 +363,8 @@ function switchToDashboard() {
 
     mainWrapper.classList.remove('CreationMode')
 }
-// upload on edit
-// download
-// liste etudiants
-// on create module mettre 0 a tout le monde dans GENERALE du module
+
+
 
 function printData(secID){
     socket.emit("getSectionData", secID);
@@ -340,7 +372,7 @@ function printData(secID){
     function setData(data) {
         sectionData = data[0]
         modules = data[1]
-        lvl = (sectionData.niveau <= 3 ? "L" : "M") + (sectionData.niveau <= 3 ? sectionData.niveau : sectionData.niveau-3)
+        lvl = sectionData.niveau == 0 ? "" : ((sectionData.niveau <= 3 ? "L" : "M") + (sectionData.niveau <= 3 ? sectionData.niveau : sectionData.niveau-3))
         document.getElementById("name").innerHTML = `${lvl} ${sectionData.specialite}${sectionData.indice != "" ? ", " + sectionData.indice : ""}`;
         document.getElementById("specialite").innerHTML = sectionData.specialite;
         document.getElementById("filliere").innerHTML = sectionData.filliere;
@@ -349,8 +381,7 @@ function printData(secID){
         document.getElementById("nbEtudiants").innerHTML = data[3] == null ? 0 : data[3].nbEtudiants;
         document.getElementById("nbProfs").innerHTML = data[4] == null ? 0 : data[4].nbProf;
         if(modules.length > 0){
-            htmlToAdd = ""
-            htmlToAdd = '<h3>Modules</h3>'
+            htmlToAdd = `<h3>Modules</h3>`
             oldData = []
             modules.forEach(mod => {
                 htmlToAdd += `
@@ -491,8 +522,8 @@ function printData(secID){
             document.getElementById("DashboardModuleDiv").innerHTML = htmlToAdd
     
         }
-        socket.off("getSectionData")
         document.getElementById('ajouterModuleBtn').addEventListener('click', showAjoutSection);
+        socket.off("getSectionData")
     }
 }
 
@@ -536,4 +567,13 @@ async function showDetail(type) {
 
     await new Promise(resolve => {setTimeout(resolve, 20)});
     suprimerConfirmPopUp.classList.add('popUpVisible')
+}
+
+
+function openListeSite(){
+    // open a new tab with the liste site
+    window.open(`/listeEtudiants?section=${document.querySelectorAll('.selected_module')[0].id}`, "_blank");
+}
+function openEDTSite(){
+    window.open(`/edt?id=${document.querySelectorAll('.selected_module')[0].id}`, "_blank");
 }

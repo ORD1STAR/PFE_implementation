@@ -16,8 +16,8 @@
 
         <h3>Menu :</h3>
 
-        <div class="moduleMenu" id="moduleMenu">
-            <div class="moduleElement" onclick="location.href = '/edt'">
+        <div class="moduleMenu" id="moduleMenu" style="display: none">
+            <div class="moduleElement  notEns" onclick="location.href = '/edt'">
                 <p>Emploi du temps</p>
             </div>
             <div class="moduleElement selected_module" onclick="location.href = '/msg'">
@@ -26,10 +26,10 @@
             <div class="moduleElement" onclick="location.href = '/files'">
                 <p>Documents</p>
             </div>
-            <div class="moduleElement" onclick="location.href = '/notes'">
+            <div class="moduleElement  notEns" onclick="location.href = '/notes'">
                 <p>Notes</p>
             </div>
-            <div class="moduleElement">
+            <div class="moduleElement" onclick="location.href = '/pagePersonelle'">
                 <p>Informations Personnels</p>
             </div>
             <div class="moduleElement" onclick="downloadFile('USTHB_Plan.pdf')">
@@ -42,7 +42,6 @@
                 <img src="/icons/Icon_gear.png" alt="">
                 <h3>Parametres</h3>
             </div>
-            <p>Version 0.2</p>
         </div>
 
     </div>
@@ -149,11 +148,13 @@
     <script src="/socket.io/socket.io.js"></script>
     
     <script>
+        var role
         socket = io()
         socket.on('connect', () => {
             socket.emit("connected", [document.cookie]) //get  the cookies with the connection socket
         })
         socket.on('connectedEtu', (data) => { //get the data from the server with the acknoledgement
+            role = "etu"
             login = data[0]["login"]            //get the login from the data
             //socket.join(login)
             prenom = data[0]["prenom"]        //get the first part of the login (the prenom)
@@ -255,11 +256,12 @@
             })
 
             selected_module = document.querySelectorAll('.selected_module')[0].innerHTML;
-            
+            document.getElementById("moduleMenu").style.display = "block"
             
         })
 
         socket.on('connectedEns', (data) => { //get the data from the server with the acknoledgement
+            role = "ens"
             login = data[0]["login"]            //get the login from the data
             //socket.join(login)
             prenom = data[0]["prenom"]        //get the first part of the login (the prenom)
@@ -371,7 +373,12 @@
             // !!!!!!!!!
         
             selected_module = document.querySelectorAll('.selected_module')[0].innerHTML;
-            
+
+            document.querySelectorAll(".notEns").forEach(element => {
+                element.style.display = "none"
+            });
+
+            document.getElementById("moduleMenu").style.display = "block"
             
         })
 

@@ -15,8 +15,8 @@
         </div>
         <h3>Menu :</h3>
 
-        <div class="moduleMenu" id="moduleMenu">
-            <div class="moduleElement" onclick="location.href = '/edt'">
+        <div class="moduleMenu" id="moduleMenu" style="display: none">
+            <div class="moduleElement  notEns" onclick="location.href = '/edt'">
                 <p>Emploi du temps</p>
             </div>
             <div class="moduleElement" onclick="location.href = '/msg'">
@@ -25,10 +25,10 @@
             <div class="moduleElement selected_module" onclick="location.href = '/files'">
                 <p>Documents</p>
             </div>
-            <div class="moduleElement" onclick="location.href = '/notes'">
+            <div class="moduleElement notEns" onclick="location.href = '/notes'">
                 <p>Notes</p>
             </div>
-            <div class="moduleElement">
+            <div class="moduleElement" onclick="location.href = '/pagePersonelle'">
                 <p>Informations Personnels</p>
             </div>
             <div class="moduleElement"  onclick="downloadFile('USTHB_Plan.pdf')">
@@ -41,7 +41,6 @@
                 <img src="/icons/Icon_gear.png" alt="">
                 <h3>Parametres</h3>
             </div>
-            <p>Version 0.2</p>
         </div>
 
 
@@ -58,29 +57,7 @@
 
         <div id="popUpBackground"></div>
         <!-- <button class="addPost">+</button> -->
-        <div class="optionPost">
-            <!-- <h2>Scan</h2> -->
-            <div class="categorieDiv">
-                <a href="/files">
-                    <h3>Drive</h3>
-                    <p>Consulter les cours et documents</p>
-                </a>
-                <a href="/msg">
-                    <h3>Messagerie</h3>
-                    <p>Contacter vos professeurs du module</p>
-                </a>
-                <a href="/notes">
-                    <h3>Notes</h3>
-                    <p>Consulter vos notes d'évaluation</p>
-                </a>
-            </div>
-            <div id="filtreDiv" class="filterDiv">
-                <h3>Filtrer :</h3>
-                <button>Cours</button>
-                <button class="filterSelected">TD</button>
-                <button class="filterSelected">TP</button>
-            </div>
-        </div>
+        
         <div class="fileSection">
             <div class="moduleSection" id="moduleSection">
                 
@@ -113,22 +90,6 @@
             
         </div>
 
-        <h3>Travaux actuels</h3>
-        <div class="travaux">
-            <div class="travauxElement">
-                <h3>Dev Web</h3>
-                <p>Tp3: les variables session</p>
-            </div>
-            <div class="travauxElement">
-                <h3>Dev Web</h3>
-                <p>Tp3: les variables session</p>
-            </div>
-            <div class="travauxElement">
-                <h3>Dev Web</h3>
-                <p>Tp3: les variables session</p>
-            </div>
-        </div>
-
         <div class="categorieDiv">
             <a href="/files">
                 <h3>Drive</h3>
@@ -146,13 +107,14 @@
     <script src="/socket.io/socket.io.js"></script>
     <script src="/js/Fichiers.js"></script>
     <script>
-
+        var role
         socket = io()
         socket.on('connect', () => {
             socket.emit("connected", [document.cookie]) //get  the cookies with the connection socket
         })
 
         socket.on('connectedEtu', (data) => { //get the data from the server with the acknoledgement
+            role = "etu"
             login = data[0]["login"]            //get the login from the data
             prenom = data[0]["prenom"]        //get the first part of the login (the prenom)
             nom = data[0]["nom"]              //get the second part of the login (the nom)
@@ -195,10 +157,11 @@
             selected_module = document.querySelectorAll('.selected_module')[0].innerHTML;
             getFiles("General") //get the posts from the server (all the posts from the section)
             
-            
+            document.getElementById("moduleMenu").style.display = "block"
         })
 
         socket.on('connectedEns', (data) => { //get the data from the server with the acknoledgement
+            role = "ens"
             login = data[0]["login"]            //get the login from the data
             prenom = data[0]["prenom"]        //get the first part of the login (the prenom)
             nom = data[0]["nom"]              //get the second part of the login (the nom)
@@ -239,7 +202,12 @@
             })
             selected_module = document.querySelectorAll('.selected_module')[0].innerHTML;
             
-            
+            document.querySelectorAll(".notEns").forEach(element => {
+                element.style.display = "none"
+            });
+
+            document.getElementById("moduleMenu").style.display = "block"
+
         })
 
             // Drive, messagerie, Notes btns changing place when scroll
