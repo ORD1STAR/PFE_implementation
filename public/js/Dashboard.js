@@ -528,6 +528,48 @@ function printData(secID){
 }
 
 
+
+async function suprimerSection() {
+    toggleBackground(false);
+    suprimerConfirmPopUp = document.createElement('div');
+    suprimerConfirmPopUp.classList.add('popUp');
+    suprimerConfirmPopUp.classList.add('smallMsgPopUp');
+    suprimerConfirmPopUp.innerHTML = `
+    <h3>Etes vous sur de vouloire suprmier la section ?</h3>
+    <div class="confirmDialog">
+    <button onclick="cancelSupression()">Annuler</button>
+    <button>Supprimer</button>
+    </div>`
+    document.body.appendChild(suprimerConfirmPopUp)
+
+    await new Promise(resolve => {setTimeout(resolve, 20)});
+    suprimerConfirmPopUp.classList.add('popUpVisible')
+}
+
+async function cancelSupression() {
+    toggleBackground(true);
+    popUpToRemove = document.querySelector('.popUp').remove()
+    popUpToRemove.classList.remove('popUpVisible')
+    popUpToRemove.remove();
+}
+
+
+
+async function showDetail(type) {
+    toggleBackground(false);
+    suprimerConfirmPopUp = document.createElement('div');
+    suprimerConfirmPopUp.classList.add('popUp');
+    suprimerConfirmPopUp.classList.add('smallMsgPopUp');
+    suprimerConfirmPopUp.innerHTML = `
+    <h3>Etes vous sur de vouloire suprmier la section ?</h3>
+    `
+    document.body.appendChild(suprimerConfirmPopUp)
+
+    await new Promise(resolve => {setTimeout(resolve, 20)});
+    suprimerConfirmPopUp.classList.add('popUpVisible')
+}
+
+
 function openListeSite(){
     // open a new tab with the liste site
     window.open(`/listeEtudiants?section=${document.querySelectorAll('.selected_module')[0].id}`, "_blank");

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PFE | Mes notes</title>
+    <title>PFE | Gestion de comptes</title>
     <link rel="stylesheet" href="/css/main.css">
     <link rel="stylesheet" href="/css/Perso.css">
     <link rel="stylesheet" href="/css/Admin.css">
@@ -55,7 +55,7 @@
         <div class="TopWrapper">
             <div class="Top">
                 <button class="hamburgerMenu" onclick="toogleMenu()"><img id="imgBtnToogleMenu" src="/icons/icon_hamburger.png" alt=""></button>
-                <h1>Mes notes</h1>
+                <h1>Gestion comptes enseignants</h1>
             </div>
     
             <div class="profileDiv">
@@ -70,19 +70,31 @@
 
         <div class="mainWrapper" id="mainWrapper">
             
-            <div class="mainWrapper" id="mainWrapper">
-                <div class="selectSectionWrapper">
-                    <h3>Spécialité : </h3>
-                    <select>
-                        <option value="ACAD">ACAD</option>
-                        <option value="ISIL">ISIL</option>
-                        <option value="GTR">GTR</option>
-                    </select>
-                    <button>Afficher</button>
+            <div class="mainWrapper creationCompteWrapper" id="mainWrapper">
+                <div class="normalSection ajoutCompteProfSection">
+                    <h3>Ajouter un compte enseignant</h3>
+                    <div class="ajoutCompteInfoElement">
+                        <p>Nom</p>
+                        <input type="text">
+                    </div>
+                    <div class="ajoutCompteInfoElement">
+                        <p>Prenom</p>
+                        <input type="text">
+                    </div>
+                    <div class="ajoutCompteInfoElement">
+                        <p>Numéro de telephone</p>
+                        <input type="text">
+                    </div>
+                    <div class="ajoutCompteInfoElement">
+                        <p>Address email</p>
+                        <input type="text">
+                    </div>
+                    <button onclick="showLoadingAnimation()">Ajouter</button>
                 </div>
     
-                <div class="listeContainer">
-                    <div class="etudiantElement AdminView">
+                <h3 class="interSectionsTitle">Liste des enseignants</h3>
+                <div class="listeContainer AdminView">
+                    <div class="etudiantElement ">
                         <div class="profilePicDiv"></div>
                         <div class="etudiantInformations">
                             <div class="etudiantInformaionElement">
@@ -90,11 +102,11 @@
                                 <p>yyyyyyy</p>
                             </div>
                             <div class="etudiantInformaionElement">
-                                <h4>Matricule : </h4>
+                                <h4>Numero de telephone</h4>
                                 <p>2020123456789</p>
                             </div>
                             <div class="etudiantInformaionElement">
-                                <h4>Email : </h4>
+                                <h4>Email</h4>
                                 <p>etudiant@gmail.com</p>
                             </div>
                         </div>
@@ -112,11 +124,11 @@
                                 <p>yyyyyyy</p>
                             </div>
                             <div class="etudiantInformaionElement">
-                                <h4>Matricule : </h4>
+                                <h4>Numero de telephone</h4>
                                 <p>2020123456789</p>
                             </div>
                             <div class="etudiantInformaionElement">
-                                <h4>Email : </h4>
+                                <h4>Email</h4>
                                 <p>etudiant@gmail.com</p>
                             </div>
                         </div>
@@ -130,6 +142,8 @@
         </div>
         
     </div>
+
+    <script src="js/main.js"></script>
 
 </body>
 </html>
