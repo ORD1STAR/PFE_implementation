@@ -62,6 +62,7 @@
                     <div class="DashboardSummaryTop">
                         <h3 class="notInCreation" id="name"></h3>
                         <input placeholder="Nom de Section" type="text" class="inCreationModeOnly" id="secName">
+                        <button class="editModeOnly notInCreation" onclick="DashboardSwitchToNormal()">X</button>
                     </div>
                     <div class="dashboardSummary">
                         <div class="summarySection">
@@ -110,7 +111,7 @@
 
                 <div class="normalSection subSummarySection">
                     <h3>Liste des étudiants</h3>
-                    <!--<button><img src="/icons/link.png" alt="Telecharger"></button>-->
+                    <button onclick="openListeSite()"><img src="/icons/link.png" alt="Telecharger"></button>
                     <input type="file" name="LSetudiants" id="LSetudiants" style="display:none;">
                     <button onclick="dlEtudiants()" class="notInCreation"><img src="/icons/Download.png" alt="Telecharger"></button>
                     <button class="editModeOnly"  id="etudButt"><img src="/icons/Upload.png" alt="Envoyer"></button>
@@ -119,7 +120,7 @@
                     <h3>Emploie du temps</h3>
                      <!--<button><img src="/icons/link.png" alt="Telecharger"></button>-->
                     <input type="file" name="EDT" id="EDT" style="display:none;">
-                    <button class="notInCreation"><img src="/icons/Download.png" alt="Telecharger"></button>
+                    <button onclick="dlEDT()" class="notInCreation"><img src="/icons/Download.png" alt="Telecharger"></button>
                     <button class="editModeOnly" id="edtButt"><img src="/icons/Upload.png" alt="Envoyer"></button>
                 </div>
                 <div class="subSummarySection modificationBtns">
@@ -184,10 +185,10 @@
             modDiv = document.getElementById("moduleMenu")  //get the module menu div
             modDiv.innerHTML = ""
             for(var section of sections){ //for each module in the modules array add a button to the module menu
-                annee = (section["niveau"] <= 3 ? "L" : "M") + "" + (section["niveau"] <= 3 ? section["niveau"] : section["niveau"] -3)
+                annee = (section["niveau"] == 0 ? "" : (section["niveau"] <= 3 ? "L" : "M") + "" + (section["niveau"] <= 3 ? section["niveau"] : section["niveau"] -3) + " " )
                 modDiv.innerHTML += `
                 <div class="moduleElement" onclick="switchToDashboard()" id="${section["idSec"]}">
-                    <p>${annee} ${section["specialite"]} ${section['indice']}</p>
+                    <p>${annee}${section["specialite"]} ${section['indice']}</p>
                 </div>
                 `
             }
