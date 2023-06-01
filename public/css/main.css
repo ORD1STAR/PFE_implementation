@@ -1527,6 +1527,7 @@ a{
 
 .smallMsgPopUp h3 {
     margin: 10px;
+    color: var(--textColorBlack);
 }
 
 .confirmDialog {

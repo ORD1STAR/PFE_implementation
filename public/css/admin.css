@@ -1131,6 +1131,10 @@ select.focus {
         max-width: calc(100% - 20px);
     }
 
+    .dashboardSummary p:nth-child(2) {
+        min-width: 50px;
+    }
+
     .summarySection:nth-child(2) .summaryElement p:nth-child(1) {
         margin: 0px 0px 0px 20px;
     }
