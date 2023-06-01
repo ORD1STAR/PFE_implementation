@@ -535,3 +535,22 @@ function openListeSite(){
 function openEDTSite(){
     window.open(`/edt?id=${document.querySelectorAll('.selected_module')[0].id}`, "_blank");
 }
+
+function editNomSpe(){
+    specialite_v = document.getElementById("secSpe").value
+    editNom()
+}
+function editNomAnn(){
+    annee_v = document.getElementById("secAnn").value
+    editNom()
+}
+function editNomInd(){
+    indice_v = document.getElementById("secInd").value
+    editNom()
+}
+
+
+function editNom(){
+    console.log(annee_v);
+    document.getElementById("secName").value = (annee_v<=3 ? "L" : "M") + (annee_v <= 3 ? annee_v : annee_v-3) + ` `+specialite_v +` `+indice_v
+}

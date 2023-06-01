@@ -535,7 +535,7 @@ io.on('connection', (socket) => {
                 const role = result[0]["role"]
                 //etudiant
                 if(role == "etudiant"){
-                    connection.query("SELECT login, user.nom, prenom, photo, niveau, specialite, idSec, indice, matricule, email, phone FROM user, etudiant, section WHERE user.idUser=etudiant.userID AND etudiant.section=section.idSec AND user.token = ?", [token], function(err, result1, fields){
+                    connection.query("SELECT login, user.nom, prenom, photo, niveau, specialite, idSec, indice, matricule, email, phone, section.nom as secNom FROM user, etudiant, section WHERE user.idUser=etudiant.userID AND etudiant.section=section.idSec AND user.token = ?", [token], function(err, result1, fields){
                         if(err){
                             console.log(err.message);
                         }
@@ -1585,6 +1585,16 @@ io.on('connection', (socket) => {
             socket.emit("getListeEtudiants", result1)
         })
     })
+    //socket.on("getListeEtudiantsEns", (cookies) => { 
+    //    var token
+    //    cookies = cookie[0].split('; ')
+    //    cookies.forEach(function(c){
+    //        if(c.startsWith('token=')){
+    //            token = c.split('=')[1]
+    //        }
+    //    })
+    //    req = "SELECT * FROM section, etudiants WHERE section.idSec = etudiants.section AND etudiants.token = ?"
+    //})
 
     socket.on("removeStudent", (matricule) => {
         req = "UPDATE etudiant SET section = 0 WHERE matricule = ?"

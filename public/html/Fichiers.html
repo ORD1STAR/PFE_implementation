@@ -90,7 +90,7 @@
             
         </div>
 
-        <div class="categorieDiv">
+        <div class="categorieDiv visibleCategorieDiv">
             <a href="/files">
                 <h3>Drive</h3>
             </a>
@@ -100,6 +100,10 @@
             <a href="/msg">
                 <h3>Messagerie</h3>
             </a>
+            <a class="notEtu" href="/msg" style="display: none">
+                <h3>Etudiants</h3>
+            </a>
+
         </div>
 
     </div>
@@ -208,6 +212,13 @@
 
             document.getElementById("moduleMenu").style.display = "block"
 
+
+            document.querySelectorAll(".notEns").forEach(element => {
+                element.style.display = "none"
+            });
+            document.querySelectorAll(".notEtu").forEach(element => {
+                element.style.display = "block"
+            });
         })
 
             // Drive, messagerie, Notes btns changing place when scroll

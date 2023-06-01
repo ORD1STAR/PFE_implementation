@@ -60,19 +60,27 @@
                 <div class="normalSection summaryDiv">
                     <div class="DashboardSummaryTop">
                         <h3 class="notInCreation" id="name"></h3>
-                        <input placeholder="Nom de Section" type="text" class="inCreationModeOnly" id="secName">
+                        <input placeholder="Nom de Section" type="text" class="inCreationModeOnly" id="secName" disabled>
                         <button class="editModeOnly notInCreation" onclick="DashboardSwitchToNormal()">X</button>
                     </div>
                     <div class="dashboardSummary" id="dashboardSummary" style="display: none">
                         <div class="summarySection">
+                            
                             <div class="summaryElement">
-                                <p class="inCreationModeOnly">Indice :</p>
-                                <input class="inCreationModeOnly" type="text" id="secInd">
+                                <p>Annee :</p>
+                                <p class="notInCreation" id="niveau"></p>
+                                <select class="inCreationModeOnly" id="secAnn" onchange="editNomAnn()">
+                                    <option value="1">1 ere Licence</option>
+                                    <option value="2">2 eme Licence</option>
+                                    <option value="3">3 eme Licence</option>
+                                    <option value="4">1 ere Master</option>
+                                    <option value="5">2 eme Master</option>
+                                </select>
                             </div>
                             <div class="summaryElement">
                                 <p>Spécialité :</p>
                                 <p class="notInCreation" id="specialite"></p>
-                                <input class="inCreationModeOnly" type="text" id="secSpe">
+                                <input class="inCreationModeOnly" type="text" id="secSpe" oninput="editNomSpe()">
                             </div>
                             <div class="summaryElement">
                                 <p>Filliére :</p>
@@ -80,15 +88,8 @@
                                 <input class="inCreationModeOnly" type="text" id="secFil">
                             </div>
                             <div class="summaryElement">
-                                <p>Annee :</p>
-                                <p class="notInCreation" id="niveau"></p>
-                                <select class="inCreationModeOnly" id="secAnn">
-                                    <option value="1">1 ere Licence</option>
-                                    <option value="2">2 eme Licence</option>
-                                    <option value="3">3 eme Licence</option>
-                                    <option value="4">1 ere Master</option>
-                                    <option value="5">2 eme Master</option>
-                                </select>
+                                <p class="inCreationModeOnly">Indice :</p>
+                                <input class="inCreationModeOnly" type="text" id="secInd"  oninput="editNomInd()">
                             </div>
                             <div class="summaryElement">
                                 <p class="notInCreation">Palier :</p>
@@ -150,7 +151,9 @@
         document.getElementById("edtButt").addEventListener("click", function(){
             document.getElementById("EDT").click()
         })
-
+        var specialite_v = "";
+        var annee_v = "";
+        var indice_v = "";
         socket = io()
         var role
         var myURL = "/icons/default_user.png"
