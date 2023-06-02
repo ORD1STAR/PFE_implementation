@@ -195,7 +195,6 @@ async function showParametres() {
                 <div class="themeSelect">
                     <button class="themeBtn${selected==0? " selectedTheme": ""}" onclick="selectTheme('0')">Foncé</button>
                     <button class="themeBtn${selected==1? " selectedTheme": ""}" onclick="selectTheme('1')">Mixte</button>
-                    <button class="themeBtn${selected==2? " selectedTheme": ""}" onclick="selectTheme('2')">Claire</button>
                 </div>
             </div>
             <div class="paramElement">
@@ -654,7 +653,6 @@ function getPosts(module){
 }
 
 function writePosteE(module, type, prof, content, postID, lens, names, date, comm, trav, deadline, role) {
-      
     
     let [titre, contenu] = content.split("##").filter(Boolean)
     pjsHTML = ""
@@ -710,7 +708,7 @@ function writePosteE(module, type, prof, content, postID, lens, names, date, com
             </div>
             <h3 class="postTitle">${titre}</h3>
             <p class="postDate">${date}</p>
-            <div><button class="deleteModuleBtn editModeOnly" onclick="deleteModule(event)">X</button></div>
+            <div><button class="deleteModuleBtn" onclick="confirmDelete(${postID}, '${module}')">X</button></div>
         </div>
         <div class="postCore${extended}">
         <div class="postText">
@@ -760,6 +758,13 @@ function writePosteE(module, type, prof, content, postID, lens, names, date, com
         e.preventDefault();
         trav.innerHTML = trav.innerHTML == "Travail a remettre ❌" ? "Travail a remettre <b style='color:green;'>✔</b>" : "Travail a remettre ❌"
         travB = travB ? false : true
+
+        // popup pour mettre la date
+        if (trav.innerHTML != "Travail a remettre ❌") {
+            enterDatePopUp();
+        }
+
+
     })
         // Drive, messagerie, Notes btns changing place when scroll
         optionPosts = document.querySelector('.categorieDiv');
@@ -788,6 +793,73 @@ function writePosteE(module, type, prof, content, postID, lens, names, date, com
         })
 
 }
+
+// entrer la date du rappel de post
+
+async function enterDatePopUp() {
+    toggleBackground(false);
+    datePopUp = document.createElement('div');
+    datePopUp.classList.add('popUp');
+    datePopUp.classList.add('smallMsgPopUp');
+    datePopUp.innerHTML = `
+    <h3>Entrer la date du rappel</h3>
+    <input type="date">
+    <div class="confirmDialog">
+    <button onclick="annulerDatePopUp()">Annuler</button>
+    <button onclick="setDateRappel()">Definir</button>
+    </div>`
+    document.body.appendChild(datePopUp)
+
+    await new Promise(resolve => {setTimeout(resolve, 20)});
+    datePopUp.classList.add('popUpVisible')
+}
+
+function annulerDatePopUp() {
+    toggleBackground(true);
+    popUpToRemove = document.querySelector('.popUp').remove()
+    popUpToRemove.classList.remove('popUpVisible')
+    popUpToRemove.remove();
+}
+
+function setDateRappel() {
+    inputDateRappel = document.getElementById('inputDateRappel');
+    console.log(inputDateRappel.value);
+    annulerDatePopUp();
+}
+
+
+// confirm delete des posts
+
+async function confirmDelete(postID, moduleName) {
+    toggleBackground(false);
+    suprimerConfirmPopUp = document.createElement('div');
+    suprimerConfirmPopUp.classList.add('popUp');
+    suprimerConfirmPopUp.classList.add('smallMsgPopUp');
+    suprimerConfirmPopUp.innerHTML = `
+    <h3>Etes vous sur de vouloire suprmier ce post ?</h3>
+    <div class="confirmDialog">
+    <button onclick="cancelSupression()">Annuler</button>
+    <button onclick="deletePostE(${postID},'${moduleName}')">Supprimer</button>
+    </div>`
+    document.body.appendChild(suprimerConfirmPopUp)
+
+    await new Promise(resolve => {setTimeout(resolve, 20)});
+    suprimerConfirmPopUp.classList.add('popUpVisible')
+}
+
+async function cancelSupression() {
+    toggleBackground(true);
+    popUpToRemove = document.querySelector('.popUp').remove()
+    popUpToRemove.classList.remove('popUpVisible')
+    popUpToRemove.remove();
+}
+
+function deletePostE(postID, moduleName) {
+    cancelSupression();
+    socket.emit('deletePost', [postID]);
+    getPostsE(moduleName);
+}
+
 function setPostsE(posts){
     codeMod = document.querySelectorAll('.selected_module')[0].id.split(" ")[1]
     postsDiv = document.getElementById("posts")

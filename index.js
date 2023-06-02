@@ -12,6 +12,7 @@ app.set('view engine', 'ejs');
 
 const nodemailer = require('nodemailer');
 const e = require('express');
+const { log } = require('console');
 
 var verifCode = {}
 
@@ -934,6 +935,16 @@ io.on('connection', (socket) => {
 
         })
     })
+
+    socket.on('deletePost', (data => {
+
+        req = `DELETE FROM postes WHERE postID = ${data[0]}`
+        connection.query(req, function(err, result, fields) {
+            if (err) {
+                console.log(err.message);
+            }
+        })
+    }))
 
     socket.on("addMessage", (data) => {
         token = data[0]

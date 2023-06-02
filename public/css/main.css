@@ -544,6 +544,7 @@ a{
     border-radius: var(--common_border_radius);
     /* flex-grow: 1; */
     width: 100%;
+    color: black !important;
 }
 
 .msgTxtSection .msgWritingSection input[type="text"]:focus {
@@ -1663,6 +1664,9 @@ a{
 
 .themeSelect {
     margin-left: auto;
+    width: 170px;
+    display: flex;
+    gap: 10px;
 }
 
 .themeSelect button {
@@ -1673,6 +1677,7 @@ a{
     border: 1px solid rgba(0, 0, 0, 0.2);
     cursor: pointer;
     color: var(--textColorMidBlack);
+    flex-grow: 1;
 }
 
 .themeSelect button.selectedTheme {
@@ -1841,7 +1846,8 @@ a{
 
 @media only screen and (max-width: 650px) {
     .TPTDmoduleSection h3{
-        color: var(--textColorWhite);
+        /* color: var(--textColorBlack); */
+        color: white;
     }
     .moduleTPTD > p{
         color: rgba(255, 255, 255, 0.8);

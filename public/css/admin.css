@@ -850,9 +850,14 @@ select.focus {
     padding: 5px;
 }
 
-.moduleSubElement p:nth-child(2) {
+/* .moduleSubElement p:nth-child(2) {
     color: var(--textColorBlack);
+    background-color: red;
     margin: 15px;
+} */
+
+.moduleSubElement p {
+    color: var(--textColorBlack);
 }
 
 .RightDashBoard button {
