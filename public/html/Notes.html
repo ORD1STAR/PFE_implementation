@@ -43,7 +43,6 @@
                 <img src="/icons/Icon_gear.png" alt="">
                 <h3>Parametres</h3>
             </div>
-            <p>Version 0.2</p>
         </div>
 
     </div>
@@ -111,35 +110,51 @@
             notesDiv = document.getElementById("mainWrapper")
             notesHtml = ""
             for(mod of modules){
-                nom = mod["nom"]
-                codeMod= mod["codeMod"]
                 prof = ""
+                date = ""
                 for(names of data[2]){
                     if(mod["codeMod"] == names["codeMod"]){
                         prof = names["login"]
+                        date = new Date(names["edited"])
                         break
                     }
                 }
+                var timePassed = (new Date()) - date;
+                var minutes = Math.floor(timePassed / (1000 * 60));
+                var hours = Math.floor(timePassed / (1000 * 60 * 60));
+                var days = Math.floor(timePassed / (1000 * 60 * 60 * 24));
+                var months = Math.floor(timePassed / (1000 * 60 * 60 * 24 * 30));
+                var remaining =
+                 months > 0
+                   ? months + " mois"
+                   : days > 0
+                   ? days + " jour" + (days > 1 ? "s" : "")
+                   : hours > 0
+                   ? hours + " heur" + (hours > 1 ? "s" : "")
+                   : minutes + " minute" + (minutes > 1 ? "s" : "");
+
+                
+
 
                 notesHtml += `
                 <div class="moduleNoteElement">
-                    <div class="moduleNoteMain" id="${codeMod}">
+                    <div class="moduleNoteMain" id="${mod["codeMod"]}">
                         <div class="moduleTitleDiv">
-                            <h3 class="moduleTitle">${nom}</h3>
-                            <p>${prof}</p>
+                            <h3 class="moduleTitle">${mod["nom"]}</h3>
+                            <p>${names["n"]} ${names["pn"]}</p>
                         </div>
                         
                         
                     </div>
 
                     <div class="moduleNoteSide">
-                        <button>Mes copies</button>
-                        <button>Recours</button>
-                        <button>Méthode de calcule</button>
-                        <p>modifié : il y a 1 jours</p>
+                        <button onclick="window.location.href = '/msg';">Recours</button>
+                        <button onclick="showMethode('${mod["codeMod"]}', '${mod["nom"]}', '${names["n"]} ${names["pn"]}')">Méthode de calcule</button>
+                        <p>modifié : ${remaining}</p>
                     </div>
                 </div>
                 `
+                
             }
             notesDiv.innerHTML = notesHtml
 
@@ -153,7 +168,6 @@
             socket.emit("getNotes", token)
             socket.on("getNotes", (data) => {
                 modulesNote = data
-
                 for(note of modulesNote){
                     for(module of modules){
                         if(note["codeMod"] == module["codeMod"]){
@@ -172,7 +186,6 @@
                         }
                     }
                 }
-                
                 for(note of modulesNote){
                     for(module of modules){
                         if(note["codeMod"] == module["codeMod"]){
@@ -180,7 +193,6 @@
                             limit.setDate(limit.getDate() + 1)
                             if(note["title"] == "GENERALE"){
                                 document.getElementById(note["codeMod"]).innerHTML += `
-                                <br>
                                 <div class="moduleMoyenneDiv">
                                     <h3>Moyenne : </h3>
                                     <h3>${note["moyenne"]}</h3>
@@ -188,6 +200,7 @@
                                 </div>`
                             }
                             break
+                            
                         }
                     }
                 }

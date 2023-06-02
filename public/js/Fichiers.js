@@ -22,7 +22,7 @@ function writeFiles(names, lens, postID) {
             size = parseInt(lens[i]) <= 1024 ? parseInt(lens[i]) : (parseFloat(lens[i])/1024).toFixed(2)
             size = `${size} ${parseInt(lens[i]) < 1024 ? "octets" : (parseInt(lens[i]) < 1024*1024 ? "Ko" : "Mo")}`
             nameE = names[i].length > 10 ? names[i].slice(0, 10) + "..." : names[i]
-            link = names[i].endsWith(".pdf") ? "/icons/PDF.png" : (names[i].endsWith(".docx") ? "/icons/Word.png" : (names[i].endsWith(".png") || names[i].endsWith(".jpg")  ? "/icons/photo.png" :"/icons/File.png.png"))
+            link = names[i].endsWith(".pdf") ? "/icons/PDF.png" : (names[i].endsWith(".docx") ? "/icons/Word.png" : (names[i].endsWith(".png") || names[i].endsWith(".jpg")  ? "/icons/photo.png" :"/icons/File.png"))
             document.getElementById("filesSectionMain").innerHTML += `
             <div class="file" onclick="download('${postID}', '${names[i]}')">
                 <img class="icone" src="${link}" alt="">

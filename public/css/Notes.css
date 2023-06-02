@@ -35,12 +35,6 @@
     /* margin: 10px; */
 }
 
-
-
-
-
-
-
 .moduleNoteMain {
     flex-grow: 2;
     position: relative;
@@ -94,15 +88,12 @@
     padding: 2px 10px;
 }
 
-.moduleNoteMain .noteElement:last-of-type {
-    margin-bottom: 50px;
-}
 
 .moduleNoteMain .moduleMoyenneDiv {
     background-color: var(--important);
     border-radius: var(--common_border_radius);
     margin: 10px;
-    position: absolute;
+    margin-left: auto;
     bottom: 0px;
     right: 0px;
     display: flex;
@@ -195,3 +186,4 @@
 .adminNotesContainer{
     min-width: 100%;
 }
+

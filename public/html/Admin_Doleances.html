@@ -17,30 +17,26 @@
 
         <h3>Menu :</h3>
 
-        <div class="moduleMenu" id="moduleMenu">
-            <div class="moduleElement" onclick="location.href = '/edt'">
-                <p>Doleances</p>
+        <div class="moduleMenu" id="moduleMenu" style="display: none">
+            <div class="moduleElement admin" onclick="location.href = '/listeEtudiants'" style="display: none">
+                <p>Liste des étudiants</p>
             </div>
-            <div class="moduleElement" onclick="location.href = '/edt'">
+            <div class="moduleElement notAdmin notEns" onclick="location.href = '/edt'">
                 <p>Emploi du temps</p>
-                <div class="notifDiv"></div>
             </div>
-            <div class="moduleElement" onclick="location.href = '/msg'">
+            <div class="moduleElement notAdmin" onclick="location.href = '/msg'">
                 <p>Messagerie</p>
-                <div class="notifDiv"></div>
             </div>
-            <div class="moduleElement" onclick="location.href = '/files'">
+            <div class="moduleElement notAdmin" onclick="location.href = '/files'">
                 <p>Documents</p>
-                <div class="notifDiv"></div>
             </div>
-            <div class="moduleElement" onclick="location.href = '/notes'">
+            <div class="moduleElement notAdmin notEns" onclick="location.href = '/notes'">
                 <p>Notes</p>
-                <div class="notifDiv"></div>
             </div>
-            <div class="moduleElement">
+            <div class="moduleElement selected_module" onclick="location.href = '/pagePersonelle'">
                 <p>Informations Personnels</p>
             </div>
-            <div class="moduleElement">
+            <div class="moduleElement"  onclick="downloadFile('USTHB_Plan.pdf')">
                 <p>USTHB map</p>
             </div>
         </div>
@@ -50,7 +46,6 @@
                 <img src="/icons/Icon_gear.png" alt="">
                 <h3>Parametres</h3>
             </div>
-            <p>Version 0.2</p>
         </div>
 
     </div>
@@ -109,7 +104,7 @@
                 document.getElementById("pdp").src = myURL
             }
             
-            sec = " Administration " //get the section (LX spé)
+            sec = " Section " //get the section (LX spé)
             idSec = data[0]["idSec"]
             
             document.getElementById("nom").innerHTML = nom          //replace the nom with the right one
@@ -134,7 +129,13 @@
                     
                 })
             })
-            
+            document.querySelectorAll(".notAdmin").forEach(element => {
+                element.style.display = "none"
+            });
+            document.querySelectorAll(".admin").forEach(element => {
+                element.style.display = "block"
+            });
+            document.getElementById("moduleMenu").style.display = "block"
             
         })
     </script>

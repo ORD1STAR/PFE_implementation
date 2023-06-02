@@ -551,7 +551,7 @@ io.on('connection', (socket) => {
                                 if(err){
                                     console.log(err.message);
                                 }
-                                connection.query("SELECT codeMod, type, login, user.nom as n, user.prenom as pn FROM module, typeModule, user WHERE secID=? AND typeModule.module = module.codeMod AND typeModule.enseignantID = user.idUser", [result1[0]["idSec"]], function(err, result3, fields){
+                                connection.query("SELECT module.codeMod, edited, type, login, user.nom as n, user.prenom as pn FROM module, typeModule, user, note WHERE secID=? AND typeModule.module = module.codeMod AND typeModule.enseignantID = user.idUser AND module.codeMod = note.codeMod order by edited DESC", [result1[0]["idSec"]], function(err, result3, fields){
                                     if(err){
                                         console.log(err.message);
                                     }
@@ -1246,7 +1246,6 @@ io.on('connection', (socket) => {
     socket.on("updateNotes", (names, maxs, mod) => {
         names.forEach(name => {
             req = `UPDATE note SET title = ? WHERE title = ? AND max = ? AND codeMod = ?`
-            console.log(`UPDATE note SET title = ${name[1]} WHERE title = ${name[0]} AND max = ${name[2]} AND codeMod = '${mod}'`);
             connection.query(req, [name[1], name[0], name[2], mod], function(err, result, fields){
                 if(err){
                     console.log(err.message);
@@ -1261,7 +1260,6 @@ io.on('connection', (socket) => {
                 }
             })
         })
-
         socket.emit("success", 1)
 
     })
@@ -1278,7 +1276,6 @@ io.on('connection', (socket) => {
             
         })
     })
-
     socket.on("addMethode", (methode, module) => {
         req = "UPDATE note SET methode = ? WHERE codeMod = ?"
         console.log(`UPDATE note SET methode = ${methode} WHERE codeMod = ${module}`);
@@ -1317,7 +1314,13 @@ io.on('connection', (socket) => {
                 if(err){
                     console.log(err.message);
                 }
-                socket.emit("success", 1)
+                req = `UPDATE note SET edited = DATE_SUB(CURRENT_TIMESTAMP, INTERVAL 1 HOUR) WHERE codeMod = ? AND matricule = ? AND title = ? AND methode = ?`
+                connection.query(req, [module, matricule, title, methode], function(err, result, fields){
+                    if(err){
+                        console.log(err.message);
+                    }
+                    socket.emit("success", 1)
+                })
             }
             )}
         )}
@@ -1602,6 +1605,51 @@ io.on('connection', (socket) => {
             if(err){
                 console.log(err.message);
             }
+        })
+    })
+
+    socket.on("suprimerSection", section => { 
+        console.log("suprimerSection");
+        req = "UPDATE etudiant SET section = 0 WHERE section = ?"
+        connection.query(req, [section], function(err, result, fields){
+            
+            if(err){
+                console.log(err.message);
+            }
+            req = "DELETE FROM typeModule WHERE module IN (SELECT codeMod FROM module WHERE secID = ?);"
+            connection.query(req, [section], function(err, result, fields){
+                
+                if(err){
+                    console.log(err.message);
+                }
+                req = "DELETE FROM postes WHERE codeModule IN (SELECT codeMod FROM module WHERE secID = ?);"
+                connection.query(req, [section], function(err, result, fields){
+                    
+                    if(err){
+                        console.log(err.message);
+                    }
+                    req = "DELETE FROM module WHERE secID = ?;"
+                    connection.query(req, [section], function(err, result, fields){
+                        if(err){
+                            console.log(err.message);
+                        }
+                        req = "DELETE FROM emploiDuTemps WHERE section = ?;"
+                        connection.query(req, [section], function(err, result, fields){
+                            if(err){
+                                console.log(err.message);
+                            }
+                            req = "DELETE FROM section WHERE idSec = ?;"
+                            connection.query(req, [section], function(err, result, fields){
+                                if(err){
+                                    console.log(err.message);
+                                }
+                                socket.emit("success", 1)
+                            })
+                        })
+                    })
+                })
+            
+            })
         })
     })
     //socket.on("disconnecting", () => {

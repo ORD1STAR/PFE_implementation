@@ -184,9 +184,9 @@
                 document.getElementById("pdpC").src = myURL
             }
             
-            sec = "L" + data[0]["niveau"] + " " + data[0]["specialite"] //get the section (LX spé)
             idSec = data[0]["idSec"]
-            
+            sec = idSec == 0 ? "Sans section" : data[0]["secNom"] //get the section (LX spé)
+            document.getElementById("Section").innerHTML = sec
             document.getElementById("nom").innerHTML = nom          //replace the nom with the right one
             document.getElementById("cNom").innerHTML = nom     //replace the matricule with the right one
             document.getElementById("prenom").innerHTML = prenom    //replace the prenom with the right one
@@ -234,7 +234,7 @@
             }
             
             sec = "Sections" //get the section (LX spé)
-            
+            document.getElementById("Section").innerHTML = sec
             document.getElementById("nom").innerHTML = nom          //replace the nom with the right one
             document.getElementById("cNom").innerHTML = nom     //replace the matricule with the right one
             document.getElementById("prenom").innerHTML = prenom    //replace the prenom with the right one
@@ -284,7 +284,7 @@
             }
             
             sec = "Sections" //get the section (LX spé)
-            
+            document.getElementById("Section").innerHTML = sec
             document.getElementById("nom").innerHTML = nom          //replace the nom with the right one
             document.getElementById("cNom").innerHTML = nom     //replace the matricule with the right one
             document.getElementById("prenom").innerHTML = prenom    //replace the prenom with the right one

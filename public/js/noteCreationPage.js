@@ -186,7 +186,6 @@ function getNotesEtudiants(mod){
     socket.on("getEtudiants", setStudents)
 }
 function setStudents(etudiants){
-    console.log(etudiants);
     html = ""
     etudiants.forEach(e => {
         link = ""

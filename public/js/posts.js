@@ -79,7 +79,7 @@ function showCommentSection(postID, title) {
 
             comments.innerHTML += `
             <div class="commentElement">
-                <img class="commenterImg" src="${url}"></img>
+                <img class="commenterImg" src="${url}">
                 <div class="commenterComment">
                     <h3>${data[i]["nom"]} ${data[i]["prenom"]}</h3>
                     <p>${data[i]["content"]}</p>

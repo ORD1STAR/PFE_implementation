@@ -51,8 +51,9 @@ async function showProfileSubMenu() {
     profileSubMenuDiv.innerHTML = `
                 <a href="/pagePersonelle"><p>Espace Personnel</p></a>
                 ${role == "admin" ? `<a href="/listeEtudiants"><p>Liste des étudiants</p></a>` : ""}
+                ${role == "admin" ? `<a href="/Admin_Doleances"><p>Doleances</p></a>` : ""}
                 ${role != "admin" ? `<a href="/msg"><p>Messagerie</p></a>` : ""}
-                ${role != "admin" ? `<a href="/edt"><p>Emploie du temps</p></a>` : ""}
+                ${role != "admin" ? (role != "ens" ? `<a href="/edt"><p>Emploie du temps</p></a>` : "") : ""}
                 ${role != "admin" ? (role != "ens" ? `<a href="/notes"><p>Délibération</p></a>` : "") : ""}
                 <div class="delimiteur"></div>
                 <a href="#" onclick="showParametres()"><p>Parametres</p></a>
@@ -425,7 +426,7 @@ function writePoste(module, type, prof, content, postID, lens, names, date, comm
                 size = `${size} ${parseInt(lens[i]) < 1024 ? "octets" : (parseInt(lens[i]) < 1024*1024 ? "Ko" : "Mo")}`
                 pj_extension = names[i].split(".")[1]
                 pj_name = names[i].length > 10 ? names[i].slice(0, 10) + `...${pj_extension}` : names[i]
-                link = names[i].endsWith(".pdf") ? "/icons/PDF.png" : (names[i].endsWith(".docx") ? "/icons/Word.png" : (names[i].endsWith(".png") || names[i].endsWith(".jpg")  ? "/icons/photo.png" :"/icons/File.png.png"))
+                link = names[i].endsWith(".pdf") ? "/icons/PDF.png" : (names[i].endsWith(".docx") ? "/icons/Word.png" : (names[i].endsWith(".png") || names[i].endsWith(".jpg")  ? "/icons/photo.png" :"/icons/File.png"))
                 pjsHTML += `
                     <a href="" class="pieceJointeElement" id="${postID}|${names[i]}">
                     <img class="PJimg icone" src="${link}">
@@ -584,7 +585,7 @@ function setPosts(posts){
         <!-- <h2>Scan</h2> -->
         <div class="categorieDiv">
             <a href="/files">
-                <h3>Drive</h3>
+                <h3>Documents</h3>
                 <p>Consulter les cours et documents</p>
             </a>
             <a href="/msg">
@@ -675,9 +676,10 @@ function writePosteE(module, type, prof, content, postID, lens, names, date, com
             curs += parseInt(lens[i])
             size = parseInt(lens[i]) <= 1024 ? parseInt(lens[i]) : (parseFloat(lens[i])/1024 <= 1024 ? (parseFloat(lens[i])/1024).toFixed(2) : (parseFloat(lens[i])/(1024*1024)).toFixed(2))
             size = `${size} ${parseInt(lens[i]) < 1024 ? "octets" : (parseInt(lens[i]) < 1024*1024 ? "Ko" : "Mo")}`
+            link = names[i].endsWith(".pdf") ? "/icons/PDF.png" : (names[i].endsWith(".docx") ? "/icons/Word.png" : (names[i].endsWith(".png") || names[i].endsWith(".jpg")  ? "/icons/photo.png" :"/icons/File.png"))
             pjsHTML += `
                 <a href="" class="pieceJointeElement" id="${postID}|${names[i]}">
-                    <div class="PJimg"> </div>
+                    <img class="PJimg icone" src="${link}">
                     <div class="PJtext">
                         <p>${names[i].length > 10 ? names[i].slice(0, 10) + "..." : names[i]}</p>
                         <p>${size}</p>
@@ -818,7 +820,18 @@ function setPostsE(posts){
         </div>
     </div>
     `
-
+    comv = document.getElementById("comv")
+    comv.addEventListener('click', (e) => {
+        e.preventDefault();
+        comv.innerHTML = comv.innerHTML == "Commentairer ❌" ? "Commentairer <b style='color:green;'>✔</b>" : "Commentairer ❌"
+        comvB = comvB ? false : true
+    })
+    trav= document.getElementById("trav")
+    trav.addEventListener('click', (e) => {
+        e.preventDefault();
+        trav.innerHTML = trav.innerHTML == "Travail a remettre ❌" ? "Travail a remettre <b style='color:green;'>✔</b>" : "Travail a remettre ❌"
+        travB = travB ? false : true
+    })
     
     for(var post of posts){
         nom = post.n + " " +post.pn
@@ -897,6 +910,9 @@ function setTravaux(){
     travaux = document.querySelectorAll(".travaux")[0]
     travaux.innerHTML = ""
     document.querySelectorAll(".travSectionBtn").forEach((btn) => {
+        if(btn.innerHTML.split(" ")[2] == "expirée"){
+            return
+        }
         document.querySelectorAll(`.post${btn.classList[2]}`)[0]
         module = postsVar[btn.classList[2]-1].nom
         title = postsVar[btn.classList[2]-1].contenu.split("##")[1]

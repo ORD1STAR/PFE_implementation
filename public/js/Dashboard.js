@@ -538,7 +538,7 @@ async function suprimerSection() {
     <h3>Etes vous sur de vouloire suprmier la section ?</h3>
     <div class="confirmDialog">
     <button onclick="cancelSupression()">Annuler</button>
-    <button>Supprimer</button>
+    <button onclick="confirmSuppr()">Supprimer</button>
     </div>`
     document.body.appendChild(suprimerConfirmPopUp)
 
@@ -552,7 +552,13 @@ async function cancelSupression() {
     popUpToRemove.classList.remove('popUpVisible')
     popUpToRemove.remove();
 }
-
+async function confirmSuppr(){
+    socket.emit("suprimerSection", document.querySelectorAll('.selected_module')[0].id);
+    socket.on("success", s => {
+        cancelSupression()
+        location.reload()
+    })
+}
 
 
 async function showDetail(type) {
