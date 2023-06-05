@@ -129,12 +129,12 @@ async function showParametres() {
             </div>
         </div> -->
         <div class="parametresBody">
-            <h3>Parametres généraux</h3>
+            <!-- <h3>Parametres généraux</h3>
             <div class="paramElement">
                 <p>- Rester connecter</p>
                 <input type="checkbox" id="resterConnecterCheckBox">
             </div>
-            <div class="ParamSeparateur"></div>
+            <div class="ParamSeparateur"></div> -->
             <h3>Affichage</h3>
             <div class="paramElement">
                 <p>- Theme</p>
