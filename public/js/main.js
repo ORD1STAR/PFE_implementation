@@ -658,6 +658,7 @@ function writePosteE(module, type, prof, content, postID, lens, names, date, com
         <div class="postTop">
             <div class="moduleTitleDiv">
                 <h3>${module}</h3>
+                <p ${role == "admin" ? "style='color:rgb(255, 102, 102);'" : ""}>${role == "admin" ? "Administrateur:" : ""} ${prof}</p>
             </div>
             <h3 class="postTitle">${titre}</h3>
             <p class="postDate">${date}</p>

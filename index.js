@@ -460,7 +460,6 @@ app.get("/notes/*", (req, res) => {
                                         if(err){
                                             console.log(err.message);
                                         }
-                                        if(result2.length > 0){
                                             myData = []
                                             result2.forEach(element => {
                                                 if(element["codeMod"] == mod){
@@ -473,7 +472,7 @@ app.get("/notes/*", (req, res) => {
                                                 }
                                             });
                                             res.render("Admin_Notes.ejs", {data: myData, section:result[0]["secID"], module: mod})
-                                        }
+                                        
                                     })
                                 }else {res.redirect("/home");}
                             })
@@ -604,7 +603,7 @@ io.on('connection', (socket) => {
                             if([...socket.rooms][1] in timeouts){
                                 clearTimeout(timeouts[[...socket.rooms][1]])
                             }
-                            connection.query("SELECT idSec, module.nom, niveau, specialite, codeMod, type FROM module, section, typeModule WHERE typeModule.module = module.codeMod AND enseignantID = ? AND module.secID = section.idSec group by codeMod", [result1[0]["idUser"]], function(err, result2, fields){
+                            connection.query("SELECT idSec, module.nom, niveau, specialite, codeMod, type, section.nom as secNom FROM module, section, typeModule WHERE typeModule.module = module.codeMod AND enseignantID = ? AND module.secID = section.idSec group by codeMod", [result1[0]["idUser"]], function(err, result2, fields){
                                 
                                 if(err){
                                     console.log(err.message);
@@ -1250,7 +1249,7 @@ io.on('connection', (socket) => {
             if(err){
                 console.log(err.message);
             }
-            req = "INSERT INTO doleances (etudiant, titre, content) VALUES (?,?,?)"
+            req = "INSERT INTO doleances (etudiant, titre, content, date) VALUES (?,?,?,DATE_SUB(NOW(), INTERVAL 1 HOUR))"
             connection.query(req, [result[0].idUser, title, content], function(err, result, fields){
                 if(err){
                     console.log(err.message);
@@ -1262,7 +1261,7 @@ io.on('connection', (socket) => {
     })
 
     socket.on("getDoleances", ()=>{
-        req = "SELECT user.nom, user.prenom, etudiant.matricule, section.specialite, section.niveau, doleances.date, doleances.titre, doleances.content, doleances.dol_id FROM doleances, etudiant, user, section WHERE doleances.etudiant = etudiant.matricule AND etudiant.userID = user.idUser AND section.idSec = etudiant.section"
+        req = "SELECT user.nom, user.prenom, etudiant.matricule, section.specialite, section.niveau, doleances.date, doleances.titre, doleances.content, doleances.dol_id FROM doleances, etudiant, user, section WHERE user.idUser = etudiant.userID AND etudiant.section = section.idSec AND doleances.etudiant = user.idUser"
         connection.query(req, function(err, result, fields){
             if(err){
                 console.log(err.message);
@@ -1293,7 +1292,7 @@ io.on('connection', (socket) => {
                 console.log(err.message);
             }
             matricules.forEach(matricule => {
-                req = "INSERT INTO note (codeMod, matricule, title, max, methode) VALUES (?,?,?,?,?)"
+                req = "INSERT INTO note (codeMod, matricule, title, max, methode, edited) VALUES (?,?,?,?,?, DATE_SUB(NOW(), INTERVAL 1 HOUR))"
                 connection.query(req, [module, matricule.matricule, title, noteMax, methode], function(err, result, fields){
                     if(err){
                         console.log(err.message);
@@ -1402,7 +1401,7 @@ io.on('connection', (socket) => {
                 if(err){
                     console.log(err.message);
                 }
-                req = `UPDATE note SET edited = DATE_SUB(CURRENT_TIMESTAMP, INTERVAL 1 HOUR) WHERE codeMod = ? AND matricule = ? AND title = ? AND methode = ?`
+                req = `UPDATE note SET edited = DATE_SUB(NOW(), INTERVAL 1 HOUR) WHERE codeMod = ? AND matricule = ? AND title = ? AND methode = ?`
                 connection.query(req, [module, matricule, title, methode], function(err, result, fields){
                     if(err){
                         console.log(err.message);
@@ -1805,13 +1804,21 @@ io.on('connection', (socket) => {
     })
     socket.on("addProf", data => { // data format [nom, prenom, phone, email]
 
-        req = "INSERT INTO user (nom, prenom, phone, email, role) VALUES (?, ?, ?, ?, 'enseignant')"
-        connection.query(req, [data[0], data[1], data[2], data[3]], function(err, result, fields){
-            if(err){
-                console.log(err.message);
-            }
-            socket.emit("success", 1)
+        mdp = generateCode(10)
+        console.log(mdp);
+        envoyerMail(data[3], "Un compte enseignant a été créé", "Un administrateur a créé un compte enseignant pour vous. Votre mot de passe est: " + mdp)
+        
+        bcrypt.hash(mdp, 14, function(err, hash) {
+            
+            req = "INSERT INTO user (nom, prenom, phone, email, password, login, role) VALUES (?, ?, ?, ?, ?, ?, 'enseignant')"
+            connection.query(req, [data[0], data[1], data[2], data[3], hash, `${data[0].toLowerCase()}.${data[1].toLowerCase()}`], function(err, result, fields){
+                if(err){
+                    console.log(err.message);
+                }
+                socket.emit("success", 1)
+            })
         })
+
 
     })
     //socket.on("disconnecting", () => {
@@ -1925,6 +1932,18 @@ function generateCode(){
     let token = '';
     for (let i = 0; i < 8; i++) { token += characters.charAt(Math.floor(Math.random() * characters.length)); }
     
+    return token
+}
+function generateMDP(){
+    const maj = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    const min = 'abcdefghijklmnopqrstuvwxyz';
+    const num = '0123456789';
+    let token = '';
+
+    for (let i = 0; i < 4; i++) { token += maj.charAt(Math.floor(Math.random() * maj.length));}
+    for (let i = 0; i < 4; i++) { token += min.charAt(Math.floor(Math.random() * min.length));}
+    for (let i = 0; i < 4; i++) { token += num.charAt(Math.floor(Math.random() * num.length));}
+
     return token
 }
 

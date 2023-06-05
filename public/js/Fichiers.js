@@ -19,7 +19,7 @@ function writeFiles(names, lens, postID) {
     
         for(var i = 0; i < lens.length; i++) {
             curs += parseInt(lens[i])
-            size = parseInt(lens[i]) <= 1024 ? parseInt(lens[i]) : (parseFloat(lens[i])/1024).toFixed(2)
+            size = parseInt(lens[i]) <= 1024 ? parseInt(lens[i]) : (parseInt(lens[i]) <= 1024*1024 ? (parseInt(lens[i])/1024).toFixed(2) : (parseInt(lens[i])/(1024*1024)).toFixed(2))
             size = `${size} ${parseInt(lens[i]) < 1024 ? "octets" : (parseInt(lens[i]) < 1024*1024 ? "Ko" : "Mo")}`
             nameE = names[i].length > 10 ? names[i].slice(0, 10) + "..." : names[i]
             link = names[i].endsWith(".pdf") ? "/icons/PDF.png" : (names[i].endsWith(".docx") ? "/icons/Word.png" : (names[i].endsWith(".png") || names[i].endsWith(".jpg")  ? "/icons/photo.png" :"/icons/File.png"))

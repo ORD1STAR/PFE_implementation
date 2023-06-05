@@ -38,11 +38,10 @@ socket.on("getDoleances", (doleances) => {
                     </div>
                     <div class="doleanceInformationElement">
                         <p>Section : </p>
-                        <p>L${doleance.niveau} ${doleance.specialite}</p>
+                        <p>${doleance.niveau != 0 ? `L${doleance.niveau} ` : ""}${doleance.specialite}</p>
                     </div>
                     <div class="doleanceInformationElement">
                         <p>date : </p>
-                        <p>${date.toLocaleDateString("en-US")}</p>
                         <p>${date.toLocaleDateString("en-US", {hour: "2-digit", hour12:false, minute: "numeric"})}</p>
                     </div>
                 </div>

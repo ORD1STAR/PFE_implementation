@@ -100,6 +100,7 @@ function addConfirm(mod){
                 </div>
                 `
                 cancelAjout()
+                socket.off("success")
             }
         })
     }
@@ -230,6 +231,7 @@ function saveNotes(methode){
         if(s == 1){
             document.getElementById("lsEtudiants").innerHTML = ""
         }
+        socket.off("success")
     })
 }
 

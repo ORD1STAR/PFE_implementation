@@ -196,7 +196,7 @@
             modules = data[1]           //get the modules from the data
             modDiv = document.getElementById("moduleMenu")  //get the module menu div
             for(var module of modules){ //for each module in the modules array add a button to the module menu
-                modDiv.innerHTML += `<div class="moduleElement" id="mod${module["idSec"]} ${module["codeMod"]} ${module["type"]}"><p>L${module["niveau"]} ${module["specialite"]}| ${module['nom']}</p></div>`
+                modDiv.innerHTML += `<div class="moduleElement" id="mod${module["idSec"]} ${module["codeMod"]} ${module["type"]}"><p>${module["secNom"]}| ${module['nom']}</p></div>`
             }
             //add the event listener to the module buttons to change the selected module
             const modulesBtns = document.querySelectorAll('.moduleElement');
