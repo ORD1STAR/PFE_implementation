@@ -289,6 +289,7 @@ function EnvoyerLePoste() {
         secID = document.querySelectorAll('.selected_module')[0].id.split(" ")[0].replace("mod", "")
         codeMod = document.querySelectorAll('.selected_module')[0].id.split(" ")[1]
         module = document.querySelectorAll('.selected_module')[0].innerHTML.split("| ")[1].replace('</p><div class="notifDiv"></div>', "").replace("</p>", "");
+        
         filesNames = [];
         filesLens = [];
         for(file of files){
@@ -302,7 +303,7 @@ function EnvoyerLePoste() {
                 token = c.split('=')[1]
             }
         })
-        socket.emit("setPost", [token, window.ensID, contenu, codeMod, files, filesLens, filesNames, comvB, travB, type])
+        socket.emit("setPost", [token, window.ensID, contenu, codeMod, files, filesLens, filesNames, comvB, travB, type, dateTrav])
         document.getElementById("postTitle").value = ""
         document.getElementById("postContent").value = ""
         document.getElementById("fileInput").value = ""
@@ -312,6 +313,7 @@ function EnvoyerLePoste() {
         socket.emit("newPost", [secID, module])
     }
 }
+
 socket.on("newPost", (module) => {
     selected = document.getElementsByClassName("selected_module")[0].children[0].innerHTML
     if(selected == module || selected == "General"){
@@ -754,7 +756,7 @@ async function enterDatePopUp() {
     datePopUp.classList.add('smallMsgPopUp');
     datePopUp.innerHTML = `
     <h3>Entrer la date du rappel</h3>
-    <input type="date">
+    <input id="inputDateRappel" type="datetime-local">
     <div class="confirmDialog">
     <button onclick="annulerDatePopUp()">Annuler</button>
     <button onclick="setDateRappel()">Definir</button>
@@ -775,9 +777,12 @@ function annulerDatePopUp() {
 }
 
 function setDateRappel() {
-    inputDateRappel = document.getElementById('inputDateRappel');
-    console.log(inputDateRappel.value);
-    annulerDatePopUp();
+    dateTrav = document.getElementById('inputDateRappel').value;
+    toggleBackground(true);
+    popUpToRemove = document.querySelector('.popUp')
+    popUpToRemove.remove();
+    
+
 }
 
 
@@ -802,7 +807,7 @@ async function confirmDelete(postID, moduleName) {
 
 async function cancelSupression() {
     toggleBackground(true);
-    popUpToRemove = document.querySelector('.popUp').remove()
+    popUpToRemove = document.querySelector('.popUp')
     popUpToRemove.classList.remove('popUpVisible')
     popUpToRemove.remove();
 }
@@ -861,6 +866,9 @@ function setPostsE(posts){
         e.preventDefault();
         trav.innerHTML = trav.innerHTML == "Travail a remettre ❌" ? "Travail a remettre <b style='color:green;'>✔</b>" : "Travail a remettre ❌"
         travB = travB ? false : true
+        if (trav.innerHTML != "Travail a remettre ❌") {
+            enterDatePopUp();
+        }
     })
     
     for(var post of posts){

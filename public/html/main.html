@@ -116,6 +116,7 @@
         //connection to the socket
         socket = io()
         var role
+        var dateTrav;
         var myURL = "/icons/default_user.png"
         socket.on('connect', () => {
             socket.emit("connected", [document.cookie]) //get  the cookies with the connection socket

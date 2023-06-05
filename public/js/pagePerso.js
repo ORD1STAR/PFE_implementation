@@ -60,6 +60,9 @@ document.getElementById('submit').addEventListener("click", function(){
     socket.on("success", (suc) => {
         if(suc == 0){
             document.getElementById("error").style.display = "block"
+            setTimeout(() => {
+                document.getElementById("error").style.display = "none"
+            }, 5000);
         }else if(suc == 1){
             document.getElementById("error").style.display = "none"
             if(newNum) document.getElementById("cNum").innerHTML = newNum; document.getElementById("inNum").value = ""

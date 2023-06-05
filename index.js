@@ -750,7 +750,6 @@ io.on('connection', (socket) => {
     });
 
     socket.on("setPost", (data) => {
-        req = "INSERT INTO `postes`(`contenu`, `ensID`, `codeModule`, `PJ`, `PJ_lens`, `PJ_names`, `comm`, `traveauRendre`, `type`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"
         
         files = data[4]
         buffers = []
@@ -759,6 +758,9 @@ io.on('connection', (socket) => {
         comm = data[7]
         travb = data[8]
         type = data[9]
+        travD = data[10]
+        req = `INSERT INTO postes(contenu, ensID, codeModule, PJ, PJ_lens, PJ_names, comm, traveauRendre, type ${travD != "" ? ", deadline" : ""}) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?${travD != "" ? ", ?" : ""})`
+        
         for(var i = 0; i < Object.keys(files).length; i++){
             fileBuffer = Buffer.from(files[i], 'base64');
             buffers.push(fileBuffer)
@@ -770,7 +772,13 @@ io.on('connection', (socket) => {
         combinedBuffer = Buffer.concat(buffers);
         const combinedBase64 = combinedBuffer.toString('base64');
         console.log(comm);
-        connection.query(req, [data[2], data[1], data[3], combinedBuffer, lens, names, comm ? 1:0, travb ? 1:0, type], function(err, result, fields){
+        args = [data[2], data[1], data[3], combinedBuffer, lens, names, comm ? 1:0, travb ? 1:0, type]
+        if(travD != "" ){
+            args.push(travD)
+        }else{
+            args[7] = 0
+        }
+        connection.query(req, args, function(err, result, fields){
             if(err){
                 console.log(err.message);
             }
@@ -1181,7 +1189,13 @@ io.on('connection', (socket) => {
         mail = data[2]
         pass = data[3]
         newPass = data[4]
-
+        if(newPass != ""){
+            if(newPass.length < 8 || !newPass.match(/[A-Z]/) || !newPass.match(/[a-z]/) || !newPass.match(/[0-9]/)){
+                socket.emit("success", 0)
+                return
+            }
+        }
+        
         req = "SELECT password FROM user WHERE token = ?"
         connection.query(req, [token], function(err, result, fields){
             if(err){
@@ -1507,6 +1521,7 @@ io.on('connection', (socket) => {
                         req = "INSERT INTO typeModule (enseignantID, module, type) VALUES (?, ?, ?)"
                     }
                     connection.query(req, [element[2], element[0], element[1]], function(err, result, fields){
+                        
                         if(err){
                             console.log(err.message);
                         }
@@ -1617,7 +1632,6 @@ io.on('connection', (socket) => {
                     for(var i = 2; i<5 ; i++){
                         console.log(element[i])
                         if(element[i] != "#"){
-                            
                             console.log(`INSERT INTO typeModule (enseignantID, module, type) VALUES ("${element[i]}", "${element[0]+idSec}", "${types[i-2]}")`);
                             connection.query(`INSERT INTO typeModule (enseignantID, module, type) VALUES ("${element[i]}", "${element[0]+idSec}", "${types[i-2]}")`, function(err, result, fields){
                                 if(err){
