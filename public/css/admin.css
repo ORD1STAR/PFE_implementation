@@ -739,7 +739,8 @@ select.focus {
 .subSummarySection h3 {
     color: var(--textColorBlack);
     font-size: 16px;
-    margin: 0px auto 0px 10px;
+    /* margin: 0px auto 0px 10px; */
+    margin: 10px;
 }
 
 .subSummarySection button {
@@ -1060,6 +1061,19 @@ select.focus {
     color: var(--textColorBlack);
 }
 
+
+
+.questionMarkBtn {
+    background-color: transparent;
+    border: 1px solid var(--important) !important;
+    color: var(--important);
+    font-weight: bold;
+    margin: 0px auto 0px 0px !important;
+}
+
+.questionMarkBtn:hover {
+    background-color: var(--accent_Lighter_05) !important;
+}
 
 
 

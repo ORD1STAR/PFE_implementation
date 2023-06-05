@@ -602,3 +602,55 @@ function editNom(){
     console.log(annee_v);
     document.getElementById("secName").value = (annee_v<=3 ? "L" : "M") + (annee_v <= 3 ? annee_v : annee_v-3) + ` `+specialite_v +` `+indice_v
 }
+
+
+
+
+async function showHelp(selected) {
+    toggleBackground(false);
+    helpPopUp = document.createElement('div');
+    helpPopUp.classList.add('popUp');
+    
+    if (selected == "etu") {
+        helpPopUp.innerHTML = `
+            <div class="popUpTop">
+                <h3>Details</h3>
+                <button onclick="hideHelp()">X</button>
+            </div>
+            <div class="parametresBody">
+            <h3>Méthode</h3>
+            <p>Importer un fichier excel au format (matricule, groupe)</p>
+            <img src="./icons/help_admin/helpEtu.png" alt="helpEtu">
+            </div>
+        `
+    } else if (selected == "edt") {
+        helpPopUp.innerHTML = `
+            <div class="popUpTop">
+                <h3>Details</h3>
+                <button onclick="hideHelp()">X</button>
+            </div>
+            <div class="parametresBody">
+            <h3>Méthode</h3>
+            <p>importer un fichier excel. 
+            une ligne -> un jour ... une colonne -> une seance</br></br>
+            Format d'une seance : "groupe|type|module|salle"</br></br>
+            "#" pour separé les seances chevauché</p>
+            <img src="./icons/help_admin/helpEdt.png" alt="helpEdt">
+            </div>
+        `
+    }
+
+    // helpPopUp.classList.add('smallMsgPopUp');
+    document.body.appendChild(helpPopUp)
+
+    await new Promise(resolve => {setTimeout(resolve, 20)});
+    helpPopUp.classList.add('popUpVisible')
+}
+
+async function hideHelp() {
+    toggleBackground(true);
+    popUpToRemove = document.querySelector('.popUp').remove()
+    popUpToRemove.classList.remove('popUpVisible')
+    popUpToRemove.remove();
+}
+

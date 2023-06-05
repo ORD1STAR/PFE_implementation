@@ -181,6 +181,10 @@
         top: 5px;
         right: 10px;
     }
+
+    .moduleNoteSide button {
+        padding: 10px 30px;
+    }
 }
 
 .adminNotesContainer{

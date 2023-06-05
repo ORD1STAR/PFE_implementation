@@ -1585,6 +1585,9 @@ a{
     color: white;
 }
 
+.popUpTop button:hover {
+    background-color: var(--red);
+}
 
 
 
@@ -1635,6 +1638,13 @@ a{
 
 .parametresBody h3 {
     color: var(--textColorBlack);
+}
+
+.parametresBody img {
+    max-width: 90%;
+    margin: 20px 10px;
+    width: 450px;
+    object-fit: contain;
 }
 
 .paramElement {
