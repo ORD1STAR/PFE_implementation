@@ -18,8 +18,14 @@
         <h3>Menu :</h3>
 
         <div class="moduleMenu" id="moduleMenu" style="display: none">
-            <div class="moduleElement admin" onclick="location.href = '/listeEtudiants'" style="display: none">
+            <div class="moduleElement admin selected_module" onclick="location.href = '/listeEtudiants'" style="display: none">
                 <p>Liste des étudiants</p>
+            </div>
+            <div class="moduleElement admin" onclick="location.href = '/Creation_enseignant'" style="display: none">
+                <p>Liste des enseignants</p>
+            </div>
+            <div class="moduleElement admin" onclick="location.href = '/Admin_Doleances'" style="display: none">
+                <p>Doléances</p>
             </div>
             <div class="moduleElement notAdmin" onclick="location.href = '/edt'">
                 <p>Emploi du temps</p>
@@ -88,6 +94,7 @@
 
     <script src="/js/main.js" defer></script>
     <script src="/js/ListeEtudiants.js" defer></script>
+    <script src="/js/loading.js"></script>
     <script src="/socket.io/socket.io.js"></script>
     <script>
         var etudiants;

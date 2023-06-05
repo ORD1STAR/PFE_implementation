@@ -41,43 +41,7 @@ var isExtending = false
 
 // Profile SubMenu Handler
 
-profileDiv = document.querySelector(".profileDiv")
-profileSubMenuBtn = document.querySelector(".profilePicDiv")
 
-profileDiv.addEventListener("click", showProfileSubMenu)
-
-async function showProfileSubMenu() {
-    profileSubMenuDiv = document.createElement('div');
-    profileSubMenuDiv.innerHTML = `
-                <a href="/pagePersonelle"><p>Espace Personnel</p></a>
-                ${role == "admin" ? `<a href="/listeEtudiants"><p>Liste des étudiants</p></a>` : ""}
-                ${role == "admin" ? `<a href="/Admin_Doleances"><p>Doleances</p></a>` : ""}
-                ${role != "admin" ? `<a href="/msg"><p>Messagerie</p></a>` : ""}
-                ${role != "admin" ? (role != "ens" ? `<a href="/edt"><p>Emploie du temps</p></a>` : "") : ""}
-                ${role != "admin" ? (role != "ens" ? `<a href="/notes"><p>Délibération</p></a>` : "") : ""}
-                <div class="delimiteur"></div>
-                <a href="#" onclick="showParametres()"><p>Parametres</p></a>
-                <a href="/disconnect"><p>se déconnecter</p></a>`;
-    document.body.appendChild(profileSubMenuDiv)
-    profileSubMenuDiv.classList.add('profileSubMenu');
-    
-    toggleBackground(false)
-    await new Promise(r => setTimeout(r,10));
-    profileSubMenuDiv.classList.add('profileSubMenuSHOWN');
-
-    document.addEventListener('click', hideProfileSubMenu);
-
-}
-
-async function hideProfileSubMenu(e) {
-    if (!profileSubMenuDiv.contains(e.target) && e.target != profileSubMenuBtn) {
-        profileSubMenuDiv.classList.remove('profileSubMenuSHOWN');
-        document.removeEventListener('click', hideProfileSubMenu)
-        await new Promise(r => setTimeout(r, 300))
-        profileSubMenuDiv.remove();
-        toggleBackground(true);
-    }
-}
 
 
 
@@ -99,24 +63,6 @@ modulesBtns.forEach(moduleBtn => {
 leftMenu = document.getElementById('leftMenu');
 imgBtnToogleMenu = document.getElementById('imgBtnToogleMenu');
 popUpBackground = document.getElementById("popUpBackground");
-var numberOfPopUps = 0;
-
-function toggleBackground(isBackgroundShown) {
-    // isShown = true => remove background
-    // isShown = false => show background
-    if (isBackgroundShown) {
-        numberOfPopUps -= 1;
-        if (numberOfPopUps == 0) {
-            popUpBackground.style.display = "none";
-            popUpBackground.style.pointerEvents = "none";
-        }
-    } else {
-        numberOfPopUps += 1;
-        popUpBackground.style.display = "block";
-        popUpBackground.style.pointerEvents = "all";
-    }
-};
-
 
 
 // Toggle Menu
@@ -398,12 +344,14 @@ function writePoste(module, type, prof, content, postID, lens, names, date, comm
         filtres[i] = filtres[i].innerHTML.toLowerCase()
     }
     
-    for(mot of content.split("##")[2].split(" ")){
-        if(mot.startsWith("https://") || mot.startsWith("http://") || mot.startsWith("www.")) {
-            contenu = contenu.replace(/\n/g, " \n")
-            contenu = contenu.replace(mot, `<a href="${mot}" target="_blank">${mot}</a>`)
+    contenu = contenu.replace(/(https?:\/\/[^\s]+)|(www\.[^\s]+)/g, function(url) {
+        if (url.startsWith("www.")) {
+          return '<a href="http://' + url + '" target="_blank">' + url + '</a>';
+        } else {
+          return '<a href="' + url + '" target="_blank">' + url + '</a>';
         }
-    }
+      });
+    
     if(filtres.includes(type)){
         pjsHTML = ""
         extended = ""
@@ -634,6 +582,9 @@ function getPosts(module){
     socket.on("getPosts", (data) => {
         postsVar = data
         setPosts(data)
+        
+        dataB = true
+        checkLoad()
     })
     document.addEventListener('scroll', addAfterScroll);
     function addAfterScroll(){
@@ -929,6 +880,8 @@ function getPostsE(filtre){
     socket.emit("getPostsE", [token, filtre, secID, limit])
     socket.on("getPostsE", (data) => {
         setPostsE(data)
+        dataB = true
+        checkLoad()
     })
     document.addEventListener('scroll', addAfterScroll);
     function addAfterScroll(){
@@ -1017,20 +970,3 @@ async function blink(id) {
 }
 
 
-
-
-
-function showLoadingAnimation() {
-    toggleBackground(false)
-    loadingPopup = document.createElement('div');
-    // loadingPopup.classList.add('popUp');
-    loadingPopup.classList.add('loadingPopup');
-    loadingPopup.innerHTML = '<div class="lds-dual-ring"></div><p>Chargement</p>'
-    document.body.appendChild(loadingPopup);
-    loadingPopup.classList.add('popUpVisible');
-}
-
-function removeLoadingAnimation() {
-    document.querySelector('.loadingPopup').remove()
-    toggleBackground(true)
-}

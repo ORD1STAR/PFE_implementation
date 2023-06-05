@@ -20,6 +20,12 @@
             <div class="moduleElement admin" onclick="location.href = '/listeEtudiants'" style="display: none">
                 <p>Liste des étudiants</p>
             </div>
+            <div class="moduleElement admin" onclick="location.href = '/Creation_enseignant'" style="display: none">
+                <p>Liste des enseignants</p>
+            </div>
+            <div class="moduleElement admin" onclick="location.href = '/Admin_Doleances'" style="display: none">
+                <p>Doléances</p>
+            </div>
             <div class="moduleElement notAdmin selected_module" onclick="location.href = '/edt'">
                 <p>Emploi du temps</p>
             </div>
@@ -84,6 +90,7 @@
     <script src="/socket.io/socket.io.js"></script>
     <script src="/js/main.js" defer></script>
     <script src="/js/edt.js" defer></script>
+    <script src="/js/loading.js"></script>
     <script>
         //connection to the socket
         socket = io()

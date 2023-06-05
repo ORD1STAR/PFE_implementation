@@ -21,6 +21,12 @@
             <div class="moduleElement admin" onclick="location.href = '/listeEtudiants'" style="display: none">
                 <p>Liste des étudiants</p>
             </div>
+            <div class="moduleElement admin" onclick="location.href = '/Creation_enseignant'" style="display: none">
+                <p>Liste des enseignants</p>
+            </div>
+            <div class="moduleElement admin selected_module" onclick="location.href = '/Admin_Doleances'" style="display: none">
+                <p>Doléances</p>
+            </div>
             <div class="moduleElement notAdmin notEns" onclick="location.href = '/edt'">
                 <p>Emploi du temps</p>
             </div>
@@ -33,7 +39,7 @@
             <div class="moduleElement notAdmin notEns" onclick="location.href = '/notes'">
                 <p>Notes</p>
             </div>
-            <div class="moduleElement selected_module" onclick="location.href = '/pagePersonelle'">
+            <div class="moduleElement" onclick="location.href = '/pagePersonelle'">
                 <p>Informations Personnels</p>
             </div>
             <div class="moduleElement"  onclick="downloadFile('USTHB_Plan.pdf')">
@@ -82,6 +88,7 @@
 
     <script src="/js/main.js" defer></script>
     <script src="/js/doleances.js" defer></script>
+    <script src="/js/loading.js"></script>
     <script src="/socket.io/socket.io.js"></script>
     <script>
         socket = io();

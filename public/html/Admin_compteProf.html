@@ -17,20 +17,29 @@
 
         <h3>Menu :</h3>
 
-        <div class="moduleMenu" id="moduleMenu">
-            <div class="moduleElement" onclick="location.href = '/edt'">
+        <div class="moduleMenu" id="moduleMenu" style="display: none">
+            <div class="moduleElement admin" onclick="location.href = '/listeEtudiants'" style="display: none">
+                <p>Liste des étudiants</p>
+            </div>
+            <div class="moduleElement admin selected_module" onclick="location.href = '/Creation_enseignant'" style="display: none">
+                <p>Liste des enseignants</p>
+            </div>
+            <div class="moduleElement admin" onclick="location.href = '/Admin_Doleances'" style="display: none">
+                <p>Doléances</p>
+            </div>
+            <div class="moduleElement notAdmin notEns" onclick="location.href = '/edt'">
                 <p>Emploi du temps</p>
             </div>
-            <div class="moduleElement" onclick="location.href = '/msg'">
+            <div class="moduleElement notAdmin" onclick="location.href = '/msg'">
                 <p>Messagerie</p>
             </div>
-            <div class="moduleElement" onclick="location.href = '/files'">
+            <div class="moduleElement notAdmin" onclick="location.href = '/files'">
                 <p>Documents</p>
             </div>
-            <div class="moduleElement selected_module" onclick="location.href = '/notes'">
+            <div class="moduleElement notAdmin notEns" onclick="location.href = '/notes'">
                 <p>Notes</p>
             </div>
-            <div class="moduleElement">
+            <div class="moduleElement" onclick="location.href = '/pagePersonelle'">
                 <p>Informations Personnels</p>
             </div>
             <div class="moduleElement"  onclick="downloadFile('USTHB_Plan.pdf')">
@@ -43,7 +52,6 @@
                 <img src="/icons/Icon_gear.png" alt="">
                 <h3>Parametres</h3>
             </div>
-            <p>Version 0.2</p>
         </div>
 
     </div>
@@ -89,61 +97,158 @@
                         <p>Address email</p>
                         <input type="text">
                     </div>
-                    <button onclick="showLoadingAnimation()">Ajouter</button>
+                    <button onclick="addProf()">Ajouter</button>
                 </div>
     
                 <h3 class="interSectionsTitle">Liste des enseignants</h3>
-                <div class="listeContainer AdminView">
-                    <div class="etudiantElement ">
-                        <div class="profilePicDiv"></div>
-                        <div class="etudiantInformations">
-                            <div class="etudiantInformaionElement">
-                                <p>xxxxxxxxxxxxxx</p>
-                                <p>yyyyyyy</p>
-                            </div>
-                            <div class="etudiantInformaionElement">
-                                <h4>Numero de telephone</h4>
-                                <p>2020123456789</p>
-                            </div>
-                            <div class="etudiantInformaionElement">
-                                <h4>Email</h4>
-                                <p>etudiant@gmail.com</p>
-                            </div>
-                        </div>
-    
-                        <div class="EtudiantOption">
-                            <button>Retirer</button>
-                            <button>Deplacer</button>
-                        </div>
-                    </div>
-                    <div class="etudiantElement AdminView">
-                        <div class="profilePicDiv"></div>
-                        <div class="etudiantInformations">
-                            <div class="etudiantInformaionElement">
-                                <p>xxxxxxxxxxxxxx</p>
-                                <p>yyyyyyy</p>
-                            </div>
-                            <div class="etudiantInformaionElement">
-                                <h4>Numero de telephone</h4>
-                                <p>2020123456789</p>
-                            </div>
-                            <div class="etudiantInformaionElement">
-                                <h4>Email</h4>
-                                <p>etudiant@gmail.com</p>
-                            </div>
-                        </div>
-    
-                        <div class="EtudiantOption">
-                            <button>Retirer</button>
-                            <button>Deplacer</button>
-                        </div>
-                    </div>
+                <div class="listeContainer AdminView" id="profLS">
+                    
+                    
                 </div>
         </div>
         
     </div>
 
-    <script src="js/main.js"></script>
+    <script src="/js/main.js" defer></script>
+    <script src="/js/loading.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+
+    <script>
+        socket = io();
+        var role
+        var myURL = "/icons/default_user.png"
+        showLoadingAnimation()
+        
+        socket.on('connect', () => {
+            socket.emit("connected", [document.cookie]) //get  the cookies with the connection socket
+        })
+
+
+        socket.on('connectedAdm', (data) => { //get the data from the server with the acknoledgement
+            persoB = true
+            role = "admin"
+            login = data[0]["login"]            //get the login from the data
+            prenom = data[0]["prenom"]    //get the first part of the login (the prenom)
+            nom = data[0]["nom"]            //get the second part of the login (the nom)
+            pdp = data[0]["photo"]
+            if(pdp.byteLength != 0){                    //if the user has a profile picture
+                pdpB = new Blob([pdp])
+                myURL = URL.createObjectURL(pdpB)
+                document.getElementById("pdp").src = myURL
+            }
+            
+            sec = " Section " //get the section (LX spé)
+            idSec = data[0]["idSec"]
+            
+            document.getElementById("nom").innerHTML = nom          //replace the nom with the right one
+            document.getElementById("prenom").innerHTML = prenom    //replace the prenom with the right one
+            document.getElementById("Section").innerHTML = sec      //replace the section with the right one
+            
+            
+            //add the event listener to the module buttons to change the selected module
+            const modulesBtns = document.querySelectorAll('.moduleElement');
+            modulesBtns.forEach(moduleBtn => {
+                moduleBtn.addEventListener('click', () => {
+                    modulesBtns.forEach(moduleBtn => {moduleBtn.classList.remove("selected_module")})
+                    moduleBtn.classList.add("selected_module")
+                    //remove the div from the childs with class "notifDiv"
+                    moduleBtn.childNodes.forEach(child => {
+                        if(child.classList != undefined){
+                            if(child.classList.contains("notifDiv")){
+                                moduleBtn.removeChild(child)
+                            }
+                        }
+                    })
+                    
+                })
+            })
+            document.querySelectorAll(".notAdmin").forEach(element => {
+                element.style.display = "none"
+            });
+            document.querySelectorAll(".admin").forEach(element => {
+                element.style.display = "block"
+            });
+            document.getElementById("moduleMenu").style.display = "block"
+            checkLoad()
+        })
+        socket.emit("getEns")
+        socket.on("getEns", setLs)
+        function cp(mail) {
+            navigator.clipboard.writeText(mail)
+        }
+
+        function rem(id){
+            socket.emit("removeTeacher", id)
+            dataB = false
+            showLoadingAnimation()
+            socket.on("success", (s) => {
+                if(s == 1){
+                    
+                    socket.emit("getEns")
+                    socket.on("getEns", setLs)
+                }
+            })
+        }
+
+        function setLs(liste){
+            dataB = true
+            lsDiv = document.getElementById("profLS")
+            lsDiv.innerHTML = ""
+            liste.forEach(element => {
+                link = ""
+                pdp = element["photo"]
+                if(pdp.byteLength != 0){                   
+                    pdpB = new Blob([pdp])
+                    myURL = URL.createObjectURL(pdpB)
+                    link = myURL
+                }else{
+                    link = "/icons/default_user.png"
+                }
+                lsDiv.innerHTML += `
+                <div class="etudiantElement AdminView">
+                    <img class="profilePicDiv" src="${link}" style="width: 50px;height: 50px;">
+                    <div class="etudiantInformations">
+                        <div class="etudiantInformaionElement">
+                            <p>${element.nom}</p>
+                            <p>${element.prenom}</p>
+                        </div>
+                        <div class="etudiantInformaionElement">
+                            <h4>Numero de telephone</h4>
+                            <p>${element.phone}</p>
+                        </div>
+                        <div class="etudiantInformaionElement">
+                            <h4>Email</h4>
+                            <p>${element.email.length > 15 ? element.email.slice(0, 15) + "...": element.email}</p>
+                        </div>
+                    </div>
+
+                    <div class="EtudiantOption">
+                        <button onclick="rem('${element.idUser}')">Retirer</button>
+                        <button onclick="cp('${element.email}')">Copier l'email</button>
+                    </div>
+                </div>
+                `
+            });
+            checkLoad()
+            socket.off("getEns")
+        }
+
+        function addProf(){
+            nom = document.querySelectorAll(".ajoutCompteInfoElement input")[0].value
+            prenom = document.querySelectorAll(".ajoutCompteInfoElement input")[1].value
+            phone = document.querySelectorAll(".ajoutCompteInfoElement input")[2].value
+            email = document.querySelectorAll(".ajoutCompteInfoElement input")[3].value
+            socket.emit("addProf", [nom, prenom, phone, email])
+            dataB = false
+            showLoadingAnimation()
+            socket.on("success", (s) => {
+                if(s == 1){
+                    socket.emit("getEns")
+                    socket.on("getEns", setLs)
+                }
+            })
+        }
+    </script>
 
 </body>
 </html>

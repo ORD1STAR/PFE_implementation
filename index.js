@@ -497,7 +497,36 @@ app.get("/disconnect", (req, res) => {
     res.redirect("/");
 })
 app.get("/Creation_enseignant", (req, res) => {
-    res.sendFile(path.join(__dirname, 'public/html/Admin_compteProf.html'));
+    
+    if(req.cookies["token"] != undefined){
+        reqs = "SELECT * FROM user WHERE token= ?"
+        connection.query(reqs, [req.cookies["token"]], function(err, result, fields){
+            if(err){
+                console.log(err.message);
+            }
+            if(result.length>0){
+                token = req.cookies["token"];
+                reqs = "SELECT role FROM user WHERE token = ?"
+                connection.query(reqs, [token], function(err, result, fields){
+                    if(err){
+                        console.log(err.message);
+                    }
+                    if(result.length > 0){
+                        if(result[0]["role"] == "admin"){
+                            res.sendFile(path.join(__dirname, 'public/html/Admin_compteProf.html'));
+                        }else{
+                            res.redirect("/home");
+                        }
+                    }
+                })
+            }else{
+                res.redirect("/login");
+            }
+        })
+        
+    }else{
+        res.redirect("/login");
+    }
 })
 
 //const fileBuffer1 = fs.readFileSync('test.txt');
@@ -1662,6 +1691,77 @@ io.on('connection', (socket) => {
             
             })
         })
+    })
+    socket.on("getEns", () => {
+        req = "SELECT * FROM user WHERE role = 'enseignant' order by nom"
+        connection.query(req, [], function(err, result, fields){
+            if(err){
+                console.log(err.message);
+            }
+            socket.emit("getEns", result)
+        })
+    })
+    socket.on("removeTeacher", id => {
+        console.log(`DELETE FROM typeModule WHERE enseignantID = ${id}`);
+        req = "DELETE FROM typeModule WHERE enseignantID = ?"
+        connection.query(req, [id], function(err, result, fields){
+            if(err){
+                console.log(err.message);
+            }
+            console.log(`SELECT * FROM postes WHERE ensID = ${id}`);
+            req = "SELECT * FROM postes WHERE ensID = ?"
+            connection.query(req, [id], function(err, result, fields){
+                if(err){
+                    console.log(err.message);
+                }
+                result.forEach(element => {
+                    console.log(`DELETE FROM commentaires WHERE postID = ${element.postID}`);
+                    req = "DELETE FROM commentaires WHERE postID = ?"
+                    connection.query(req, [element.postID], function(err, result, fields){
+                        if(err){
+                            console.log(err.message);
+                        }
+                        console.log(`DELETE FROM postes WHERE postID = ${element.postID}`);
+                        req = "DELETE FROM postes WHERE postID = ?"
+                        connection.query(req, [element.postID], function(err, result, fields){
+                            if(err){
+                                console.log(err.message);
+                            }
+                        })
+                    })
+                });
+                console.log(`DELETE FROM message WHERE sender = ${id}`);
+                req = "DELETE FROM message WHERE sender = ?"
+                connection.query(req, [id], function(err, result, fields){
+                    if(err){
+                        console.log(err.message);
+                    }
+                    console.log(`DELETE FROM user WHERE idUser = ${id} AND role = 'enseignant'`);
+                    req = "DELETE FROM user WHERE idUser = ? AND role = 'enseignant'"
+                    connection.query(req, [id], function(err, result, fields){
+                        if(err){
+                            console.log(err.message);
+                        }
+                        socket.emit("success", 1)
+                        console.log("fin");
+                    })
+                })
+
+            })
+            
+        })
+        
+    })
+    socket.on("addProf", data => { // data format [nom, prenom, phone, email]
+
+        req = "INSERT INTO user (nom, prenom, phone, email, role) VALUES (?, ?, ?, ?, 'enseignant')"
+        connection.query(req, [data[0], data[1], data[2], data[3]], function(err, result, fields){
+            if(err){
+                console.log(err.message);
+            }
+            socket.emit("success", 1)
+        })
+
     })
     //socket.on("disconnecting", () => {
     //    login = [...socket.rooms][1]

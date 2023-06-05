@@ -19,6 +19,8 @@ function setStudents(){
                 pdpB = new Blob([pdp])
                 myURL = URL.createObjectURL(pdpB)
                 link = myURL
+            }else{
+                link = "/icons/default_user.png"
             }
             html += `<div class="etudiantElement AdminView">
             <img class="profilePicDiv" src=${link} style="width:50px;height:50px;">
