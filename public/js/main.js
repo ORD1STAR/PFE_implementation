@@ -289,7 +289,7 @@ function EnvoyerLePoste() {
         secID = document.querySelectorAll('.selected_module')[0].id.split(" ")[0].replace("mod", "")
         codeMod = document.querySelectorAll('.selected_module')[0].id.split(" ")[1]
         module = document.querySelectorAll('.selected_module')[0].innerHTML.split("| ")[1].replace('</p><div class="notifDiv"></div>', "").replace("</p>", "");
-        
+        console.log(codeMod, module);
         filesNames = [];
         filesLens = [];
         for(file of files){

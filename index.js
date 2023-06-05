@@ -770,7 +770,6 @@ io.on('connection', (socket) => {
         names = names.slice(0, -1)
         combinedBuffer = Buffer.concat(buffers);
         const combinedBase64 = combinedBuffer.toString('base64');
-        console.log(comm);
         args = [data[2], data[1], data[3], combinedBuffer, lens, names, comm ? 1:0, travb ? 1:0, type]
         if(travD != "" ){
             args.push(travD)
@@ -1304,7 +1303,6 @@ io.on('connection', (socket) => {
         })
 
     })
-
     socket.on("updateNotes", (names, maxs, mod) => {
         names.forEach(name => {
             req = `UPDATE note SET title = ? WHERE title = ? AND max = ? AND codeMod = ?`
