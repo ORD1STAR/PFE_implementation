@@ -117,10 +117,10 @@
                     <button onclick="dlEtudiants()" class="notInCreation"><img src="/icons/Download.png" alt="Telecharger"></button>
                     <button class="editModeOnly"  id="etudButt"><img src="/icons/Upload.png" alt="Envoyer"></button>
                 </div>
-                <div onclick="openEDTSite()" class="normalSection subSummarySection">
+                <div class="normalSection subSummarySection">
                     <h3>Emploie du temps</h3>
                     <button onclick="showHelp('edt')" class="questionMarkBtn">?</button>
-                     <button class="notInCreation"><img src="/icons/link.png" alt="Telecharger"></button>
+                     <button class="notInCreation" onclick="openEDTSite()"><img src="/icons/link.png" alt="Telecharger"></button>
                     <input type="file" name="EDT" id="EDT" style="display:none;">
                     <button onclick="dlEDT()" class="notInCreation"><img src="/icons/Download.png" alt="Telecharger"></button>
                     <button class="editModeOnly" id="edtButt"><img src="/icons/Upload.png" alt="Envoyer"></button>
@@ -162,6 +162,7 @@
         var myURL = "/icons/default_user.png"
         socket.on('connect', () => {
             socket.emit("connected", [document.cookie]) //get  the cookies with the connection socket
+            switchToCreation()
         })
 
         socket.on('connectedAdm', (data) => { //get the data from the server with the acknoledgement
@@ -183,7 +184,6 @@
             document.getElementById("nom").innerHTML = nom          //replace the nom with the right one
             document.getElementById("prenom").innerHTML = prenom    //replace the prenom with the right one
             document.getElementById("Section").innerHTML = "Section"      //replace the section with the right one
-            switchToCreation()
             document.getElementById("dashboardSummary").style.display = "flex"
         })
         socket.emit("getAdminSections")

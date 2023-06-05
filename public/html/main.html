@@ -114,7 +114,6 @@
 
     <script>
         //connection to the socket
-        showLoadingAnimation()
         socket = io()
         var role
         var myURL = "/icons/default_user.png"
@@ -170,7 +169,7 @@
             })
             selected_module = document.querySelectorAll('.selected_module')[0].innerHTML;
             getPosts("General") //get the posts from the server (all the posts from the section)
-            checkLoad()
+            
         })
         
         socket.on('connectedEns', (data) => { //get the data from the server with the acknoledgement
@@ -239,7 +238,6 @@
             document.querySelectorAll(".notEtu").forEach(element => {
                 element.style.display = "block"
             });
-            checkLoad()
         })
             
         

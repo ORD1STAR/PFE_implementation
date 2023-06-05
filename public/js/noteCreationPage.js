@@ -182,6 +182,8 @@ function methodeConfirm(mod){
 //  <button>Enregister</button>
 function getNotesEtudiants(mod){
     selected = document.getElementById("notesS").value
+    dataB = false
+    showLoadingAnimation()
     socket.emit("getEtudiants", mod, selected)
     socket.on("getEtudiants", setStudents)
 }
@@ -190,11 +192,13 @@ function setStudents(etudiants){
     etudiants.forEach(e => {
         link = ""
         pdp = e["photo"]
-            if(pdp.byteLength != 0){                    //if the user has a profile picture
-                pdpB = new Blob([pdp])
-                myURL = URL.createObjectURL(pdpB)
-                link = myURL
-            }
+        if(pdp.byteLength != 0){                    //if the user has a profile picture
+            pdpB = new Blob([pdp])
+            myURL = URL.createObjectURL(pdpB)
+            link = myURL
+        }else{ 
+            link = "/icons/default_user.png"
+        }
         html += `
         <div class="affectationNoteElement">
           <img class="profilePicDiv"  src="${link}" style="width:40px;height:40px;">
@@ -208,8 +212,11 @@ function setStudents(etudiants){
         `
     })
     html += `<button onclick='saveNotes("${etudiants[0].methode}")'>Enregister</button>`
-    socket.off("getEtudiants", setStudents)
     document.getElementById("lsEtudiants").innerHTML = html
+    dataB = true
+    checkLoad()
+    socket.off("getEtudiants", setStudents)
+
 }
 
 function saveNotes(methode){

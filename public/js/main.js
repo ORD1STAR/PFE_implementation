@@ -563,6 +563,7 @@ function setPosts(posts){
     
 }
 function getPosts(module){
+    showLoadingAnimation()
     token = ""
     if(onMod==module){
         limit += 5
@@ -655,7 +656,6 @@ function writePosteE(module, type, prof, content, postID, lens, names, date, com
         <div class="postTop">
             <div class="moduleTitleDiv">
                 <h3>${module}</h3>
-                <p ${role == "admin" ? "style='color:rgb(255, 102, 102);'" : ""}>${role == "admin" ? "Administrateur:" : ""} ${prof}</p>
             </div>
             <h3 class="postTitle">${titre}</h3>
             <p class="postDate">${date}</p>
@@ -767,9 +767,11 @@ async function enterDatePopUp() {
 
 function annulerDatePopUp() {
     toggleBackground(true);
-    popUpToRemove = document.querySelector('.popUp').remove()
-    popUpToRemove.classList.remove('popUpVisible')
+    popUpToRemove = document.querySelector('.popUp')
     popUpToRemove.remove();
+    trav= document.getElementById("trav")
+    trav.innerHTML = trav.innerHTML == "Travail a remettre ❌" ? "Travail a remettre <b style='color:green;'>✔</b>" : "Travail a remettre ❌"
+    travB = travB ? false : true
 }
 
 function setDateRappel() {
@@ -807,8 +809,13 @@ async function cancelSupression() {
 
 function deletePostE(postID, moduleName) {
     cancelSupression();
-    socket.emit('deletePost', [postID]);
-    getPostsE(moduleName);
+    socket.emit('deletePost', postID);
+    socket.on("success", s => {
+        if(s ==2 ){
+            getPostsE(moduleName);
+
+        }
+    })
 }
 
 function setPostsE(posts){
@@ -863,6 +870,7 @@ function setPostsE(posts){
     updateTimes()
 }
 function getPostsE(filtre){
+    showLoadingAnimation()
     secID = document.querySelectorAll('.selected_module')[0].id.split(" ")[0].replace("mod", "")
     token = ""
     if(onMod==filtre){
@@ -899,15 +907,6 @@ function getPostsE(filtre){
             }, 1000*0.8);
         }
     }
-}
-
-function getPostsA(filtre){
-    secID = document.querySelectorAll('.selected_module')[0].id.split(" ")[0].replace("mod", "")
-    socket.emit("getPostsA", [filtre, secID])
-    socket.on("getPostsA", (data) => {
-        
-        setPostsE(data)
-    })
 }
 
 function updateTimes(){

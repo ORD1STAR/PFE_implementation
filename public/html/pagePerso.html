@@ -88,34 +88,39 @@
                     <div class="informationElement">
                         <p>Nom</p>
                         <p>:</p>
-                        <p id="cNom">monNom</p>
+                        <p id="cNom"></p>
                     </div>
                     <div class="informationElement">
                         <p>Prénom</p>
                         <p>:</p>
-                        <p id="cPrenom">monPrenom</p>
+                        <p id="cPrenom"></p>
                     </div>
                     <div class="informationElement" id="matricule">
                         <p>Matricule</p>
                         <p>:</p>
-                        <p id="cMatri">monMatricule</p>
+                        <p id="cMatri"></p>
                     </div>
                     <div class="informationElement" id="specialite">
                         <p>Section</p>
                         <p>:</p>
-                        <p id="cSection">L3 GTR</p>
+                        <p id="cSection"></p>
+                    </div>
+                    <div class="informationElement" id="groupe">
+                        <p>Groupe</p>
+                        <p>:</p>
+                        <p id="cGroupe"></p>
                     </div>
                     <div class="EspaceEntreInformations"></div>
                     <div class="informationElement">
                         <p>Numero de telephone</p>
                         <p>:</p>
-                        <p class="infoModifiable" id="cNum">0123456789</p>
+                        <p class="infoModifiable" id="cNum"></p>
                         <input type="text" id="inNum" value="">
                     </div>
                     <div class="informationElement">
-                        <p>Adress Email</p>
+                        <p>Address Email</p>
                         <p>:</p>
-                        <p class="infoModifiable" id="cMail">monAdress@gmail.com</p>
+                        <p class="infoModifiable" id="cMail"></p>
                         <input type="text" id="inMail" value="">
                     </div>
                     <div class="EspaceEntreInformations"></div>
@@ -179,6 +184,7 @@
             login = data[0]["login"]            //get the login from the data
             prenom = data[0]["prenom"]    //get the first part of the login (the prenom)
             nom = data[0]["nom"]            //get the second part of the login (the nom)
+            groupe = data[0]["groupe"]
             pdp = data[0]["photo"]
             matricule = data[0]["matricule"]
             email = data[0]["email"]
@@ -197,6 +203,7 @@
             document.getElementById("cNom").innerHTML = nom     //replace the matricule with the right one
             document.getElementById("prenom").innerHTML = prenom    //replace the prenom with the right one
             document.getElementById("cPrenom").innerHTML = prenom  //replace the prenom with the right one
+            document.getElementById("cGroupe").innerHTML = groupe      //replace the matricule with the right one
             document.getElementById("Section").innerHTML = sec      //replace the section with the right one
             document.getElementById("cSection").innerHTML = sec      //replace the section with the right one
             document.getElementById("cMatri").innerHTML = matricule      //replace the matricule with the right one
@@ -247,6 +254,7 @@
             document.getElementById("cPrenom").innerHTML = prenom  //replace the prenom with the right one
             document.getElementById("specialite").style.display = "none" //      //replace the section with the right one
             document.getElementById("matricule").style.display = "none"      //replace the matricule with the right one
+            document.getElementById("groupe").style.display = "none"      //replace the section with the right one
             document.getElementById("cNum").innerHTML = phone      //replace the matricule with the right one
             document.getElementsByClassName("doleancesTitle")[0].style.display = "none"
             
@@ -298,6 +306,7 @@
             document.getElementById("cMail").innerHTML = email    //replace the prenom with the right one
             document.getElementById("specialite").style.display = "none" //      //replace the section with the right one
             document.getElementById("matricule").style.display = "none"      //replace the matricule with the right one
+            document.getElementById("groupe").style.display = "none"
             document.getElementById("cNum").innerHTML = phone      //replace the matricule with the right one
             document.getElementById("dols").style.display = "none"      //replace the matricule with the right one
             document.getElementById("voirDols").style.display = "block"

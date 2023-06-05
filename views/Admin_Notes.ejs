@@ -12,7 +12,7 @@
 <body>
     <div id="leftMenu" class="leftMenu">
         <div class="titleDiv" onclick="location.href = '/home'">
-            <h1 id="Section">GTR L3</h1>
+            <h1 id="Section"></h1>
         </div>
 
         <h3>Menu :</h3>
@@ -54,8 +54,8 @@
             <div class="profileDiv">
                 <img class="profilePicDiv" id="pdp" src="/icons/default_user.png">
                 <div class="profileTextDiv">
-                    <p id="nom">Hannoun</p>
-                    <p id="prenom">Amar Amine</p>
+                    <p id="nom"></p>
+                    <p id="prenom"></p>
                     <button id="profileSubMenuBtn">Mon compte</button>
                 </div>
             </div>
@@ -109,12 +109,14 @@
     </div>
     <%md = "[";data.forEach(element => {md+="["; md += '`' + element.codeMod + "`,`" + element.title + "`,`" + element.max + "`,`" + element.id + "`"; md +="],"}); md+= "[]]"%>
     <script src="/js/main.js" defer></script>
+    <script src="/js/loading.js"></script>
     <script src="/js/notes.js"></script>
     <script src="/js/noteCreationPage.js" defer></script>
 
     <script src="/socket.io/socket.io.js"></script>
     <script>
         //connection to the socket
+        var role;
         module = "<%=module%>"
         socket = io()
         socket.on('connect', () => {
@@ -122,6 +124,8 @@
         })
 
         socket.on('connectedEns', (data) => { //get the data from the server with the acknoledgement
+            persoB = true
+            role = "ens"
             login = data[0]["login"]            //get the login from the data
             prenom = data[0]["prenom"]        //get the first part of the login (the prenom)
             nom = data[0]["nom"]              //get the second part of the login (the nom)
@@ -149,7 +153,6 @@
                     document.getElementById("mainTitle").innerHTML = `Actualité ${moduleBtn.children[0].innerHTML}`
                 })
             })
-            selected_module = document.querySelectorAll('.selected_module')[0].innerHTML;
             
         })
         data = JSON.parse("<%=md%>".replaceAll("`", '"'))
@@ -178,14 +181,19 @@
         socket.emit("getMethode", '<%=module%>')
         socket.on("getMethode", (methode, notes) => {
             if(methode != ""){
-                document.getElementById("methode").value = methode
                 document.getElementById("methodeTxt").innerHTML = methode
-                notes.forEach(note => {
-                    n = note.title
-                    document.getElementById("notesS").innerHTML += `<option value="${n}">${n}</option>`
-                })
-                document.getElementById("notesS").innerHTML += '<option value="GENERALE">Moyenne General</option>'
+                document.getElementById("methode").value = methode
+            }else{
+                document.getElementById("methodeTxt").innerHTML = "Vous n'avez pas définie une méthode de calcule des moyennes"
             }
+            notes.forEach(note => {
+                n = note.title
+                if(n != "GENERALE"){
+                    document.getElementById("notesS").innerHTML += `<option value="${n}">${n}</option>`
+                }
+            })
+            document.getElementById("notesS").innerHTML += '<option value="GENERALE">Moyenne General</option>'
+            
         })
         
         

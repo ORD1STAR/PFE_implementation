@@ -565,7 +565,7 @@ io.on('connection', (socket) => {
                 const role = result[0]["role"]
                 //etudiant
                 if(role == "etudiant"){
-                    connection.query("SELECT login, user.nom, prenom, photo, niveau, specialite, idSec, indice, matricule, email, phone, section.nom as secNom FROM user, etudiant, section WHERE user.idUser=etudiant.userID AND etudiant.section=section.idSec AND user.token = ?", [token], function(err, result1, fields){
+                    connection.query("SELECT login, user.nom, prenom, photo, niveau, specialite, idSec, indice, matricule, email, phone, section.nom as secNom, groupe FROM user, etudiant, section WHERE user.idUser=etudiant.userID AND etudiant.section=section.idSec AND user.token = ?", [token], function(err, result1, fields){
                         if(err){
                             console.log(err.message);
                         }
@@ -967,12 +967,21 @@ io.on('connection', (socket) => {
 
     socket.on('deletePost', (data => {
 
-        req = `DELETE FROM postes WHERE postID = ${data[0]}`
+
+        req = `DELETE FROM commentaires WHERE postID = ${data}`
         connection.query(req, function(err, result, fields) {
             if (err) {
                 console.log(err.message);
             }
+            req = `DELETE FROM postes WHERE postID = ${data}`
+            connection.query(req, function(err, result, fields) {
+                if (err) {
+                    console.log(err.message);
+                }
+                socket.emit("success", 2)
+            })
         })
+        
     }))
 
     socket.on("addMessage", (data) => {
@@ -1305,8 +1314,9 @@ io.on('connection', (socket) => {
     })
 
     socket.on("getMethode", module => {
-        req = "SELECT title, methode FROM note WHERE codeMod = ? group by title"
+        req = "SELECT title, methode FROM note WHERE codeMod = ? group by title order by methode desc"
         connection.query(req, [module], function(err, result, fields){
+            console.log(result);
             if(err){
                 console.log(err.message);
             }
@@ -1335,6 +1345,30 @@ io.on('connection', (socket) => {
             }
             if(result.length > 0){
                 socket.emit("getEtudiants", result)
+            } else if (title == "GENERALE"){
+                req = "SELECT matricule FROM etudiant WHERE section = (SELECT secID FROM module WHERE codeMod = ?)"
+                connection.query(req, [module], function(err, result, fields){
+                    if(err){
+                        console.log(err.message);
+                    }
+                    req = "INSERT INTO note (codeMod, matricule, title, max) VALUES (?,?,?,?)"
+                    result.forEach(matricule => {
+                        connection.query(req, [module, matricule.matricule, title, 20], function(err, result, fields){
+                            if(err){
+                                console.log(err.message);
+                            }
+                        })
+                    });
+                    req2 = "SELECT nom, prenom, photo, etudiant.matricule, note.* FROM user, etudiant, note WHERE user.idUser = etudiant.userID AND etudiant.matricule = note.matricule AND note.codeMod = ? AND title = ?"
+                    connection.query(req2, [module, title], function(err, result, fields){
+                        if(err){
+                            console.log(err.message);
+                        }
+                        if(result.length > 0){
+                            socket.emit("getEtudiants", result)
+                        }
+                    })
+                })
             }
             
         })
@@ -1573,17 +1607,19 @@ io.on('connection', (socket) => {
             if(edt != undefined){
                 editEDT(edt, idSec)
             }
-            types = ["cours", "td", "tp"]
-            req = "INSERT INTO module (codeMod, nom, secID) VALUES (?, ?, ?)"
+            var types = ["cours", "td", "tp"]
             modules.forEach(element => {
-                connection.query(req, [element[0]+idSec, element[0], idSec], function(err, result, fields){
+                connection.query(`INSERT INTO module (codeMod, nom, secID) VALUES ("${element[0]+idSec}", "${element[0]}", "${idSec}")`, function(err, result, fields){
+
                     if(err){
                         console.log(err.message);
                     }
                     for(var i = 2; i<5 ; i++){
+                        console.log(element[i])
                         if(element[i] != "#"){
-                            req = "INSERT INTO typeModule (enseignantID, module, type) VALUES (?, ?, ?)"
-                            connection.query(req, [element[i], element[0]+idSec, types[i-2]], function(err, result, fields){
+                            
+                            console.log(`INSERT INTO typeModule (enseignantID, module, type) VALUES ("${element[i]}", "${element[0]+idSec}", "${types[i-2]}")`);
+                            connection.query(`INSERT INTO typeModule (enseignantID, module, type) VALUES ("${element[i]}", "${element[0]+idSec}", "${types[i-2]}")`, function(err, result, fields){
                                 if(err){
                                     console.log(err.message);
                                 }
@@ -1591,6 +1627,7 @@ io.on('connection', (socket) => {
                         }
                     }
                 })
+
             });
 
         })

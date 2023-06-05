@@ -618,9 +618,9 @@ async function showHelp(selected) {
                 <button onclick="hideHelp()">X</button>
             </div>
             <div class="parametresBody">
-            <h3>Méthode</h3>
-            <p>Importer un fichier excel au format (matricule, groupe)</p>
-            <img src="./icons/help_admin/helpEtu.png" alt="helpEtu">
+                <h3>Méthode</h3>
+                <p style="color: var(--textColorBlack);">Importer un fichier excel au format (matricule, groupe)</p>
+                <img src="./icons/help_admin/helpEtu.png" alt="helpEtu">
             </div>
         `
     } else if (selected == "edt") {
@@ -631,7 +631,7 @@ async function showHelp(selected) {
             </div>
             <div class="parametresBody">
             <h3>Méthode</h3>
-            <p>importer un fichier excel. 
+            <p style="color: var(--textColorBlack);">importer un fichier excel. 
             une ligne -> un jour ... une colonne -> une seance</br></br>
             Format d'une seance : "groupe|type|module|salle"</br></br>
             "#" pour separé les seances chevauché</p>
