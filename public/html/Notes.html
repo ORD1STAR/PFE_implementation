@@ -110,30 +110,22 @@
             notesDiv = document.getElementById("mainWrapper")
             notesHtml = ""
             for(mod of modules){
-                prof = ""
+                profn = ""
+                profpn = ""
                 date = ""
                 for(names of data[2]){
                     if(mod["codeMod"] == names["codeMod"]){
-                        prof = names["login"]
+                        profn = names["n"] 
+                        profpn = names["pn"]
                         date = new Date(names["edited"])
                         break
                     }
                 }
-                var timePassed = (new Date()) - date;
-                var minutes = Math.floor(timePassed / (1000 * 60));
-                var hours = Math.floor(timePassed / (1000 * 60 * 60));
-                var days = Math.floor(timePassed / (1000 * 60 * 60 * 24));
-                var months = Math.floor(timePassed / (1000 * 60 * 60 * 24 * 30));
-                var remaining =
-                 months > 0
-                   ? months + " mois"
-                   : days > 0
-                   ? days + " jour" + (days > 1 ? "s" : "")
-                   : hours > 0
-                   ? hours + " heur" + (hours > 1 ? "s" : "")
-                   : minutes + " minute" + (minutes > 1 ? "s" : "");
 
-                
+                date = new Date(names["edited"])
+                days = (new Date(date).getDate() < 10 ? "0" + new Date(date).getDate() : new Date(date).getDate()) + "/" + (new Date(date).getMonth() < 10 ? "0" + new Date(date).getMonth() : new Date(date).getMonth()) + "/" + new Date(date).getFullYear()
+                console.log(days);
+                edit = ""
 
 
                 notesHtml += `
@@ -141,7 +133,7 @@
                     <div class="moduleNoteMain" id="${mod["codeMod"]}">
                         <div class="moduleTitleDiv">
                             <h3 class="moduleTitle">${mod["nom"]}</h3>
-                            <p>${names["n"]} ${names["pn"]}</p>
+                            <p>${profn} ${profpn}</p>
                         </div>
                         
                         
@@ -150,7 +142,7 @@
                     <div class="moduleNoteSide">
                         <button onclick="window.location.href = '/msg';">Recours</button>
                         <button onclick="showMethode('${mod["codeMod"]}', '${mod["nom"]}', '${names["n"]} ${names["pn"]}')">Méthode de calcule</button>
-                        <p>modifié : ${remaining}</p>
+                        <p>modifié le : ${edit}</p>
                     </div>
                 </div>
                 `
@@ -216,121 +208,7 @@
             
         })
 
-        socket.on('connectedEns', (data) => { //get the data from the server with the acknoledgement
-            role = "ens"
-            methode = ""
-            login = data[0]["login"]            //get the login from the data
-            //socket.join(login)
-            prenom = data[0]["prenom"]        //get the first part of the login (the prenom)
-            nom = data[0]["nom"]              //get the second part of the login (the nom)
-            pdp = data[0]["photo"]
-            if(pdp.byteLength != 0){                    //if the user has a profile picture
-                pdpB = new Blob([pdp])
-                url = URL.createObjectURL(pdpB)
-
-                document.getElementById("pdp").src = url
-            }
-            idSec = data[0]["idSec"]
-            
-            document.getElementById("nom").innerHTML = nom          //replace the nom with the right one
-            document.getElementById("prenom").innerHTML = prenom    //replace the prenom with the right one
-            document.getElementById("Section").innerHTML = "Section"      //replace the section with the right one
-            
-            modules = data[1]           //get the modules from the data
-            
-            notesDiv = document.getElementById("mainWrapper")
-            notesHtml = ""
-            
-            for(mod of modules){
-                nom = mod["nom"]
-                codeMod= mod["codeMod"]
-                prof = ""
-                for(names of data[2]){
-                    if(mod["codeMod"] == names["codeMod"]){
-                        prof = names["login"]
-                        break
-                    }
-                }
-                notesHtml += `
-                <div class="moduleNoteElement">
-                    <div class="moduleNoteMain notes" id="${codeMod}">
-                        <div class="moduleTitleDiv">
-                            <h3 class="moduleTitle">${nom}</h3>
-                            <p>${prof}</p>
-                        </div>
-                        
-                        
-                    </div>
-
-                    <div class="moduleNoteSide">
-                        <button>Les copies</button>
-                        <button onclick="console.log('test')">Les Recours</button>
-                        <button onclick="showMethode('scan')">Méthode de calcule</button>
-                        <button onclick="socket.emit('saveNotes', [methode, document.getElementsByClassName('${codeMod}')], '${codeMod}')">Sauvegarder les notes du module</button>
-                    </div>
-                </div>
-                `
-            }
-            notesDiv.innerHTML = notesHtml
-            token = ""
-            cookies = document.cookie.split('; ')
-            cookies.forEach(function(c){
-                if(c.startsWith('token=')){
-                    token = c.split('=')[1]
-                }
-            })
-            socket.emit("getNotesE", token)
-            socket.on("getNotesE", (data) => {
-                modulesNote = data
-                for(note of modulesNote){
-                    for(module of modules){
-                        if(note["codeMod"] == module["codeMod"]){
-                            limit = new Date(note["edited"])
-                            limit.setDate(limit.getDate() + 1)
-                            if(note["title"] != "GENERALE"){
-                                document.getElementById(note["codeMod"]).innerHTML += `
-                                <div class="noteElement">
-                                    <p style="width: 300px;"><b>${note["login"]}</b> > <i><input class="${note["codeMod"]}" type="text" value="${note["title"]}" size="8"> </i>:</p>
-                                    <p><input class="${note["codeMod"]}" type="text" value="${note["moyenne"]}" size="1"></p>
-                                    <p>/ <input class="${note["codeMod"]}" type="text" value="${note["max"]}" size="1"></p>
-                                   
-                                </div>`
-                            }
-                            break
-                        }
-                    }
-                }
-                
-                for(note of modulesNote){
-                    for(module of modules){
-                        if(note["codeMod"] == module["codeMod"]){
-                            limit = new Date(note["edited"])
-                            limit.setDate(limit.getDate() + 1)
-                            if(note["title"] == "GENERALE"){
-                                document.getElementById(note["codeMod"]).innerHTML += `
-                                <div class="noteElement">
-                                    <p style="width: 300px;"><b>${note["login"]}</b> > <i>Generale</i>:</p>
-                                    <p><input type="text" value="${note["moyenne"]}" size="1"></p>
-                                    <p>/ <input type="text" value="${note["max"]}" size="1"></p>
-                                </div>`
-                            }
-                            break
-                        }
-                    }
-                }
-                console.log(note["codeMod"]);
-                document.getElementById(note["codeMod"]).innerHTML += '<div class="noteElement"></div>'
-            })
-            
-            for(var mod of modules){
-
-            }
-
-            selected_module = document.querySelectorAll('.selected_module')[0].innerHTML;
-            
-            
-        })
-
+        
 
         
     </script>

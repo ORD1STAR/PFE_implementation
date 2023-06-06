@@ -1,6 +1,6 @@
 bc = require("bcryptjs")
 
-bc.hash("mdpEtu12", 14, function(err, hash) {
+bc.hash("mdpSaid123", 14, function(err, hash) {
     console.log(hash)
 })
 
