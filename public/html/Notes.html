@@ -124,8 +124,8 @@
 
                 date = new Date(names["edited"])
                 days = (new Date(date).getDate() < 10 ? "0" + new Date(date).getDate() : new Date(date).getDate()) + "/" + (new Date(date).getMonth() < 10 ? "0" + new Date(date).getMonth() : new Date(date).getMonth()) + "/" + new Date(date).getFullYear()
-                console.log(days);
-                edit = ""
+                heure =  (new Date(date).getHours()<10? "0"+new Date(date).getHours() : new Date(date).getHours()) + ":" + (new Date(date).getMinutes()<10? "0"+new Date(date).getMinutes() : new Date(date).getMinutes())
+                edit = `${days} a ${heure}`
 
 
                 notesHtml += `
