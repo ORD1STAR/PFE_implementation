@@ -930,7 +930,7 @@ function updateTimes(){
             const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
             btn.innerHTML = `Date limite: ${days} jours, ${hours<10 ? "0" + hours : hours}:${minutes<10 ? "0" + minutes : minutes}:${seconds<10 ? "0" + seconds : seconds}  restantes`
         }else{
-            const date = (new Date(then).getDay() < 10 ? "0" + new Date(then).getDay() : new Date(then).getDay()) + "/" + (new Date(then).getMonth() < 10 ? "0" + new Date(then).getMonth() : new Date(then).getMonth()) + "/" + new Date(then).getFullYear()
+            const date = (new Date(then).getDate() < 10 ? "0" + new Date(then).getDate() : new Date(then).getDate()) + "/" + (new Date(then).getMonth() < 10 ? "0" + new Date(then).getMonth() : new Date(then).getMonth()) + "/" + new Date(then).getFullYear()
             const heure =  (new Date(then).getHours()<10? "0"+new Date(then).getHours() : new Date(then).getHours()) + ":" + (new Date(then).getMinutes()<10? "0"+new Date(then).getMinutes() : new Date(then).getMinutes())
             btn.innerHTML = `Date limite: expirée le ${date} a ${heure}`
         }
